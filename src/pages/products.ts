@@ -3,6 +3,24 @@ export const productsPageTemplate = (): string => {
   return `
     <!-- Luxury Products Page -->
     <div class="luxury-products-page">
+        <!-- Coupon Banner -->
+        <div class="luxury-coupon-banner" id="couponBanner">
+            <div class="luxury-coupon-content">
+                <svg class="luxury-coupon-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"></path>
+                    <polyline points="7.5 4.21 12 6.81 16.5 4.21"></polyline>
+                    <polyline points="7.5 19.79 7.5 14.6 3 12"></polyline>
+                    <polyline points="21 12 16.5 14.6 16.5 19.79"></polyline>
+                    <polyline points="3.27 6.96 12 12.01 20.73 6.96"></polyline>
+                    <line x1="12" y1="22.08" x2="12" y2="12"></line>
+                </svg>
+                <span class="luxury-coupon-text">Use code</span>
+                <button class="luxury-coupon-code" id="couponCode" title="Click to copy">WELCOME10</button>
+                <span class="luxury-coupon-text">for 10% off your first order</span>
+            </div>
+            <div class="luxury-coupon-copied" id="couponCopied">Copied to clipboard!</div>
+        </div>
+
         <!-- Header -->
         <div class="luxury-products-header">
             <h1 class="luxury-page-title">PREMIUM COLLECTION</h1>
@@ -184,6 +202,76 @@ export const productsPageTemplate = (): string => {
     </div>
 
     <script>
+      // Animate coupon banner on page load
+      setTimeout(() => {
+        const banner = document.getElementById('couponBanner');
+        if (banner) {
+          banner.classList.add('show');
+        }
+      }, 500);
+
+      // Copy coupon code to clipboard
+      const couponCode = document.getElementById('couponCode');
+      const copiedMessage = document.getElementById('couponCopied');
+      
+      couponCode?.addEventListener('click', async () => {
+        try {
+          await navigator.clipboard.writeText('WELCOME10');
+          
+          // Show copied message
+          copiedMessage.classList.add('show');
+          couponCode.classList.add('copied');
+          
+          // Hide after 2 seconds
+          setTimeout(() => {
+            copiedMessage.classList.remove('show');
+            couponCode.classList.remove('copied');
+          }, 2000);
+        } catch (err) {
+          console.error('Failed to copy:', err);
+        }
+      });
+
+      // Product data
+      const productsData = {
+        '1': {
+          name: 'Moisture Senses Hydrating Conditioner',
+          price: '£29.95',
+          images: [
+            '/Davroe_Moisture_Senses_Hydrating_Conditioner_325ml__99636.jpg',
+            '/Davroe_Repair_Senses_Revitalising_Conditioner_325ml_2__32801.jpg'
+          ],
+          description: 'A deeply nourishing conditioner that restores moisture balance and enhances natural shine. Perfect for all hair types, especially dry or damaged hair.',
+          details: ['325ml premium formula', 'Enriched with natural oils', 'Sulfate and paraben-free', 'Suitable for daily use', 'Made in Australia', 'Cruelty-free and vegan'],
+          materials: 'Apply to clean, damp hair. Massage gently through mid-lengths to ends. Leave for 2-3 minutes. Rinse thoroughly with water.',
+          commitment: 'Formulated with natural botanicals and enriched with Quinoa protein. Vegan-friendly, cruelty-free, and Australian-made with sustainable practices.'
+        },
+        '2': {
+          name: 'Protein Hair Rebuilder',
+          price: '£39.95',
+          images: [
+            '/Davroe_Protein_Hair_Rebuilder_200ml__77435.jpg',
+            '/__Davroe_Replenish_Jojoba_Crme_Treatment_200ml__26186.jpg'
+          ],
+          description: 'Intensive protein treatment designed to rebuild and strengthen damaged hair from within. Professional-grade formula for salon results at home.',
+          details: ['200ml intensive treatment', 'Hydrolyzed wheat protein', 'Restores hair structure', 'Deep conditioning formula', 'Professional salon-tested', 'Safe for color-treated hair'],
+          materials: 'Apply to freshly washed, towel-dried hair. Distribute evenly from roots to ends. Leave on for 5-10 minutes. Rinse thoroughly. Use weekly for best results.',
+          commitment: 'Contains hydrolyzed wheat protein and essential amino acids. Professional-grade formula, salon-tested and approved.'
+        },
+        '3': {
+          name: 'Shine Fluid & Thermaprotect Duo',
+          price: '£34.95',
+          images: [
+            '/Davroe_Thermaprotect_200ml__47285.jpg',
+            '/Davroe_Shine_Fluid_75ml_2__31573.jpg'
+          ],
+          description: 'Perfect duo for heat styling protection and brilliant shine finish. Protects hair up to 230°C while adding luxurious glossy finish.',
+          details: ['Shine Fluid 75ml + Thermaprotect 200ml', 'Heat protection up to 230°C', 'Infused with argan oil', 'Eliminates frizz and flyaways', 'Lightweight, non-greasy formula', 'UV protection included'],
+          materials: 'Thermaprotect: Spray evenly on damp hair before blow-drying or heat styling. Shine Fluid: Apply 1-2 drops to dry hair ends for glossy finish.',
+          commitment: 'Infused with argan oil and heat-activated polymers. Eco-conscious packaging, free from harmful sulfates and parabens.'
+        }
+      };
+
       // Product carousel functionality
       document.querySelectorAll('.luxury-product-card').forEach(card => {
         const images = card.querySelectorAll('.carousel-image');
@@ -202,8 +290,59 @@ export const productsPageTemplate = (): string => {
           });
         });
 
-        // Click card to open detail view
+        // Click card to open detail view with product data
         card.addEventListener('click', () => {
+          const productId = card.getAttribute('data-product');
+          const product = productsData[productId];
+          
+          if (product) {
+            // Update detail modal with product data
+            document.getElementById('detailTitle').textContent = product.name;
+            document.getElementById('detailPrice').textContent = product.price;
+            
+            // Update images
+            const detailImages = document.querySelectorAll('.detail-carousel-image');
+            const thumbnails = document.querySelectorAll('.luxury-thumbnail');
+            
+            detailImages.forEach((img, index) => {
+              if (product.images[index]) {
+                img.src = product.images[index];
+                img.alt = product.name;
+              }
+            });
+            
+            thumbnails.forEach((thumb, index) => {
+              if (product.images[index]) {
+                const img = thumb.querySelector('img');
+                img.src = product.images[index];
+                img.alt = product.name;
+              }
+            });
+            
+            // Update description section
+            const descSection = document.querySelector('.luxury-section-content');
+            if (descSection && product.description) {
+              let detailsHTML = '<ul>';
+              product.details.forEach(detail => {
+                detailsHTML += '<li>' + detail + '</li>';
+              });
+              detailsHTML += '</ul>';
+              
+              descSection.innerHTML = '<p>' + product.description + '</p><br><strong>Product Details</strong>' + detailsHTML;
+            }
+            
+            // Update materials section
+            const materialsSections = document.querySelectorAll('.luxury-section-content');
+            if (materialsSections[1] && product.materials) {
+              materialsSections[1].innerHTML = '<p>' + product.materials + '</p>';
+            }
+            
+            // Update commitment section
+            if (materialsSections[2] && product.commitment) {
+              materialsSections[2].innerHTML = '<p>' + product.commitment + '</p>';
+            }
+          }
+          
           document.getElementById('productDetail').style.display = 'flex';
           document.body.style.overflow = 'hidden';
         });
