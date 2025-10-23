@@ -2582,17 +2582,29 @@ p, span, div {
   background: transparent !important;
 }
 
-/* Ensure specific content areas use white */
+/* Ensure specific content areas are transparent - let them float on gradient */
 .hero-content,
 .page-hero-content,
 .about-hero-content,
 .products-hero-content {
-  background: #FFFFFF !important;
+  background: transparent !important;
   color: #1A1A2E !important;
 }
 
-/* Keep only specific elements with intentional colors (buttons, badges, etc) */
+/* Make ALL button text white and highly visible */
 .btn,
+.btn-primary,
+.btn-secondary,
+.btn-add-to-cart,
+.product-link,
+a.btn,
+button {
+  color: #FFFFFF !important;
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.4) !important;
+  font-weight: 700 !important;
+}
+
+/* Keep only specific elements with intentional colors (badges, etc) */
 .badge,
 .hero-badge,
 .trust-badges {
