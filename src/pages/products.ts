@@ -79,24 +79,6 @@ export const productsPageTemplate = (): string => {
                     <p class="luxury-product-price">£34.95</p>
                 </div>
             </div>
-
-            <!-- Product 4 (Duplicate for grid) -->
-            <div class="luxury-product-card" data-product="4">
-                <div class="luxury-product-image">
-                    <div class="luxury-product-carousel">
-                        <img src="/Davroe_Moisture_Senses_Hydrating_Conditioner_325ml__99636.jpg" alt="Hydrating Conditioner" class="carousel-image active" loading="lazy">
-                        <img src="/Davroe_Repair_Senses_Revitalising_Conditioner_325ml_2__32801.jpg" alt="Revitalising Conditioner" class="carousel-image" loading="lazy">
-                    </div>
-                    <div class="luxury-carousel-dots">
-                        <span class="luxury-dot active" data-index="0"></span>
-                        <span class="luxury-dot" data-index="1"></span>
-                    </div>
-                </div>
-                <div class="luxury-product-info">
-                    <h3 class="luxury-product-name">Davroe Moisture Senses Collection</h3>
-                    <p class="luxury-product-price">£29.95</p>
-                </div>
-            </div>
         </div>
 
         <!-- Product Detail Modal (Hidden by default) -->
