@@ -14,7 +14,7 @@ export const homePageTemplate = (): string => {
                     <img src="/logo.png" alt="BlissHairStudio - Premium Hair Salon & Luxury Hair Care" class="hero-logo-elegant" />
                 </div>
                 <h1 class="hero-tagline">
-                    <span class="tagline-main">Where Beauty Meets Luxury</span>
+                    <span class="tagline-main">WHERE BEAUTY MEETS LUXURY</span>
                 </h1>
                 <p class="hero-subtitle">Transform your hair with expert salon services and premium products</p>
                 <div class="hero-buttons">

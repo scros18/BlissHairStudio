@@ -406,23 +406,12 @@
 
 .tagline-main {
   font-size: clamp(2.8rem, 5.5vw, 4rem);
-  font-weight: 600;
-  background: linear-gradient(135deg, 
-    #1A3A2E 0%,
-    #1B4D3E 20%,
-    #2D6854 45%,
-    #1B5E4D 70%,
-    #1A3A2E 100%
-  );
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
-  letter-spacing: -0.02em;
+  font-weight: 300;
+  color: #1A1A2E;
+  letter-spacing: 0.15em;
   line-height: 1.2;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Helvetica Neue', sans-serif;
-  filter: drop-shadow(0 2px 8px rgba(27, 77, 62, 0.15));
-  animation: textShimmer 8s ease-in-out infinite;
-  background-size: 200% auto;
+  font-family: 'Georgia', 'Times New Roman', serif;
+  text-transform: uppercase;
 }
 
 @keyframes textShimmer {
@@ -491,15 +480,16 @@
   font-size: clamp(1.15rem, 2.2vw, 1.4rem);
   color: #637887;
   margin-bottom: 52px;
-  font-weight: 400;
+  font-weight: 300;
   line-height: 1.65;
   max-width: 640px;
   margin-left: auto;
   margin-right: auto;
   opacity: 0.95;
   transform: translateZ(0);
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Helvetica Neue', sans-serif;
-  letter-spacing: 0.5px;
+  font-family: 'Georgia', 'Times New Roman', serif;
+  letter-spacing: 0.05em;
+  font-style: italic;
 }
 
 .hero-buttons {
