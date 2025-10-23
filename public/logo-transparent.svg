@@ -1,0 +1,57 @@
+<svg width="300" height="300" viewBox="0 0 300 300" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <!-- Elegant circular frame -->
+  <circle cx="150" cy="150" r="145" stroke="url(#gradient1)" stroke-width="2" opacity="0.3"/>
+  <circle cx="150" cy="150" r="135" stroke="url(#gradient1)" stroke-width="1.5" opacity="0.2"/>
+  
+  <!-- Stylized hair strands forming a crown -->
+  <path d="M150 50 C120 60, 100 80, 90 110 Q85 130, 95 145 T120 155" 
+        stroke="url(#gradient1)" stroke-width="3" stroke-linecap="round" fill="none"/>
+  <path d="M150 50 C180 60, 200 80, 210 110 Q215 130, 205 145 T180 155" 
+        stroke="url(#gradient1)" stroke-width="3" stroke-linecap="round" fill="none"/>
+  <path d="M150 45 C140 55, 135 70, 130 90 Q125 110, 135 125" 
+        stroke="url(#gradient2)" stroke-width="2.5" stroke-linecap="round" fill="none"/>
+  <path d="M150 45 C160 55, 165 70, 170 90 Q175 110, 165 125" 
+        stroke="url(#gradient2)" stroke-width="2.5" stroke-linecap="round" fill="none"/>
+  
+  <!-- Center elegant leaf/flower design -->
+  <ellipse cx="150" cy="150" rx="40" ry="55" fill="url(#gradient1)" opacity="0.15"/>
+  <path d="M150 120 Q140 135, 150 150 Q160 135, 150 120 Z" fill="url(#gradient1)"/>
+  <path d="M150 150 Q140 165, 150 180 Q160 165, 150 150 Z" fill="url(#gradient2)"/>
+  <circle cx="150" cy="150" r="8" fill="#FFFFFF"/>
+  <circle cx="150" cy="150" r="6" fill="url(#gradient1)"/>
+  
+  <!-- Decorative flourish lines -->
+  <path d="M110 160 Q120 165, 130 160" stroke="url(#gradient2)" stroke-width="2" stroke-linecap="round" fill="none"/>
+  <path d="M170 160 Q180 165, 190 160" stroke="url(#gradient2)" stroke-width="2" stroke-linecap="round" fill="none"/>
+  
+  <!-- Bottom elegant curves -->
+  <path d="M80 200 Q150 185, 220 200" stroke="url(#gradient1)" stroke-width="2.5" stroke-linecap="round" fill="none"/>
+  <path d="M90 210 Q150 198, 210 210" stroke="url(#gradient2)" stroke-width="2" stroke-linecap="round" fill="none" opacity="0.6"/>
+  
+  <!-- Sparkle elements -->
+  <circle cx="120" cy="100" r="3" fill="#FFFFFF" opacity="0.9"/>
+  <circle cx="180" cy="95" r="2.5" fill="#FFFFFF" opacity="0.8"/>
+  <circle cx="110" cy="180" r="2" fill="#FFFFFF" opacity="0.7"/>
+  <circle cx="190" cy="185" r="2.5" fill="#FFFFFF" opacity="0.8"/>
+  
+  <!-- Text: BLISS -->
+  <text x="150" y="240" font-family="'Playfair Display', serif" font-size="38" font-weight="700" 
+        fill="url(#gradient1)" text-anchor="middle" letter-spacing="6">BLISS</text>
+  
+  <!-- Text: HAIR STUDIO -->
+  <text x="150" y="265" font-family="'Poppins', sans-serif" font-size="14" font-weight="400" 
+        fill="#2D6854" text-anchor="middle" letter-spacing="4" opacity="0.8">HAIR STUDIO</text>
+  
+  <!-- Gradient Definitions -->
+  <defs>
+    <linearGradient id="gradient1" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#2D6854;stop-opacity:1" />
+      <stop offset="50%" style="stop-color:#3D8B6C;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#4DA684;stop-opacity:1" />
+    </linearGradient>
+    <linearGradient id="gradient2" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#4DA684;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#2D6854;stop-opacity:1" />
+    </linearGradient>
+  </defs>
+</svg>

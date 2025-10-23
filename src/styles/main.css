@@ -1,0 +1,330 @@
+/* Import all modular CSS */
+@import './variables.css';
+@import './base.css';
+@import './components.css';
+@import './icons.css';
+@import './navigation.css';
+@import './hero.css';
+@import './products.css';
+@import './admin.css';
+
+/* Additional sections */
+.about, .services, .testimonials, .contact {
+  padding: 100px 20px;
+}
+
+.about {
+  background: var(--background);
+}
+
+.services {
+  background: var(--background-soft);
+}
+
+.testimonials {
+  background: var(--background-accent);
+}
+
+.contact {
+  background: var(--background);
+}
+
+/* Services Grid */
+.services-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 30px;
+  margin-top: 40px;
+}
+
+.service-card {
+  text-align: center;
+  padding: 40px 25px;
+  background: white;
+  border-radius: var(--radius-lg);
+  transition: all var(--transition-base);
+  border: 2px solid transparent;
+}
+
+.service-card:hover {
+  transform: translateY(-5px);
+  border-color: var(--primary-light);
+  box-shadow: 0 10px 30px var(--shadow);
+}
+
+.service-icon {
+  font-size: 3.5rem;
+  margin-bottom: 20px;
+}
+
+.service-card h3 {
+  font-size: var(--text-xl);
+  margin-bottom: 15px;
+}
+
+.service-card p {
+  color: var(--text-light);
+  line-height: 1.7;
+}
+
+/* Testimonials */
+.testimonials-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 30px;
+  margin-top: 40px;
+}
+
+.testimonial-card {
+  background: white;
+  padding: 35px;
+  border-radius: var(--radius-lg);
+  box-shadow: 0 4px 20px var(--shadow);
+  transition: transform var(--transition-base);
+}
+
+.testimonial-card:hover {
+  transform: translateY(-5px);
+}
+
+.stars {
+  color: #ffd700;
+  font-size: var(--text-lg);
+  margin-bottom: 15px;
+}
+
+.testimonial-card p {
+  color: var(--text-light);
+  font-style: italic;
+  margin-bottom: 20px;
+  line-height: 1.7;
+}
+
+.testimonial-author strong {
+  color: var(--text-dark);
+  font-size: var(--text-lg);
+}
+
+.testimonial-author span {
+  color: var(--primary-color);
+  font-size: var(--text-sm);
+}
+
+/* Contact */
+.contact-content {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 50px;
+  margin-top: 40px;
+}
+
+.contact-info h3 {
+  font-size: var(--text-2xl);
+  margin-bottom: 25px;
+}
+
+.contact-item {
+  display: flex;
+  gap: 20px;
+  margin-bottom: 25px;
+  align-items: flex-start;
+}
+
+.contact-icon {
+  font-size: 2rem;
+}
+
+.contact-item strong {
+  display: block;
+  margin-bottom: 5px;
+  font-size: var(--text-lg);
+}
+
+.contact-item p {
+  color: var(--text-light);
+  line-height: 1.6;
+}
+
+.social-links {
+  display: flex;
+  gap: 15px;
+  margin-top: 30px;
+}
+
+.social-links a {
+  width: 45px;
+  height: 45px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--primary-light);
+  color: white;
+  border-radius: 50%;
+  transition: all var(--transition-base);
+}
+
+.social-links a:hover {
+  background: var(--primary-color);
+  transform: translateY(-3px);
+}
+
+.contact-form {
+  background: var(--background-soft);
+  padding: 40px;
+  border-radius: var(--radius-lg);
+}
+
+.contact-form h3 {
+  font-size: var(--text-2xl);
+  margin-bottom: 25px;
+}
+
+/* Footer - White & Elegant */
+.footer {
+  background: var(--background);
+  color: var(--text-dark);
+  padding: 80px 20px 30px;
+  border-top: 3px solid var(--primary-light);
+  position: relative;
+}
+
+.footer::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, var(--primary-color), transparent);
+}
+
+.footer-content {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 50px;
+  margin-bottom: 50px;
+  max-width: 1200px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.footer-section h4 {
+  color: var(--text-dark);
+  font-size: var(--text-xl);
+  font-weight: 700;
+  margin-bottom: 24px;
+  letter-spacing: 0.5px;
+}
+
+.footer-logo {
+  max-width: 180px;
+  margin-bottom: 20px;
+  filter: none;
+}
+
+.footer-section p {
+  color: var(--text-light);
+  line-height: 1.8;
+  font-size: var(--text-base);
+}
+
+.footer-section ul {
+  list-style: none;
+}
+
+.footer-section ul li {
+  margin-bottom: 12px;
+}
+
+.footer-section ul li a {
+  color: var(--text-light);
+  transition: all var(--transition-base);
+  display: inline-block;
+  position: relative;
+  padding-left: 18px;
+}
+
+.footer-section ul li a::before {
+  content: '→';
+  position: absolute;
+  left: 0;
+  opacity: 0;
+  transition: all var(--transition-base);
+}
+
+.footer-section ul li a:hover {
+  color: var(--primary-color);
+  padding-left: 24px;
+}
+
+.footer-section ul li a:hover::before {
+  opacity: 1;
+}
+
+.newsletter-form {
+  display: flex;
+  gap: 10px;
+  margin-top: 20px;
+  flex-wrap: wrap;
+}
+
+.newsletter-form input {
+  flex: 1;
+  min-width: 200px;
+  padding: 14px 20px;
+  border-radius: var(--radius-full);
+  border: 2px solid var(--border-color);
+  background: var(--background-soft);
+  color: var(--text-dark);
+  transition: all var(--transition-base);
+}
+
+.newsletter-form input:focus {
+  border-color: var(--primary-color);
+  background: white;
+  outline: none;
+  box-shadow: 0 0 0 4px rgba(143, 188, 143, 0.1);
+}
+
+.newsletter-form button {
+  white-space: nowrap;
+}
+
+.footer-bottom {
+  text-align: center;
+  padding-top: 30px;
+  border-top: 2px solid var(--background-accent);
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.footer-bottom p {
+  color: var(--text-muted);
+  font-size: var(--text-sm);
+}
+
+/* Responsive */
+@media (min-width: 768px) {
+  .contact-content {
+    grid-template-columns: 1fr 1.2fr;
+  }
+}
+
+@media (max-width: 768px) {
+  .about, .services, .testimonials, .contact {
+    padding: 60px 15px;
+  }
+  
+  .services-grid,
+  .testimonials-grid {
+    grid-template-columns: 1fr;
+  }
+  
+  .contact-form {
+    padding: 25px;
+  }
+  
+  .footer-content {
+    grid-template-columns: 1fr;
+  }
+}

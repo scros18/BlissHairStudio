@@ -1,0 +1,149 @@
+/* ================================================
+   Custom SVG Icons - Elegant & Smooth
+   ================================================ */
+
+.icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 24px;
+  height: 24px;
+}
+
+.icon svg {
+  width: 100%;
+  height: 100%;
+}
+
+.icon-sparkles svg {
+  stroke: currentColor;
+  fill: none;
+  stroke-width: 2;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.icon-heart svg {
+  stroke: currentColor;
+  fill: none;
+  stroke-width: 2;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.icon-leaf svg {
+  stroke: currentColor;
+  fill: none;
+  stroke-width: 2;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+/* Animated Icons */
+.icon-sparkles {
+  animation: sparkle 2s ease-in-out infinite;
+}
+
+@keyframes sparkle {
+  0%, 100% { opacity: 1; transform: scale(1); }
+  50% { opacity: 0.8; transform: scale(1.1); }
+}
+
+.icon-heart {
+  animation: heartbeat 2s ease-in-out infinite;
+}
+
+@keyframes heartbeat {
+  0%, 100% { transform: scale(1); }
+  10%, 30% { transform: scale(1.1); }
+  20%, 40% { transform: scale(1); }
+}
+
+/* Feature Icons (larger) - Filled with vibrant colors */
+.feature-icon-svg {
+  width: 64px;
+  height: 64px;
+  margin: 0 auto 20px;
+  display: block;
+  stroke: none;
+  fill: currentColor;
+  transition: all var(--transition-base);
+}
+
+/* Feature specific colors */
+.feature-card:nth-child(1) .feature-icon-svg {
+  color: var(--accent-gold);
+  filter: drop-shadow(0 4px 12px rgba(212, 175, 55, 0.3));
+}
+
+.feature-card:nth-child(2) .feature-icon-svg {
+  color: var(--accent-rose);
+  filter: drop-shadow(0 4px 12px rgba(232, 180, 184, 0.3));
+}
+
+.feature-card:nth-child(3) .feature-icon-svg {
+  color: var(--accent-lavender);
+  filter: drop-shadow(0 4px 12px rgba(200, 168, 216, 0.3));
+}
+
+.feature-card:nth-child(4) .feature-icon-svg {
+  color: var(--accent-coral);
+  filter: drop-shadow(0 4px 12px rgba(244, 151, 142, 0.3));
+}
+
+.feature-card:hover .feature-icon-svg {
+  transform: scale(1.1) translateY(-4px);
+}
+
+/* Service Icons (larger) - Filled with vibrant colors */
+.service-icon-svg {
+  width: 80px;
+  height: 80px;
+  margin: 0 auto 24px;
+  display: block;
+  stroke: none;
+  fill: currentColor;
+  transition: all var(--transition-base);
+}
+
+/* Service specific colors */
+.service-card:nth-child(1) .service-icon-svg {
+  color: var(--primary-color);
+  filter: drop-shadow(0 4px 16px rgba(45, 104, 84, 0.3));
+}
+
+.service-card:nth-child(2) .service-icon-svg {
+  color: var(--accent-coral);
+  filter: drop-shadow(0 4px 16px rgba(244, 151, 142, 0.3));
+}
+
+.service-card:nth-child(3) .service-icon-svg {
+  color: var(--accent-lavender);
+  filter: drop-shadow(0 4px 16px rgba(200, 168, 216, 0.3));
+}
+
+.service-card:nth-child(4) .service-icon-svg {
+  color: var(--accent-gold);
+  filter: drop-shadow(0 4px 16px rgba(212, 175, 55, 0.3));
+}
+
+.service-card:hover .service-icon-svg {
+  transform: scale(1.15) rotate(5deg);
+}
+
+/* Contact Icons - Filled with vibrant colors */
+.contact-icon-svg {
+  width: 32px;
+  height: 32px;
+  stroke: none;
+  fill: currentColor;
+  color: var(--primary-color);
+  filter: drop-shadow(0 2px 8px rgba(45, 104, 84, 0.2));
+}
+
+/* Social Icons */
+.social-icon {
+  width: 20px;
+  height: 20px;
+  fill: currentColor;
+}

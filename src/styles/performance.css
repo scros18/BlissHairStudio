@@ -1,0 +1,123 @@
+/* ================================================
+   Performance Optimizations - Anti-Flicker
+   ================================================ */
+
+/* Force GPU acceleration for smooth rendering */
+.navbar,
+.logo,
+.nav-menu,
+.cart-icon,
+.auth-button,
+.menu-toggle {
+  transform: translateZ(0);
+  -webkit-transform: translateZ(0);
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+  perspective: 1000px;
+  -webkit-perspective: 1000px;
+}
+
+/* Disable animations that cause flicker on scroll */
+.hero-content,
+.hero-badge,
+.hero-title,
+.hero-subtitle,
+.hero-cta,
+.trust-badges,
+.hero-images {
+  animation: none !important;
+  opacity: 1 !important;
+}
+
+/* Static rendering for icons and badges */
+.badge-item,
+.feature-icon-wrap,
+.service-icon,
+.cart-count {
+  will-change: auto;
+  transform: translateZ(0);
+  backface-visibility: hidden;
+}
+
+/* Smooth scrolling without jank */
+* {
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
+}
+
+/* Prevent layout shifts */
+img {
+  display: block;
+  max-width: 100%;
+  height: auto;
+}
+
+/* Optimize floating animations */
+.floating-shape,
+.hero-decoration {
+  will-change: transform;
+  transform: translateZ(0);
+}
+
+/* Remove problematic animations on scroll */
+.feature-card-enhanced,
+.service-category-card,
+.review-card {
+  animation: none !important;
+}
+
+/* Static hover states only */
+.cart-icon:hover,
+.auth-button:hover {
+  will-change: transform;
+}
+
+/* Optimize transitions */
+button,
+a,
+.btn {
+  transition: transform 0.2s ease, background 0.2s ease, color 0.2s ease;
+  will-change: auto;
+}
+
+/* Prevent paint flashing */
+.navbar.scrolled {
+  will-change: auto;
+  transform: translateZ(0);
+}
+
+/* Fix ribbon animations */
+.ribbon-stripe {
+  will-change: filter;
+  transform: translateZ(0) skewX(-25deg);
+}
+
+.ribbon-shine {
+  will-change: left;
+  transform: translateZ(0) skewX(-25deg);
+}
+
+/* Optimize menu toggle */
+.menu-toggle span {
+  will-change: transform, opacity;
+  transform: translateZ(0);
+}
+
+/* Static positioning */
+.nav-actions,
+.logo img {
+  will-change: auto;
+}
+
+/* Prevent repaint on hover */
+.service-list li {
+  contain: layout style;
+}
+
+/* Optimize shadows */
+.service-category-card,
+.review-card,
+.cart-count {
+  contain: layout style paint;
+}
