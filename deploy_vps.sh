@@ -143,24 +143,82 @@ EOF
     rm -f /etc/nginx/sites-enabled/default
   fi
   nginx -t
-  systemctl reload nginx
+  # Use service to reload so we avoid systemctl when it's unavailable
+  if command -v service >/dev/null 2>&1; then
+    service nginx reload || nginx -s reload || true
+  else
+    nginx -s reload || true
+  fi
+}
+
+enable_ssl_nginx(){
+  echoinfo "Enabling SSL nginx server block..."
+  # write a TLS-enabled nginx block using Certbot locations
+  cat > "${NGINX_CONF_PATH}" <<EOF
+server {
+    listen 80;
+    listen [::]:80;
+    server_name ${DOMAIN};
+
+    root ${APP_DIR}/current;
+    index index.html;
+
+    location /.well-known/acme-challenge/ {
+        try_files \$uri =404;
+    }
+
+    location / {
+        try_files \$uri \$uri/ =404;
+    }
+}
+
+server {
+    listen 443 ssl http2;
+    listen [::]:443 ssl http2;
+    server_name ${DOMAIN};
+
+    root ${APP_DIR}/current;
+    index index.html;
+
+    ssl_certificate /etc/letsencrypt/live/${DOMAIN}/fullchain.pem;
+    ssl_certificate_key /etc/letsencrypt/live/${DOMAIN}/privkey.pem;
+    include /etc/letsencrypt/options-ssl-nginx.conf;
+    ssl_dhparam /etc/letsencrypt/ssl-dhparams.pem;
+
+    location / {
+        try_files \$uri \$uri/ =404;
+    }
+
+    location ~* \.(?:css|js|woff2?|ttf|svg|ico|png|jpg|jpeg|webp)$ {
+        try_files \$uri =404;
+        access_log off;
+        add_header Cache-Control "public, max-age=31536000, immutable";
+    }
+}
+EOF
+
+  ln -sf "${NGINX_CONF_PATH}" /etc/nginx/sites-enabled/blisshairstudio
+  nginx -t
+  if command -v service >/dev/null 2>&1; then
+    service nginx reload || nginx -s reload || true
+  else
+    nginx -s reload || true
+  fi
 }
 
 obtain_ssl(){
-  echoinfo "Requesting SSL certificate from Let's Encrypt..."
-  # Use webroot plugin; certbot will place challenge files under ${APP_DIR}/current/.well-known
+  echoinfo "Requesting SSL certificate from Let's Encrypt using webroot (no systemctl calls)..."
   mkdir -p "${APP_DIR}/current/.well-known/acme-challenge"
   chown -R www-data:www-data "${APP_DIR}/current/.well-known"
 
-  # First try the nginx plugin (automatic). If that fails, fall back to webroot.
-  if certbot --nginx --non-interactive --agree-tos --redirect --email "${EMAIL}" -d "${DOMAIN}"; then
-    echoinfo "Certbot nginx plugin succeeded"
+  # Use webroot only to avoid invoking systemd
+  if certbot certonly --webroot -w "${APP_DIR}/current" --non-interactive --agree-tos --email "${EMAIL}" -d "${DOMAIN}"; then
+    echoinfo "Certificate obtained successfully"
+    enable_ssl_nginx
   else
-    echowarn "Certbot nginx plugin failed, trying webroot..."
-    certbot certonly --webroot -w "${APP_DIR}/current" --non-interactive --agree-tos --email "${EMAIL}" -d "${DOMAIN}"
+    echoerr "Certbot webroot issuance failed. Inspect /var/log/letsencrypt/letsencrypt.log"
+    return 1
   fi
-
-  echoinfo "SSL certificate request finished. Certbot will handle renewals via snap." 
 }
 
 setup_cron_renewal(){
