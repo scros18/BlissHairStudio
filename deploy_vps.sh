@@ -307,14 +307,16 @@ install_certbot(){
 setup_app_dir(){
   echoinfo "Ensuring application directory exists: ${APP_DIR}"
   mkdir -p "${APP_DIR}"
-  chown -R $SUDO_USER:root "${APP_DIR}" || true
+  if [ -n "${SUDO_USER:-}" ]; then
+    chown -R "${SUDO_USER}:root" "${APP_DIR}" || true
+  fi
   chmod -R 755 "${APP_DIR}"
 }
 
-clone_or_update_repo(){
-  if [ -d "${APP_DIR}/.git" ]; then
-    echoinfo "Updating repository..."
-    git -C "${APP_DIR}" fetch --all --prune
+  # ensure permissions for the deployer user if available
+  if [ -n "${SUDO_USER:-}" ]; then
+    chown -R "${SUDO_USER}:root" "${APP_DIR}" || true
+  fi
     git -C "${APP_DIR}" reset --hard origin/main
     git -C "${APP_DIR}" pull origin main || true
   else
