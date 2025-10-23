@@ -2555,15 +2555,9 @@ article {
   color: #1A1A2E !important;
 }
 
-/* Force text to be dark and visible */
-body *,
-.hero *,
-.page-hero *,
-.about-hero *,
-.products-hero *,
-.products-section *,
+/* Force text to be dark and visible - EXCEPT buttons */
 h1, h2, h3, h4, h5, h6,
-p, span, div {
+p:not(.btn):not(.btn *) {
   color: #1A1A2E !important;
 }
 
@@ -2591,16 +2585,33 @@ p, span, div {
   color: #1A1A2E !important;
 }
 
-/* Make ALL button text white and highly visible */
+/* ================================================
+   BUTTON TEXT VISIBILITY - SIMPLE AND CLEAR
+   ================================================ */
+
+/* ALL DARK GREEN BUTTONS = WHITE TEXT */
 .btn,
 .btn-primary,
-.btn-secondary,
 .btn-add-to-cart,
 .product-link,
 a.btn,
-button {
+button,
+.hero-buttons .btn,
+.hero-buttons .btn-primary,
+.hero-buttons a,
+.product-card a,
+.product-card button {
   color: #FFFFFF !important;
-  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.4) !important;
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.5) !important;
+  font-weight: 700 !important;
+}
+
+/* LIGHT BACKGROUND BUTTONS (outline buttons) = DARK TEXT */
+.btn-secondary,
+.btn-secondary-outline,
+.hero-buttons .btn-secondary-outline {
+  color: #1A1A2E !important;
+  text-shadow: none !important;
   font-weight: 700 !important;
 }
 
