@@ -95,10 +95,12 @@ function loadGalleryItems() {
 
   const itemsToShow = galleryData.slice(0, visibleItems);
   
+  console.log('Loading gallery items:', itemsToShow); // Debug log
+  
   grid.innerHTML = itemsToShow.map((item, index) => `
     <div class="gallery-item" data-index="${index}">
       <div class="gallery-item-inner">
-        <img src="${item.image}" alt="${item.alt}" loading="lazy" width="400" height="400" />
+        <img src="${item.image}" alt="${item.alt}" loading="lazy" width="400" height="400" onerror="console.error('Failed to load image:', this.src)" />
         <div class="gallery-item-overlay">
           <button class="gallery-view-btn" aria-label="View full image">
             <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">

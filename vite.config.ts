@@ -114,7 +114,7 @@ export default defineConfig({
         categories: ['beauty', 'shopping', 'lifestyle']
       },
       workbox: {
-        globPatterns: ['**/*.{js,css,html,webp,png,svg,ico,woff,woff2}'],
+        globPatterns: ['**/*.{js,css,html,webp,png,jpg,jpeg,svg,ico,woff,woff2}'],
         runtimeCaching: [
           {
             urlPattern: /^https:\/\/fonts\.googleapis\.com\/.*/i,
