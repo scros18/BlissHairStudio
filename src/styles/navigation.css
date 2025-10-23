@@ -154,7 +154,8 @@
 }
 
 .cart-icon svg {
-  color: #1A1A2E;
+  color: #1A1A2E !important;
+  stroke: #1A1A2E !important;
   width: 20px;
   height: 20px;
   stroke-width: 2;
