@@ -199,7 +199,33 @@ export const productDuoTemplate = (): string => {
             section.classList.toggle('active');
           });
         });
-      }, 100);
-    </script>
+
+        // Add to Cart functionality
+        const addToBagBtn = document.querySelector('.btn-add-to-bag');
+        if (addToBagBtn) {
+          addToBagBtn.addEventListener('click', () => {
+            const quantity = parseInt((document.getElementById('qtyInput') as HTMLInputElement).value) || 1;
+            
+            // Import cartManager dynamically
+            import('../utils/cartManager').then(({ cartManager }) => {
+              const product = {
+                id: 'product-shine-duo',
+                title: 'Shine Fluid & Thermaprotect Duo',
+                price: 34.95,
+                image: '/Davroe_Thermaprotect_200ml__47285.jpg',
+                description: 'Perfect duo for heat styling protection and brilliant shine'
+              };
+              
+              for (let i = 0; i < quantity; i++) {
+                cartManager.addItem(product);
+              }
+              
+              import('../components/ui').then(({ UI }) => {
+                const msg = 'Added ' + quantity + ' x ' + product.title + ' to cart!';
+                UI.showNotification(msg, { type: 'success' });
+              });
+            });
+          });
+        }
   `;
 };

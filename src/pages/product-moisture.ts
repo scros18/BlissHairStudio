@@ -206,6 +206,36 @@ export const productMoistureTemplate = (): string => {
             section.classList.toggle('active');
           });
         });
+
+        // Add to Cart functionality
+        const addToBagBtn = document.querySelector('.btn-add-to-bag');
+        if (addToBagBtn) {
+          addToBagBtn.addEventListener('click', () => {
+            const quantity = parseInt((document.getElementById('qtyInput') as HTMLInputElement).value) || 1;
+            const selectedSize = document.querySelector('.size-option.active')?.textContent || '325ml';
+            
+            // Import cartManager dynamically
+            import('../utils/cartManager').then(({ cartManager }) => {
+              const product = {
+                id: 'product-moisture-senses',
+                title: 'Moisture Senses Hydrating Conditioner',
+                price: 29.95,
+                image: '/Davroe_Moisture_Senses_Hydrating_Conditioner_325ml__99636.jpg',
+                size: selectedSize,
+                description: 'A deeply nourishing conditioner that restores moisture balance'
+              };
+              
+              for (let i = 0; i < quantity; i++) {
+                cartManager.addItem(product);
+              }
+              
+              import('../components/ui').then(({ UI }) => {
+                const msg = 'Added ' + quantity + ' x ' + product.title + ' to cart!';
+                UI.showNotification(msg, { type: 'success' });
+              });
+            });
+          });
+        }
       }, 100);
     </script>
   `;
