@@ -32,6 +32,9 @@ import { renderTermsPage } from './pages/terms';
 import { renderAccessibilityPage } from './pages/accessibility';
 import { clientsPageTemplate, initClientsGallery } from './pages/clients';
 import { storesPage } from './pages/stores';
+import { productMoistureTemplate } from './pages/product-moisture';
+import { productProteinTemplate } from './pages/product-protein';
+import { productDuoTemplate } from './pages/product-duo';
 
 class App {
   async init(): Promise<void> {
@@ -175,6 +178,30 @@ class App {
           keywords: 'hair salon locations, store locator, find salon, BlissHairStudio near me, salon addresses'
         });
         pageManager.loadPageFromTemplate(storesPage);
+      })
+      .route('/product/moisture-senses', () => {
+        seoManager.updateMeta({
+          title: 'Moisture Senses Hydrating Conditioner | BlissHairStudio',
+          description: 'Davroe Moisture Senses Hydrating Conditioner - Deeply nourish and hydrate dry, damaged hair with this luxurious salon treatment.',
+          keywords: 'hydrating conditioner, moisture conditioner, hair conditioner, Davroe products'
+        });
+        pageManager.loadPageFromTemplate(productMoistureTemplate);
+      })
+      .route('/product/protein-rebuilder', () => {
+        seoManager.updateMeta({
+          title: 'Protein Hair Rebuilder | BlissHairStudio',
+          description: 'Davroe Protein Hair Rebuilder - Intensive reparative treatment that reconstructs and strengthens damaged hair from within.',
+          keywords: 'protein treatment, hair rebuilder, damaged hair treatment, Davroe protein'
+        });
+        pageManager.loadPageFromTemplate(productProteinTemplate);
+      })
+      .route('/product/shine-duo', () => {
+        seoManager.updateMeta({
+          title: 'Shine Fluid & Thermaprotect Duo | BlissHairStudio',
+          description: 'The ultimate styling duo - Davroe Shine Fluid and Thermaprotect for gorgeous, protected hair with brilliant shine.',
+          keywords: 'shine fluid, heat protection, styling products, Davroe duo, thermaprotect'
+        });
+        pageManager.loadPageFromTemplate(productDuoTemplate);
       })
       .notFound(() => {
         router.navigate('/');

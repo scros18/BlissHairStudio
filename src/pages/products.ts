@@ -45,7 +45,7 @@ export const productsPageTemplate = (): string => {
         <!-- Products Grid -->
         <div class="luxury-products-grid">
             <!-- Product 1 -->
-            <div class="luxury-product-card" data-product="1">
+            <a href="/product/moisture-senses" class="luxury-product-card" data-product="1">
                 <div class="luxury-product-image">
                     <div class="luxury-product-carousel">
                         <img src="/Davroe_Moisture_Senses_Hydrating_Conditioner_325ml__99636.jpg" alt="Moisture Senses Hydrating Conditioner" class="carousel-image active" loading="lazy">
@@ -64,10 +64,10 @@ export const productsPageTemplate = (): string => {
                         <span class="luxury-product-price">£29.95</span>
                     </div>
                 </div>
-            </div>
+            </a>
 
             <!-- Product 2 -->
-            <div class="luxury-product-card" data-product="2">
+            <a href="/product/protein-rebuilder" class="luxury-product-card" data-product="2">
                 <div class="luxury-product-image">
                     <div class="luxury-product-carousel">
                         <img src="/Davroe_Protein_Hair_Rebuilder_200ml__77435.jpg" alt="Protein Hair Rebuilder" class="carousel-image active" loading="lazy">
@@ -86,10 +86,10 @@ export const productsPageTemplate = (): string => {
                         <span class="luxury-product-price">£39.95</span>
                     </div>
                 </div>
-            </div>
+            </a>
 
             <!-- Product 3 -->
-            <div class="luxury-product-card" data-product="3">
+            <a href="/product/shine-duo" class="luxury-product-card" data-product="3">
                 <div class="luxury-product-image">
                     <div class="luxury-product-carousel">
                         <img src="/Davroe_Thermaprotect_200ml__47285.jpg" alt="Thermaprotect Heat Protection" class="carousel-image active" loading="lazy">
@@ -108,7 +108,7 @@ export const productsPageTemplate = (): string => {
                         <span class="luxury-product-price">£34.95</span>
                     </div>
                 </div>
-            </div>
+            </a>
         </div>
 
         <!-- Product Detail Modal (Hidden by default) -->
@@ -284,13 +284,14 @@ export const productsPageTemplate = (): string => {
         }
       };
 
-      // Product carousel functionality
+      // Product carousel functionality - prevent link navigation when clicking dots
       document.querySelectorAll('.luxury-product-card').forEach(card => {
         const images = card.querySelectorAll('.carousel-image');
         const dots = card.querySelectorAll('.luxury-dot');
         
         dots.forEach(dot => {
           dot.addEventListener('click', (e) => {
+            e.preventDefault();
             e.stopPropagation();
             const index = parseInt(dot.getAttribute('data-index'));
             
@@ -300,85 +301,6 @@ export const productsPageTemplate = (): string => {
             dots.forEach(d => d.classList.remove('active'));
             dot.classList.add('active');
           });
-        });
-
-        // Click card to open detail view with product data
-        card.addEventListener('click', () => {
-          const productId = card.getAttribute('data-product');
-          const product = productsData[productId];
-          
-          if (product) {
-            // Update detail modal with product data
-            document.getElementById('detailTitle').textContent = product.name;
-            document.getElementById('detailPrice').textContent = product.price;
-            
-            // Update images
-            const detailImages = document.querySelectorAll('.detail-carousel-image');
-            const thumbnails = document.querySelectorAll('.luxury-thumbnail');
-            
-            detailImages.forEach((img, index) => {
-              if (product.images[index]) {
-                img.src = product.images[index];
-                img.alt = product.name;
-              }
-            });
-            
-            thumbnails.forEach((thumb, index) => {
-              if (product.images[index]) {
-                const img = thumb.querySelector('img');
-                img.src = product.images[index];
-                img.alt = product.name;
-              }
-            });
-            
-            // Update description section
-            const descSection = document.querySelector('.luxury-section-content');
-            if (descSection && product.description) {
-              let detailsHTML = '<ul>';
-              product.details.forEach(detail => {
-                detailsHTML += '<li>' + detail + '</li>';
-              });
-              detailsHTML += '</ul>';
-              
-              descSection.innerHTML = '<p>' + product.description + '</p><br><strong>Product Details</strong>' + detailsHTML;
-            }
-            
-            // Update materials section
-            const materialsSections = document.querySelectorAll('.luxury-section-content');
-            if (materialsSections[1] && product.materials) {
-              materialsSections[1].innerHTML = '<p>' + product.materials + '</p>';
-            }
-            
-            // Update commitment section
-            if (materialsSections[2] && product.commitment) {
-              materialsSections[2].innerHTML = '<p>' + product.commitment + '</p>';
-            }
-          }
-          
-          document.getElementById('productDetail').style.display = 'flex';
-          document.body.style.overflow = 'hidden';
-        });
-      });
-
-      // Close detail view
-      document.getElementById('closeDetail')?.addEventListener('click', () => {
-        document.getElementById('productDetail').style.display = 'none';
-        document.body.style.overflow = 'auto';
-      });
-
-      // Detail view carousel
-      const detailImages = document.querySelectorAll('.detail-carousel-image');
-      const thumbnails = document.querySelectorAll('.luxury-thumbnail');
-      
-      thumbnails.forEach(thumb => {
-        thumb.addEventListener('click', () => {
-          const index = parseInt(thumb.getAttribute('data-index'));
-          
-          detailImages.forEach(img => img.classList.remove('active'));
-          detailImages[index].classList.add('active');
-          
-          thumbnails.forEach(t => t.classList.remove('active'));
-          thumb.classList.add('active');
         });
       });
 

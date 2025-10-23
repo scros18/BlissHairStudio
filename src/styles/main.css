@@ -13,6 +13,7 @@
 @import './performance.css';
 @import './clients.css';
 @import './product-cards.css';
+@import './product-detail.css';
 
 /* Additional sections */
 .about, .services, .testimonials, .contact {

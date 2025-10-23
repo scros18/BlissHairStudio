@@ -227,6 +227,9 @@
   cursor: pointer;
   transition: opacity 0.3s;
   position: relative;
+  display: block;
+  text-decoration: none;
+  color: inherit;
 }
 
 .luxury-product-card:hover {
