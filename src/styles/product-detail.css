@@ -245,7 +245,7 @@
   padding: 12px 24px;
   border: 1px solid #E8E8E8;
   background: white;
-  color: #1A1A1A;
+  color: #1A1A1A !important;
   font-size: 0.9rem;
   font-weight: 500;
   cursor: pointer;
@@ -254,13 +254,13 @@
 
 .size-option:hover {
   border-color: #1A1A1A;
-  color: #1A1A1A;
+  color: #1A1A1A !important;
 }
 
 .size-option.active {
   border-color: #1A1A1A;
   background: #1A1A1A;
-  color: white;
+  color: white !important;
 }
 
 /* Quantity Selector */
@@ -293,13 +293,13 @@
   font-size: 1.2rem;
   cursor: pointer;
   transition: background 0.3s;
-  color: #1A1A1A;
+  color: #1A1A1A !important;
   font-weight: 500;
 }
 
 .qty-btn:hover {
   background: #F5F5F5;
-  color: #1A1A1A;
+  color: #1A1A1A !important;
 }
 
 #qtyInput {
@@ -312,7 +312,7 @@
   font-size: 1rem;
   font-weight: 500;
   background: white;
-  color: #1A1A1A;
+  color: #1A1A1A !important;
 }
 
 /* Product Actions */
@@ -421,22 +421,28 @@
 .section-header svg {
   transition: transform 0.3s;
   flex-shrink: 0;
-}
-
-.detail-section.active .section-header svg {
   transform: rotate(180deg);
 }
 
+.detail-section.collapsed .section-header svg {
+  transform: rotate(0deg);
+}
+
 .section-content {
-  max-height: 0;
+  max-height: 1000px;
   overflow: hidden;
   transition: max-height 0.3s ease;
-  padding: 0;
+  padding-bottom: 20px;
 }
 
 .detail-section.active .section-content {
   max-height: 1000px;
   padding-bottom: 20px;
+}
+
+.detail-section.collapsed .section-content {
+  max-height: 0;
+  padding: 0;
 }
 
 .section-content ul {

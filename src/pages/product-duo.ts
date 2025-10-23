@@ -192,11 +192,11 @@ export const productDuoTemplate = (): string => {
           });
         }
 
-        // Collapsible sections
+        // Collapsible sections - Open by default
         document.querySelectorAll('.section-header').forEach(header => {
           header.addEventListener('click', () => {
             const section = header.parentElement;
-            section.classList.toggle('active');
+            section.classList.toggle('collapsed');
           });
         });
 
