@@ -950,6 +950,7 @@
     display: flex;
     justify-content: center;
     align-items: center;
+    padding: 0 16px;
   }
   
   .trust-badges {
@@ -959,18 +960,19 @@
     justify-content: center;
     width: 100%;
     max-width: 100%;
-    padding: 12px;
-    margin: 0 auto;
+    padding: 0;
+    margin: 0;
     background: transparent;
     text-align: center;
   }
   
   .badge-item {
     justify-content: center;
-    width: 90%;
-    max-width: 300px;
-    margin: 0 auto;
+    width: auto;
+    max-width: 90%;
+    margin: 0;
     text-align: center;
+    padding: 12px 20px;
   }
   
   /* Make floating icons visible and attractive on mobile */
