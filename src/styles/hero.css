@@ -48,6 +48,10 @@
 .hero .container {
   position: relative;
   z-index: 2;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
 }
 
 .hero-content {
@@ -56,6 +60,13 @@
   max-width: 900px;
   opacity: 1;
   transform: translateZ(0);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  width: 100%;
+  margin: 0 auto;
 }
 
 /* Center Logo Styling */
@@ -612,12 +623,17 @@
   margin-top: 60px;
   opacity: 1;
   transform: translateZ(0);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
 }
 
 .trust-badges {
   display: flex;
   gap: 16px;
   justify-content: center;
+  align-items: center;
   flex-wrap: wrap;
   padding: 16px;
   background: transparent;

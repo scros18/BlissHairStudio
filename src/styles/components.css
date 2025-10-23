@@ -590,8 +590,10 @@ section {
   display: flex;
   gap: 12px;
   justify-content: center;
+  align-items: center;
   flex-wrap: wrap;
-  margin: 40px 0;
+  margin: 40px auto;
+  max-width: 800px;
 }
 
 .filter-btn {
