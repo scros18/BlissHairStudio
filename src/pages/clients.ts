@@ -69,21 +69,57 @@ export function clientsPageTemplate(): string {
 let galleryData: Array<{id: number, image: string, alt: string}> = [];
 
 // Generate gallery data from image count (will be populated on init)
-function generateGalleryData() {
-  // These will be loaded dynamically - the actual images are in /public/clients/
-  const imageCount = 12; // Update this if you add more images
-  galleryData = Array.from({ length: imageCount }, (_, i) => ({
-    id: i + 1,
-    image: `/clients/${i + 1}.jpeg`,
-    alt: `Beautiful hair transformation and styling by BlissHairStudio - Image ${i + 1}`
-  }));
+async function generateGalleryData() {
+  console.log('🔍 Generating gallery data...');
+  
+  // Start with known images - test each one to see if it exists
+  const maxImages = 50; // Check up to 50 images
+  
+  // Test each image by trying to load it
+  const testPromises = Array.from({ length: maxImages }, async (_, i) => {
+    const imageNum = i + 1;
+    const imagePath = `/clients/${imageNum}.jpeg`;
+    
+    try {
+      // Create a test image to check if it exists
+      const response = await fetch(imagePath, { method: 'HEAD' });
+      if (response.ok) {
+        console.log(`✅ Found image: ${imagePath}`);
+        return {
+          id: imageNum,
+          image: imagePath,
+          alt: `Beautiful hair transformation and styling by BlissHairStudio - Image ${imageNum}`
+        };
+      }
+    } catch (error) {
+      // Image doesn't exist, skip it
+    }
+    return null;
+  });
+  
+  const results = await Promise.all(testPromises);
+  galleryData = results.filter(item => item !== null) as Array<{id: number, image: string, alt: string}>;
+  
+  console.log(`📸 Found ${galleryData.length} images in gallery`);
+  
+  // If no images found via HEAD request, fall back to known count
+  if (galleryData.length === 0) {
+    console.log('⚠️ No images detected via HEAD request, using fallback...');
+    // Fallback: Create entries for images 1-12 (known to exist)
+    galleryData = Array.from({ length: 12 }, (_, i) => ({
+      id: i + 1,
+      image: `/clients/${i + 1}.jpeg`,
+      alt: `Beautiful hair transformation and styling by BlissHairStudio - Image ${i + 1}`
+    }));
+  }
 }
 
 let currentImageIndex = 0;
-let visibleItems = 12; // Show all items by default
+let visibleItems = 999; // Show all items by default
 
-export function initClientsGallery() {
-  generateGalleryData();
+export async function initClientsGallery() {
+  console.log('🎨 Initializing clients gallery...');
+  await generateGalleryData();
   loadGalleryItems();
   setupLightbox();
   setupLoadMore();
@@ -92,13 +128,13 @@ export function initClientsGallery() {
 function loadGalleryItems() {
   const grid = document.getElementById('galleryGrid');
   if (!grid) {
-    console.error('Gallery grid not found');
+    console.error('❌ Gallery grid not found');
     return;
   }
 
   const itemsToShow = galleryData.slice(0, visibleItems);
   
-  console.log('Loading gallery items:', itemsToShow); // Debug log
+  console.log(`📷 Loading ${itemsToShow.length} gallery items...`);
   
   if (itemsToShow.length === 0) {
     grid.innerHTML = '<p style="text-align: center; padding: 40px; color: #666;">No images available yet. Coming soon!</p>';
@@ -115,7 +151,8 @@ function loadGalleryItems() {
           width="400" 
           height="400"
           style="width: 100%; height: 100%; object-fit: cover;"
-          onerror="this.style.display='none'; this.parentElement.innerHTML='<div style=\\'display:flex;align-items:center;justify-content:center;height:100%;background:#f0f0f0;color:#666;\\'>Image ${index + 1}</div>'; console.error('Failed to load:', this.src);" 
+          onload="console.log('✅ Loaded:', '${item.image}'); this.style.opacity='1';"
+          onerror="console.error('❌ Failed to load:', '${item.image}'); this.style.display='none'; this.parentElement.innerHTML='<div style=\\'display:flex;align-items:center;justify-content:center;height:100%;background:#f0f0f0;color:#999;font-size:14px;\\'>Image ${index + 1}<br/>Not Available</div>';" 
         />
         <div class="gallery-item-overlay">
           <button class="gallery-view-btn" aria-label="View full image">
@@ -131,10 +168,13 @@ function loadGalleryItems() {
     </div>
   `).join('');
 
+  console.log(`✅ Gallery HTML rendered with ${itemsToShow.length} items`);
+
   // Add click handlers
   document.querySelectorAll('.gallery-item').forEach(item => {
     item.addEventListener('click', () => {
       const index = parseInt(item.getAttribute('data-index') || '0');
+      console.log(`🖼️ Opening lightbox for image ${index + 1}`);
       openLightbox(index);
     });
   });

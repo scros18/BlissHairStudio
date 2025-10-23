@@ -192,14 +192,14 @@ class App {
         });
         pageManager.loadPageFromTemplate(renderAccessibilityPage);
       })
-      .route('/clients', () => {
+      .route('/clients', async () => {
         seoManager.updateMeta({
           title: 'Client Gallery - Hair Transformations | BlissHairStudio',
           description: 'Browse our stunning gallery of real client hair transformations. See the beautiful work we create at BlissHairStudio - balayage, cuts, colors & more.',
           keywords: 'hair gallery, client transformations, hair before after, salon portfolio, hair inspiration, BlissHairStudio gallery'
         });
         pageManager.loadPageFromTemplate(clientsPageTemplate);
-        setTimeout(() => initClientsGallery(), 100);
+        setTimeout(async () => await initClientsGallery(), 100);
       })
       .route('/stores', () => {
         seoManager.updateMeta({
