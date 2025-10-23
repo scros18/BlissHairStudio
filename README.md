@@ -176,3 +176,39 @@ For questions or customization requests, contact the developer.
 ---
 
 Made with 💝 for BlissHairStudio
+
+## Deployment
+
+This project builds with Vite and is deployed to a VPS via SCP/SSH. The repository includes a `deploy.ps1` PowerShell helper that will build, package, upload and extract the site on the server (it creates a backup of the current site before extracting).
+
+From Windows (PowerShell):
+
+1. Ensure Node 18+ and npm are installed.
+2. Install dependencies (if needed): `npm install`
+3. Run the deploy script (will run the build and upload):
+
+```powershell
+# From the project root
+.\deploy.ps1
+```
+
+Manual (SCP) alternative:
+
+1. Build the project:
+
+```powershell
+npm run build
+Compress-Archive -Path .\dist\* -DestinationPath .\dist.zip -Force
+```
+
+2. Upload and extract on the VPS (replace `root@IP` and `/var/www/site`):
+
+```powershell
+scp .\dist.zip root@your.vps.ip:/tmp/dist.zip
+ssh root@your.vps.ip "sudo unzip -o /tmp/dist.zip -d /var/www/blisshairstudio && sudo chown -R www-data:www-data /var/www/blisshairstudio && sudo chmod -R 755 /var/www/blisshairstudio && rm -f /tmp/dist.zip"
+```
+
+Notes:
+- The `deploy.ps1` currently targets `root@213.171.195.105:/var/www/blisshairstudio` — edit it if you need a different server or path.
+- The script makes a backup of the previous site at `/var/www/blisshairstudio-backup-YYYY_MM_DD_HHMMSS`.
+- If your VPS uses a different user (not `root`), adjust the `deploy.ps1` or use `sudo` as necessary on the remote commands.
