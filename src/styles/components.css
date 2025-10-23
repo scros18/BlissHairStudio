@@ -598,7 +598,7 @@ section {
   padding: 12px 28px;
   background: white;
   border: 2px solid var(--primary-light);
-  color: var(--text-light);
+  color: #1A1A2E;
   border-radius: 50px;
   font-weight: 500;
   cursor: pointer;
@@ -641,18 +641,19 @@ section {
 .cta-box p {
   font-size: 1.1rem;
   margin-bottom: 32px;
-  color: rgba(255, 255, 255, 0.95);
+  color: white;
   font-weight: 500;
 }
 
 .cta-box .btn-secondary {
   background: white;
-  color: var(--primary-color);
+  color: #1A1A2E;
   border-color: white;
 }
 
 .cta-box .btn-secondary:hover {
   background: var(--primary-light);
+  color: #1A1A2E;
   transform: translateY(-2px);
 }
 

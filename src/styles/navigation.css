@@ -506,6 +506,8 @@
   .cart-icon svg {
     width: 18px;
     height: 18px;
+    color: #1A1A2E;
+    stroke: #1A1A2E;
   }
   
   .nav-menu {
