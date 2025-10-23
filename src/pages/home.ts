@@ -9,21 +9,14 @@ export const homePageTemplate = (): string => {
         </div>
         <div class="container">
             <div class="hero-content">
-                <span class="hero-badge">
-                    <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
-                        <path d="M12 2l2 7h7l-5.5 4 2 7L12 16l-5.5 4 2-7L3 9h7z"/>
-                    </svg>
-                    Award-Winning Hair Care Excellence
-                </span>
-                <h1 class="hero-title">
-                    Elevate Your Hair,<br/>
-                    <span class="highlight-multi">
-                        <span class="word-1">Embrace</span>
-                        <span class="word-2">Your</span>
-                        <span class="word-3">Beauty</span>
-                    </span>
+                <div class="hero-logo-showcase">
+                    <div class="logo-glow-ambient"></div>
+                    <img src="/logo.png" alt="BlissHairStudio - Premium Hair Salon & Luxury Hair Care" class="hero-logo-elegant" />
+                </div>
+                <h1 class="hero-tagline">
+                    <span class="tagline-main">Where Beauty Meets Luxury</span>
                 </h1>
-                <p class="hero-subtitle">Discover luxury hair care that transforms not just your look, but how you feel. Experience the perfect blend of artistry, science, and personalized care.</p>
+                <p class="hero-subtitle">Transform your hair with expert salon services and premium products</p>
                 <div class="hero-buttons">
                     <a href="/products" class="btn btn-primary">
                         <span>Shop Premium Collection</span>
@@ -31,7 +24,7 @@ export const homePageTemplate = (): string => {
                             <path d="M5 12h14M12 5l7 7-7 7"/>
                         </svg>
                     </a>
-                    <a href="#services" class="btn btn-secondary-outline">
+                    <a href="/contact" class="btn btn-secondary-outline">
                         <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                             <circle cx="12" cy="12" r="10"/>
                             <polygon points="10 8 16 12 10 16 10 8"/>
@@ -64,66 +57,213 @@ export const homePageTemplate = (): string => {
             </div>
         </div>
         <div class="hero-decoration">
-            <div class="floating-shape shape-1">
-                <svg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
-                    <path fill="currentColor" d="M44.7,-76.4C58.8,-69.2,71.8,-59.1,79.6,-45.8C87.4,-32.6,90,-16.3,88.5,-0.9C87,14.6,81.4,29.2,73.1,42.2C64.8,55.2,53.8,66.6,40.3,73.8C26.8,81,10.8,84,-5.3,83.3C-21.4,82.6,-42.8,78.2,-58.4,68.4C-74,58.6,-83.8,43.4,-88.3,26.8C-92.8,10.2,-92,-7.8,-85.8,-23.2C-79.6,-38.6,-68,-51.4,-54.3,-58.8C-40.6,-66.2,-25.7,-68.2,-11.3,-72.9C3.1,-77.6,30.6,-83.6,44.7,-76.4Z" transform="translate(100 100)" />
+            <!-- Detailed Scissors Icon -->
+            <div class="floating-icon icon-scissors">
+                <svg width="52" height="52" viewBox="0 0 100 100" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+                    <circle cx="25" cy="25" r="12" fill="rgba(0,137,123,0.2)"/>
+                    <circle cx="25" cy="75" r="12" fill="rgba(0,137,123,0.2)"/>
+                    <circle cx="25" cy="25" r="8"/>
+                    <circle cx="25" cy="75" r="8"/>
+                    <line x1="85" y1="15" x2="32" y2="68"/>
+                    <line x1="32" y1="32" x2="50" y2="50"/>
+                    <line x1="60" y1="60" x2="85" y2="85"/>
+                    <circle cx="85" cy="15" r="4"/>
+                    <circle cx="85" cy="85" r="4"/>
                 </svg>
             </div>
-            <div class="floating-shape shape-2">
-                <svg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
-                    <path fill="currentColor" d="M39.5,-65.6C51.4,-58.5,61.7,-48.3,68.4,-36.2C75.1,-24.1,78.2,-10.1,77.8,3.7C77.4,17.5,73.5,31,65.8,42.2C58.1,53.4,46.6,62.3,33.8,67.8C21,73.3,6.9,75.4,-7.2,74.3C-21.3,73.2,-35.4,69,-47.1,60.9C-58.8,52.8,-68.1,40.8,-73.2,27.3C-78.3,13.8,-79.2,-1.2,-75.3,-14.8C-71.4,-28.4,-62.7,-40.6,-51.5,-48C-40.3,-55.4,-26.6,-57.9,-13.8,-60.5C-1,-63.1,10.9,-65.8,22.7,-64.8C34.5,-63.8,46.2,-59.1,39.5,-65.6Z" transform="translate(100 100)" />
+            <!-- Detailed Shampoo Bottle Icon -->
+            <div class="floating-icon icon-shampoo">
+                <svg width="48" height="48" viewBox="0 0 100 100" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+                    <rect x="35" y="25" width="30" height="10" rx="2" fill="rgba(232,160,191,0.3)"/>
+                    <rect x="30" y="35" width="40" height="50" rx="8" fill="rgba(232,160,191,0.2)"/>
+                    <path d="M30 35 Q 30 32 32 30 L 68 30 Q 70 32 70 35"/>
+                    <line x1="50" y1="18" x2="50" y2="25"/>
+                    <circle cx="50" cy="15" r="3"/>
+                    <path d="M40 50 Q 50 55 60 50" fill="none"/>
+                    <path d="M40 62 Q 50 67 60 62" fill="none"/>
+                </svg>
+            </div>
+            <!-- Detailed Hair Straightener Icon -->
+            <div class="floating-icon icon-straightener">
+                <svg width="50" height="50" viewBox="0 0 100 100" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+                    <rect x="20" y="15" width="20" height="70" rx="4" fill="rgba(77,182,172,0.2)"/>
+                    <rect x="60" y="15" width="20" height="70" rx="4" fill="rgba(77,182,172,0.2)"/>
+                    <line x1="25" y1="25" x2="25" y2="75"/>
+                    <line x1="30" y1="25" x2="30" y2="75"/>
+                    <line x1="35" y1="25" x2="35" y2="75"/>
+                    <line x1="65" y1="25" x2="65" y2="75"/>
+                    <line x1="70" y1="25" x2="70" y2="75"/>
+                    <line x1="75" y1="25" x2="75" y2="75"/>
+                    <path d="M40 40 Q 50 35 60 40"/>
+                    <circle cx="30" cy="20" r="2" fill="currentColor"/>
+                    <circle cx="70" cy="20" r="2" fill="currentColor"/>
+                </svg>
+            </div>
+            <!-- Detailed Hair Dryer Icon -->
+            <div class="floating-icon icon-dryer">
+                <svg width="54" height="54" viewBox="0 0 100 100" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+                    <ellipse cx="35" cy="40" rx="25" ry="20" fill="rgba(0,137,123,0.2)"/>
+                    <rect x="50" y="35" width="30" height="10" rx="3"/>
+                    <rect x="32" y="55" width="6" height="30" rx="3" fill="rgba(0,137,123,0.1)"/>
+                    <circle cx="25" cy="35" r="3"/>
+                    <circle cx="35" cy="32" r="3"/>
+                    <circle cx="35" cy="45" r="3"/>
+                    <circle cx="45" cy="40" r="3"/>
+                    <line x1="75" y1="38" x2="85" y2="35"/>
+                    <line x1="75" y1="42" x2="85" y2="45"/>
+                </svg>
+            </div>
+            <!-- Detailed Comb Icon -->
+            <div class="floating-icon icon-comb">
+                <svg width="46" height="46" viewBox="0 0 100 100" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+                    <rect x="15" y="20" width="70" height="15" rx="3" fill="rgba(255,182,193,0.2)"/>
+                    <line x1="25" y1="35" x2="25" y2="75"/>
+                    <line x1="35" y1="35" x2="35" y2="80"/>
+                    <line x1="45" y1="35" x2="45" y2="82"/>
+                    <line x1="55" y1="35" x2="55" y2="80"/>
+                    <line x1="65" y1="35" x2="65" y2="75"/>
+                    <line x1="75" y1="35" x2="75" y2="70"/>
+                    <circle cx="50" cy="27" r="2" fill="currentColor"/>
+                </svg>
+            </div>
+            <!-- Sparkle Icon -->
+            <div class="floating-icon icon-sparkle">
+                <svg width="40" height="40" viewBox="0 0 100 100" fill="currentColor">
+                    <path d="M50 10 L55 40 L85 45 L60 65 L68 95 L50 80 L32 95 L40 65 L15 45 L45 40 Z" opacity="0.8"/>
+                    <circle cx="50" cy="50" r="8" fill="white"/>
                 </svg>
             </div>
         </div>
     </section>
 
-    <!-- About Section -->
-    <section class="about" id="about">
-        <div class="about-decoration-bg"></div>
+    <!-- Product Showcase Section -->
+    <section class="about luxury-products" id="about">
         <div class="container">
-            <div class="section-header centered">
-                <span class="section-tag gradient-tag">Why Choose BlissHairStudio</span>
-                <h2>Your Hair Journey <span class="highlight-gradient">Starts Here</span></h2>
-                <div class="divider gradient-divider"></div>
-                <p class="section-description bold-description">Experience the perfect blend of luxury, expertise, and care that makes BlissHairStudio the ultimate destination for your hair transformation</p>
+            <div class="section-header centered luxury-header">
+                <h2 style="font-weight: 300; font-size: 2.5rem; letter-spacing: 2px; text-transform: uppercase; color: #1A1A1A; margin-bottom: 60px;">Featured Collection</h2>
             </div>
             <div class="about-content">
-                <div class="about-features-grid">
-                    <div class="feature feature-card-enhanced">
-                        <div class="feature-icon-wrap gradient-1">
-                            <svg class="feature-icon-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                <path d="M12 2L15 8L22 9L17 14L18 21L12 18L6 21L7 14L2 9L9 8L12 2Z"/>
-                            </svg>
+                <div class="about-features-grid luxury-grid">
+                    <!-- Product 1: Moisture Conditioner -->
+                    <div class="feature feature-card-enhanced product-card">
+                        <div class="product-image-carousel">
+                            <div class="product-images">
+                                <img src="/Davroe_Moisture_Senses_Hydrating_Conditioner_325ml__99636.jpg" alt="Davroe Moisture Senses Hydrating Conditioner" class="product-image active">
+                                <img src="/Davroe_Repair_Senses_Revitalising_Conditioner_325ml_2__32801.jpg" alt="Davroe Repair Senses Revitalising Conditioner" class="product-image">
+                            </div>
+                            <div class="product-image-dots">
+                                <button class="dot active" data-index="0"></button>
+                                <button class="dot" data-index="1"></button>
+                            </div>
                         </div>
-                        <h3>Salon-Grade Products</h3>
-                        <p>Every product is handpicked from premium brands trusted by professional stylists worldwide. Only the best for your hair.</p>
-                        <div class="feature-badge">Premium Quality</div>
+                        <h3>Moisture Senses Hydrating Conditioner</h3>
+                        <div class="product-rating">
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="#FFD700"><path d="M12 2L15 8L22 9L17 14L18 21L12 18L6 21L7 14L2 9L9 8L12 2Z"/></svg>
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="#FFD700"><path d="M12 2L15 8L22 9L17 14L18 21L12 18L6 21L7 14L2 9L9 8L12 2Z"/></svg>
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="#FFD700"><path d="M12 2L15 8L22 9L17 14L18 21L12 18L6 21L7 14L2 9L9 8L12 2Z"/></svg>
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="#FFD700"><path d="M12 2L15 8L22 9L17 14L18 21L12 18L6 21L7 14L2 9L9 8L12 2Z"/></svg>
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="#FFD700"><path d="M12 2L15 8L22 9L17 14L18 21L12 18L6 21L7 14L2 9L9 8L12 2Z"/></svg>
+                        </div>
+                        <div class="product-pricing">
+                            <span class="original-price">£34.95</span>
+                            <span class="sale-price">£29.95</span>
+                        </div>
+                        <a href="/products" class="product-link">
+                            <span>Shop Now</span>
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M5 12h14M12 5l7 7-7 7"/>
+                            </svg>
+                        </a>
                     </div>
-                    <div class="feature feature-card-enhanced">
-                        <div class="feature-icon-wrap gradient-2">
-                            <svg class="feature-icon-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/>
-                            </svg>
+                    
+                    <!-- Product 2: Protein Rebuilder -->
+                    <div class="feature feature-card-enhanced product-card">
+                        <div class="product-image-carousel">
+                            <div class="product-images">
+                                <img src="/Davroe_Protein_Hair_Rebuilder_200ml__77435.jpg" alt="Davroe Protein Hair Rebuilder" class="product-image active">
+                                <img src="/__Davroe_Replenish_Jojoba_Crme_Treatment_200ml__26186.jpg" alt="Davroe Replenish Jojoba Crème Treatment" class="product-image">
+                            </div>
+                            <div class="product-image-dots">
+                                <button class="dot active" data-index="0"></button>
+                                <button class="dot" data-index="1"></button>
+                            </div>
                         </div>
-                        <h3>Personalized Care</h3>
-                        <p>Expert consultations to find the perfect products and treatments for your unique hair type, texture, and goals.</p>
-                        <div class="feature-badge">Expert Advice</div>
+                        <h3>Protein Hair Rebuilder</h3>
+                        <div class="product-rating">
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="#FFD700"><path d="M12 2L15 8L22 9L17 14L18 21L12 18L6 21L7 14L2 9L9 8L12 2Z"/></svg>
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="#FFD700"><path d="M12 2L15 8L22 9L17 14L18 21L12 18L6 21L7 14L2 9L9 8L12 2Z"/></svg>
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="#FFD700"><path d="M12 2L15 8L22 9L17 14L18 21L12 18L6 21L7 14L2 9L9 8L12 2Z"/></svg>
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="#FFD700"><path d="M12 2L15 8L22 9L17 14L18 21L12 18L6 21L7 14L2 9L9 8L12 2Z"/></svg>
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="#FFD700"><path d="M12 2L15 8L22 9L17 14L18 21L12 18L6 21L7 14L2 9L9 8L12 2Z"/></svg>
+                        </div>
+                        <div class="product-pricing">
+                            <span class="original-price">£44.95</span>
+                            <span class="sale-price">£39.95</span>
+                        </div>
+                        <a href="/products" class="product-link">
+                            <span>Shop Now</span>
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M5 12h14M12 5l7 7-7 7"/>
+                            </svg>
+                        </a>
                     </div>
-                    <div class="feature feature-card-enhanced">
-                        <div class="feature-icon-wrap gradient-3">
-                            <svg class="feature-icon-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                <path d="M12 2a10 10 0 0 0-9.95 9h1.64a9 9 0 0 1 16.62 0h1.64A10 10 0 0 0 12 2z"/>
-                                <path d="M12 22a10 10 0 0 0 9.95-9h-1.64a9 9 0 0 1-16.62 0H2.05A10 10 0 0 0 12 22z"/>
-                                <circle cx="12" cy="12" r="3"/>
-                            </svg>
+                    
+                    <!-- Product 3: Shine Fluid + Thermaprotect -->
+                    <div class="feature feature-card-enhanced product-card">
+                        <div class="product-image-carousel">
+                            <div class="product-images">
+                                <img src="/Davroe_Thermaprotect_200ml__47285.jpg" alt="Davroe Thermaprotect" class="product-image active">
+                                <img src="/Davroe_Shine_Fluid_75ml_2__31573.jpg" alt="Davroe Shine Fluid" class="product-image">
+                            </div>
+                            <div class="product-image-dots">
+                                <button class="dot active" data-index="0"></button>
+                                <button class="dot" data-index="1"></button>
+                            </div>
                         </div>
-                        <h3>Natural & Sustainable</h3>
-                        <p>Eco-friendly, cruelty-free products that are as gentle on the planet as they are nourishing for your hair.</p>
-                        <div class="feature-badge">Earth-Friendly</div>
+                        <h3>Shine Fluid & Thermaprotect Duo</h3>
+                        <div class="product-rating">
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="#FFD700"><path d="M12 2L15 8L22 9L17 14L18 21L12 18L6 21L7 14L2 9L9 8L12 2Z"/></svg>
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="#FFD700"><path d="M12 2L15 8L22 9L17 14L18 21L12 18L6 21L7 14L2 9L9 8L12 2Z"/></svg>
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="#FFD700"><path d="M12 2L15 8L22 9L17 14L18 21L12 18L6 21L7 14L2 9L9 8L12 2Z"/></svg>
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="#FFD700"><path d="M12 2L15 8L22 9L17 14L18 21L12 18L6 21L7 14L2 9L9 8L12 2Z"/></svg>
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="#FFD700"><path d="M12 2L15 8L22 9L17 14L18 21L12 18L6 21L7 14L2 9L9 8L12 2Z"/></svg>
+                        </div>
+                        <div class="product-pricing">
+                            <span class="original-price">£39.90</span>
+                            <span class="sale-price">£34.95</span>
+                        </div>
+                        <a href="/products" class="product-link">
+                            <span>Shop Now</span>
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M5 12h14M12 5l7 7-7 7"/>
+                            </svg>
+                        </a>
                     </div>
                 </div>
             </div>
         </div>
     </section>
+    
+    <script>
+      // Product image carousel functionality
+      document.querySelectorAll('.product-card').forEach(card => {
+        const images = card.querySelectorAll('.product-image');
+        const dots = card.querySelectorAll('.dot');
+        
+        dots.forEach(dot => {
+          dot.addEventListener('click', () => {
+            const index = parseInt(dot.getAttribute('data-index'));
+            
+            // Update active image
+            images.forEach(img => img.classList.remove('active'));
+            images[index].classList.add('active');
+            
+            // Update active dot
+            dots.forEach(d => d.classList.remove('active'));
+            dot.classList.add('active');
+          });
+        });
+      });
+    </script>
   `;
 };

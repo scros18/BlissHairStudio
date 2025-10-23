@@ -34,7 +34,7 @@
   font-size: clamp(2.5rem, 5vw, 3.5rem);
   font-weight: 800;
   margin-bottom: 20px;
-  font-family: 'Poppins', sans-serif;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Helvetica Neue', sans-serif;
 }
 
 .products-hero-content p {
@@ -45,6 +45,18 @@
 
 .products-section {
   padding: 80px 0;
+}
+
+/* Ensure products area is white and not covered by any dark overlay */
+.products-hero,
+.products-section,
+.products-hero::before,
+.products-section::before {
+  background: #FFFFFF !important;
+  color: var(--text-dark) !important;
+  box-shadow: none !important;
+  display: block !important;
+  content: none !important;
 }
 
 /* ================================================
@@ -113,7 +125,7 @@
   font-weight: 700;
   color: #1A1A2E;
   margin-bottom: 8px;
-  font-family: 'Poppins', sans-serif;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Helvetica Neue', sans-serif;
 }
 
 .admin-login-header p {
@@ -227,7 +239,7 @@
   font-weight: 800;
   color: #1A1A2E;
   margin-bottom: 12px;
-  font-family: 'Poppins', sans-serif;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Helvetica Neue', sans-serif;
 }
 
 .checkout-header p {
@@ -318,7 +330,7 @@
   font-weight: 700;
   color: #1A1A2E;
   margin-bottom: 32px;
-  font-family: 'Poppins', sans-serif;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Helvetica Neue', sans-serif;
 }
 
 .form-row {
@@ -399,7 +411,7 @@
   font-weight: 700;
   color: #1A1A2E;
   margin-bottom: 24px;
-  font-family: 'Poppins', sans-serif;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Helvetica Neue', sans-serif;
 }
 
 .order-items {
@@ -555,7 +567,7 @@
   font-size: clamp(1.8rem, 5vw, 2.5rem);
   font-weight: 800;
   color: #1A1A2E;
-  font-family: 'Poppins', sans-serif;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Helvetica Neue', sans-serif;
   margin-bottom: 8px;
   line-height: 1.2;
 }
@@ -663,7 +675,7 @@
   font-weight: 700;
   color: #1A1A2E;
   margin-bottom: 28px;
-  font-family: 'Poppins', sans-serif;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Helvetica Neue', sans-serif;
 }
 
 .account-form .form-group {
@@ -1224,7 +1236,7 @@
   font-size: clamp(2.5rem, 5vw, 3.5rem);
   font-weight: 800;
   margin-bottom: 16px;
-  font-family: 'Poppins', sans-serif;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Helvetica Neue', sans-serif;
   position: relative;
   z-index: 2;
   background: linear-gradient(135deg, #1A1A2E 0%, #2D6854 100%);
@@ -1239,6 +1251,182 @@
   position: relative;
   z-index: 2;
   color: #1A1A2E;
+}
+
+/* About Hero with Image */
+.about-hero {
+  padding: 0;
+  background: none;
+  /* make hero slimmer and more consistent */
+  height: auto;
+  min-height: 36vh;
+  max-height: 480px;
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.about-hero::before {
+  display: none;
+}
+
+.about-hero-image {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 0;
+}
+
+.about-hero-image img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+}
+
+.about-hero-content {
+  position: relative;
+  z-index: 2;
+  width: 100%;
+  padding: 38px 20px;
+  /* remove heavy dark overlay — keep subtle lift for readability */
+  background: linear-gradient(to top, rgba(255,255,255,0.02) 0%, rgba(255,255,255,0.0) 50%, transparent 100%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Hide the large top hero image on About page while keeping the story image below.
+   This targets both desktop and mobile. The story image (in .story-image) remains visible.
+*/
+.about-hero .about-hero-image {
+  display: none !important;
+}
+
+/* Ensure hero content uses a light background so iPhones or dark-mode do not render the page black */
+@media (prefers-color-scheme: dark) {
+  .page-hero,
+  .about-hero,
+  body {
+    background: #FFFFFF !important;
+    color: #1A1A2E !important;
+  }
+
+  /* Remove heavy dark overlay from about hero content when we hide the image */
+  .about-hero .about-hero-content {
+    background: linear-gradient(to top, rgba(255,255,255,0.02) 0%, rgba(255,255,255,0.0) 50%, transparent 100%) !important;
+    color: #1A1A2E !important;
+  }
+}
+
+/* Additional safeguard for mobile Safari (iPhone) where viewport-fit and safe-area may cause black bars */
+@supports (-webkit-touch-callout: none) {
+  body {
+    background-color: #FFFFFF !important;
+    -webkit-font-smoothing: antialiased;
+  }
+}
+
+/* Make the About hero text visible and use the same font as product cards */
+.about-hero .about-hero-content h1,
+.about-hero .about-hero-content p {
+  color: #0F1E1A !important;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Helvetica Neue', sans-serif !important;
+  text-align: center;
+  margin: 0 auto;
+  max-width: 950px;
+}
+
+.about-hero .about-hero-content h1 {
+  font-size: clamp(1.8rem, 4vw, 2.8rem) !important;
+  font-weight: 800 !important;
+  line-height: 1.05;
+  margin-bottom: 12px;
+}
+
+.about-hero .about-hero-content p {
+  font-size: clamp(0.95rem, 2.2vw, 1.1rem) !important;
+  color: #556b66 !important;
+  margin-top: 0;
+}
+
+/* Force common sections and the footer to use the intended light background and text color
+   across desktop, mobile and iPhone (overrides dark-mode and Safari quirks).
+*/
+.page-hero,
+.our-story,
+.values-section,
+.team-section,
+.services-section,
+.products-section,
+.reviews,
+.location,
+.footer,
+footer {
+  background: var(--background) !important;
+  color: var(--text-dark) !important;
+}
+
+.footer a,
+.footer .btn,
+footer a {
+  color: var(--text-dark) !important;
+}
+
+/* Make sure any accidental full-page black backgrounds are overridden */
+body,
+html {
+  background: var(--background) !important;
+  color: var(--text-dark) !important;
+}
+
+@media (prefers-color-scheme: dark) {
+  /* Strong overrides so iPhone / Safari won't switch to dark backgrounds */
+  body, html, .page-hero, .footer, footer, .our-story, .values-section {
+    background: var(--background) !important;
+    color: var(--text-dark) !important;
+  }
+}
+
+.about-hero h1 {
+  color: #0F1E1A !important;
+  background: none !important;
+  -webkit-background-clip: unset !important;
+  -webkit-text-fill-color: initial !important;
+  background-clip: unset !important;
+  text-shadow: none !important;
+  font-weight: 700 !important;
+  letter-spacing: -0.5px;
+}
+
+.about-hero p {
+  color: #2C3E39 !important;
+  opacity: 1 !important;
+  text-shadow: none !important;
+  font-weight: 400 !important;
+  font-size: 1.05rem !important;
+}
+
+@media (max-width: 768px) {
+  .about-hero {
+    min-height: 28vh;
+    max-height: 380px;
+    padding: 18px 0;
+  }
+
+  .about-hero-content {
+    padding: 24px 16px;
+  }
+
+  .about-hero .about-hero-content h1 {
+    font-size: clamp(1.6rem, 6vw, 2.2rem) !important;
+  }
+
+  .about-hero .about-hero-content p {
+    font-size: 0.95rem !important;
+  }
 }
 
 /* About Page */
@@ -1259,7 +1447,7 @@
   font-weight: 800;
   color: #1A1A2E;
   margin-bottom: 32px;
-  font-family: 'Poppins', sans-serif;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Helvetica Neue', sans-serif;
 }
 
 .story-text p {
@@ -1271,6 +1459,66 @@
 
 .story-image {
   position: relative;
+}
+
+.story-image img {
+  width: 100%;
+  height: 500px;
+  object-fit: cover;
+  border-radius: 0;
+  display: block;
+}
+
+/* ========== FINAL OVERRIDES (apply last) ========== */
+html[data-theme] .about-hero .about-hero-content h1,
+.about-hero .about-hero-content h1,
+.about-hero h1 {
+  color: #0F1E1A !important;
+  -webkit-text-fill-color: #0F1E1A !important;
+  text-shadow: none !important;
+}
+
+.about-hero .about-hero-content p,
+.about-hero p {
+  color: #2C3E39 !important;
+  -webkit-text-fill-color: #2C3E39 !important;
+  text-shadow: none !important;
+}
+
+/* Footer final override */
+.footer, footer, .footer * {
+  background: #FFFFFF !important;
+  color: #2D2D2D !important;
+}
+
+@media (prefers-color-scheme: dark) {
+  .footer, footer, .about-hero, .about-hero * {
+    background: #FFFFFF !important;
+    color: #2D2D2D !important;
+    -webkit-text-fill-color: #2D2D2D !important;
+  }
+}
+
+/* Remove large dark pseudo-element overlays specifically on hero, about and footer sections */
+.about-hero::before,
+.about-hero::after,
+.page-hero::before,
+.page-hero::after,
+.footer::before,
+.footer::after,
+footer::before,
+footer::after {
+  display: none !important;
+  background: transparent !important;
+  box-shadow: none !important;
+  content: none !important;
+}
+
+/* Also protect against any high-z-index dark overlay elements inserted globally */
+body > .overlay, html > .overlay, .site-overlay {
+  display: none !important;
+  background: transparent !important;
+  pointer-events: none !important;
 }
 
 .image-placeholder {
@@ -1325,7 +1573,7 @@
   width: 120px;
   height: 120px;
   border-radius: 50%;
-  background: linear-gradient(135deg, #2D6854, #3D8B6C);
+  background: linear-gradient(135deg, #FFF5F7, #F0F9F8);
   color: white;
   display: flex;
   align-items: center;
@@ -1334,6 +1582,193 @@
   font-weight: 700;
   margin: 0 auto;
   box-shadow: 0 8px 24px rgba(0, 137, 123, 0.3);
+  overflow: hidden;
+  position: relative;
+}
+
+.team-image .avatar svg {
+  width: 100%;
+  height: 100%;
+  display: block;
+}
+
+.avatar-maxine {
+  background: linear-gradient(135deg, #FFE8D6, #FFF5E6);
+  box-shadow: 0 8px 24px rgba(232, 160, 191, 0.3);
+}
+
+.avatar-maxine-large {
+  width: 160px;
+  height: 160px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #FFE8D6, #FFF5E6);
+  box-shadow: 0 12px 40px rgba(232, 160, 191, 0.4);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  position: relative;
+  border: 4px solid rgba(255, 215, 0, 0.3);
+}
+
+.avatar-maxine-large svg {
+  width: 100%;
+  height: 100%;
+  display: block;
+}
+
+.avatar-carla {
+  background: linear-gradient(135deg, #FFEEE6, #FFE5D9);
+  box-shadow: 0 8px 24px rgba(139, 69, 19, 0.2);
+}
+
+.avatar-jana {
+  background: linear-gradient(135deg, #F5E6E8, #EDE7F6);
+  box-shadow: 0 8px 24px rgba(77, 182, 172, 0.3);
+}
+
+/* Owner Spotlight Section */
+.owner-spotlight {
+  margin: 60px 0 40px;
+}
+
+.owner-card {
+  background: linear-gradient(135deg, #FFF9F5 0%, #FFFAF7 100%);
+  border-radius: 24px;
+  padding: 60px;
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: 60px;
+  align-items: center;
+  box-shadow: 0 20px 60px rgba(232, 160, 191, 0.15);
+  border: 2px solid rgba(255, 215, 0, 0.2);
+  position: relative;
+  overflow: hidden;
+}
+
+.owner-card::before {
+  content: '';
+  position: absolute;
+  top: -50%;
+  right: -20%;
+  width: 400px;
+  height: 400px;
+  background: radial-gradient(circle, rgba(255, 215, 0, 0.1) 0%, transparent 70%);
+  border-radius: 50%;
+  pointer-events: none;
+}
+
+.owner-image {
+  position: relative;
+  text-align: center;
+}
+
+.owner-badge {
+  position: absolute;
+  bottom: 10px;
+  right: -10px;
+  background: linear-gradient(135deg, #FFD700 0%, #FFA500 100%);
+  color: white;
+  padding: 8px 20px;
+  border-radius: 50px;
+  font-size: 0.85rem;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  box-shadow: 0 6px 20px rgba(255, 215, 0, 0.5);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.owner-badge svg {
+  width: 16px;
+  height: 16px;
+}
+
+.owner-details h3 {
+  font-size: 2.5rem;
+  font-weight: 800;
+  color: #1A1A2E;
+  margin-bottom: 8px;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Helvetica Neue', sans-serif;
+  background: linear-gradient(135deg, #1A1A2E 0%, #2D6854 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.owner-title {
+  font-size: 1.3rem;
+  color: #FFD700;
+  font-weight: 700;
+  margin-bottom: 24px;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+.owner-bio {
+  font-size: 1.05rem;
+  line-height: 1.8;
+  color: #4A4A4A;
+  margin-bottom: 32px;
+}
+
+.owner-achievements {
+  display: flex;
+  gap: 24px;
+  flex-wrap: wrap;
+}
+
+.achievement-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  background: rgba(255, 215, 0, 0.1);
+  padding: 12px 20px;
+  border-radius: 50px;
+  border: 2px solid rgba(255, 215, 0, 0.3);
+}
+
+.achievement-item svg {
+  width: 24px;
+  height: 24px;
+  stroke: #FFD700;
+  flex-shrink: 0;
+}
+
+.achievement-item span {
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: #2D6854;
+}
+
+@media (max-width: 768px) {
+  .owner-card {
+    grid-template-columns: 1fr;
+    padding: 40px 30px;
+    gap: 40px;
+    text-align: center;
+  }
+  
+  .owner-details h3 {
+    font-size: 2rem;
+  }
+  
+  .owner-achievements {
+    justify-content: center;
+  }
+  
+  .owner-badge {
+    left: 50%;
+    transform: translateX(-50%);
+    right: auto;
+  }
+}
+
+.avatar-maxine {
+  background: linear-gradient(135deg, #FFE8D6, #FFF5E6);
+  box-shadow: 0 8px 24px rgba(232, 160, 191, 0.3);
 }
 
 .team-card h3 {
@@ -1341,7 +1776,7 @@
   font-weight: 700;
   color: #1A1A2E;
   margin-bottom: 8px;
-  font-family: 'Poppins', sans-serif;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Helvetica Neue', sans-serif;
 }
 
 .team-role {
@@ -1421,7 +1856,7 @@
   font-weight: 700;
   color: #1A1A2E;
   margin-bottom: 16px;
-  font-family: 'Poppins', sans-serif;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Helvetica Neue', sans-serif;
 }
 
 .value-card p {
@@ -1544,7 +1979,7 @@
   font-weight: 800;
   color: #1A1A2E;
   margin: 0;
-  font-family: 'Poppins', sans-serif;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Helvetica Neue', sans-serif;
   letter-spacing: -0.02em;
   background: linear-gradient(135deg, #1A1A2E 0%, #2D6854 100%);
   -webkit-background-clip: text;
@@ -1571,6 +2006,30 @@
   background: white;
 }
 
+/* Center the 4th value card (Client Relationships) under the three cards on wider screens */
+@media (min-width: 992px) {
+  .values-grid {
+    grid-template-columns: repeat(3, 1fr) !important;
+  }
+
+  .values-grid > .value-card:nth-child(4) {
+    grid-column: 2 / 3; /* place in the middle column */
+    justify-self: center;
+    align-self: start;
+    max-width: 520px;
+    text-align: left; /* keep content left for readability */
+  }
+
+  /* center the icon within the centered card */
+  .values-grid > .value-card:nth-child(4) .value-icon {
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  /* optional: if you prefer centered text for that card, uncomment the next rule */
+  /* .values-grid > .value-card:nth-child(4) { text-align: center; } */
+}
+
 .service-list li {
   padding: 24px 0;
   border-bottom: 1px dashed rgba(0, 137, 123, 0.2);
@@ -1593,7 +2052,7 @@
   font-weight: 700;
   color: #1A1A2E;
   margin-bottom: 6px;
-  font-family: 'Poppins', sans-serif;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Helvetica Neue', sans-serif;
   letter-spacing: 0.01em;
 }
 
@@ -1615,7 +2074,7 @@
   font-weight: 700;
   white-space: nowrap;
   box-shadow: 0 3px 10px rgba(0, 137, 123, 0.25);
-  font-family: 'Poppins', sans-serif;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Helvetica Neue', sans-serif;
   letter-spacing: 0.02em;
   margin-left: 16px;
   transition: all 0.3s ease;
@@ -1640,7 +2099,7 @@
   font-weight: 800;
   color: #1A1A2E;
   margin-bottom: 16px;
-  font-family: 'Poppins', sans-serif;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Helvetica Neue', sans-serif;
 }
 
 .services-cta p {
@@ -1667,7 +2126,7 @@
   font-weight: 800;
   color: #1A1A2E;
   margin-bottom: 32px;
-  font-family: 'Poppins', sans-serif;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Helvetica Neue', sans-serif;
 }
 
 .contact-cards {
@@ -1747,6 +2206,10 @@
     gap: 48px;
   }
   
+  .story-image img {
+    height: 400px;
+  }
+  
   .contact-grid {
     grid-template-columns: 1fr;
   }
@@ -1759,6 +2222,32 @@
   
   .team-grid {
     grid-template-columns: 1fr;
+  }
+  
+  /* About Page Mobile Centering */
+  .value-card {
+    text-align: center;
+  }
+  
+  .value-icon {
+    margin-left: auto;
+    margin-right: auto;
+  }
+  
+  .story-text {
+    text-align: center;
+  }
+  
+  .section-tag {
+    display: inline-block;
+  }
+  
+  .team-card {
+    text-align: center;
+  }
+  
+  .owner-card {
+    text-align: center;
   }
   
   .services-grid {
@@ -1823,5 +2312,221 @@
   .services-hero-badge {
     font-size: 0.85rem;
     padding: 8px 20px;
+  }
+}
+
+/* ================================================
+   Legal Pages Styles (Privacy, Terms, Accessibility)
+   ================================================ */
+
+.legal-page {
+  min-height: 100vh;
+  background: #FFFFFF;
+}
+
+.legal-hero {
+  background: linear-gradient(135deg, #FAFAFA 0%, #F5F5F5 100%);
+  padding: 140px 20px 80px;
+  text-align: center;
+  position: relative;
+  overflow: hidden;
+}
+
+.legal-hero::before {
+  content: '';
+  position: absolute;
+  top: -30%;
+  right: -5%;
+  width: 400px;
+  height: 400px;
+  background: radial-gradient(circle, rgba(0, 137, 123, 0.12) 0%, transparent 70%);
+  border-radius: 50%;
+  filter: blur(60px);
+}
+
+.legal-hero h1 {
+  font-size: clamp(2.5rem, 5vw, 3.5rem);
+  font-weight: 800;
+  color: #1A1A2E;
+  margin-bottom: 12px;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Helvetica Neue', sans-serif;
+  position: relative;
+  z-index: 2;
+}
+
+.legal-subtitle {
+  font-size: 1rem;
+  color: #64748B;
+  font-weight: 500;
+  position: relative;
+  z-index: 2;
+}
+
+.legal-content {
+  padding: 80px 20px;
+  background: white;
+}
+
+.legal-content .container {
+  max-width: 900px;
+  margin: 0 auto;
+}
+
+.legal-section {
+  margin-bottom: 60px;
+}
+
+.legal-section:last-of-type {
+  margin-bottom: 40px;
+}
+
+.legal-section h2 {
+  font-size: 1.8rem;
+  font-weight: 700;
+  color: #1A1A2E;
+  margin-bottom: 20px;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Helvetica Neue', sans-serif;
+  position: relative;
+  padding-bottom: 12px;
+}
+
+.legal-section h2::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 60px;
+  height: 3px;
+  background: linear-gradient(90deg, #00897B 0%, #26A69A 100%);
+  border-radius: 2px;
+}
+
+.legal-section h3 {
+  font-size: 1.3rem;
+  font-weight: 600;
+  color: #334155;
+  margin: 28px 0 16px;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Helvetica Neue', sans-serif;
+}
+
+.legal-section p {
+  font-size: 1.05rem;
+  line-height: 1.8;
+  color: #475569;
+  margin-bottom: 16px;
+}
+
+.legal-section ul {
+  margin: 20px 0;
+  padding-left: 0;
+  list-style: none;
+}
+
+.legal-section ul li {
+  font-size: 1.05rem;
+  line-height: 1.8;
+  color: #475569;
+  margin-bottom: 12px;
+  padding-left: 32px;
+  position: relative;
+}
+
+.legal-section ul li::before {
+  content: '✓';
+  position: absolute;
+  left: 0;
+  color: #00897B;
+  font-weight: 700;
+  font-size: 1.2rem;
+}
+
+.legal-section strong {
+  color: #1E293B;
+  font-weight: 600;
+}
+
+.contact-info {
+  background: #F8FAFC;
+  border-left: 4px solid #00897B;
+  padding: 24px;
+  margin: 20px 0;
+  border-radius: 8px;
+}
+
+.contact-info p {
+  margin-bottom: 10px;
+  font-size: 1rem;
+}
+
+.contact-info p:last-child {
+  margin-bottom: 0;
+}
+
+.contact-info strong {
+  color: #00897B;
+  font-weight: 600;
+}
+
+.legal-back {
+  text-align: center;
+  padding: 40px 0 20px;
+}
+
+.legal-back .btn {
+  padding: 14px 32px;
+  font-size: 1rem;
+  font-weight: 600;
+  transition: all 0.3s ease;
+}
+
+.legal-back .btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 24px rgba(0, 137, 123, 0.2);
+}
+
+/* Responsive Design for Legal Pages */
+@media (max-width: 768px) {
+  .legal-hero {
+    padding: 120px 20px 60px;
+  }
+
+  .legal-hero h1 {
+    font-size: 2rem;
+  }
+
+  .legal-subtitle {
+    font-size: 0.9rem;
+  }
+
+  .legal-content {
+    padding: 60px 20px;
+  }
+
+  .legal-section {
+    margin-bottom: 50px;
+  }
+
+  .legal-section h2 {
+    font-size: 1.5rem;
+    margin-bottom: 16px;
+  }
+
+  .legal-section h3 {
+    font-size: 1.15rem;
+    margin: 24px 0 14px;
+  }
+
+  .legal-section p,
+  .legal-section ul li {
+    font-size: 1rem;
+    line-height: 1.7;
+  }
+
+  .legal-section ul li {
+    padding-left: 28px;
+  }
+
+  .contact-info {
+    padding: 20px;
   }
 }

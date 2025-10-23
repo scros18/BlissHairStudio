@@ -23,19 +23,22 @@ export class CartUI {
   }
 
   private createCartSidebar(): void {
-    // Create overlay
+    // Create overlay (lighter for dropdown)
     this.overlay = document.createElement('div');
-    this.overlay.className = 'modal-overlay';
+    this.overlay.className = 'cart-overlay';
     this.overlay.style.display = 'none';
     this.overlay.onclick = () => this.closeCart();
     
-    // Create sidebar
+    // Create dropdown modal
     this.sidebar = document.createElement('div');
-    this.sidebar.className = 'cart-sidebar';
+    this.sidebar.className = 'cart-dropdown';
     this.sidebar.innerHTML = `
       <div class="cart-header">
-        <h2>Shopping Cart</h2>
-        <button class="modal-close" aria-label="Close cart">&times;</button>
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <circle cx="12" cy="12" r="10"/>
+          <path d="M8 12h8M12 8v8"/>
+        </svg>
+        <h3>Your Cart</h3>
       </div>
       <div class="cart-body"></div>
       <div class="cart-footer">
@@ -43,8 +46,8 @@ export class CartUI {
           <span>Total:</span>
           <span class="cart-total-amount">£0.00</span>
         </div>
-        <button class="btn btn-primary btn-block" id="checkoutBtn">
-          Proceed to Checkout
+        <button class="btn btn-primary btn-checkout" id="checkoutBtn">
+          Checkout
         </button>
       </div>
     `;
@@ -64,10 +67,26 @@ export class CartUI {
   }
 
   private toggleCart(): void {
+    // Close auth dropdown if open
+    this.closeAuthDropdown();
+    
     if (this.sidebar?.classList.contains('active')) {
       this.closeCart();
     } else {
       this.openCart();
+    }
+  }
+  
+  private closeAuthDropdown(): void {
+    const authDropdown = document.querySelector('.auth-dropdown');
+    const authOverlay = document.querySelector('.auth-dropdown-overlay');
+    if (authDropdown) {
+      (authDropdown as HTMLElement).style.display = 'none';
+      authDropdown.classList.remove('show');
+    }
+    if (authOverlay) {
+      (authOverlay as HTMLElement).style.display = 'none';
+      authOverlay.classList.remove('show');
     }
   }
 

@@ -105,6 +105,12 @@ export class Navigation {
   }
 
   private setupAuthDropdown(): void {
+    // Create backdrop overlay
+    const overlay = document.createElement('div');
+    overlay.className = 'auth-dropdown-overlay';
+    overlay.style.display = 'none';
+    document.body.appendChild(overlay);
+    
     const dropdown = document.createElement('div');
     dropdown.className = 'auth-dropdown';
     dropdown.style.display = 'none';
@@ -198,14 +204,30 @@ export class Navigation {
     // Toggle dropdown
     this.authButton!.addEventListener('click', (e) => {
       e.stopPropagation();
+      // Close cart if open
+      this.closeAllDropdowns();
+      
       const isVisible = dropdown.style.display !== 'none';
       dropdown.style.display = isVisible ? 'none' : 'block';
+      overlay.style.display = isVisible ? 'none' : 'block';
       
       if (!isVisible) {
-        setTimeout(() => dropdown.classList.add('show'), 10);
+        setTimeout(() => {
+          dropdown.classList.add('show');
+          overlay.classList.add('show');
+        }, 10);
       } else {
         dropdown.classList.remove('show');
+        overlay.classList.remove('show');
       }
+    });
+    
+    // Close dropdown when clicking overlay
+    overlay.addEventListener('click', () => {
+      dropdown.style.display = 'none';
+      dropdown.classList.remove('show');
+      overlay.style.display = 'none';
+      overlay.classList.remove('show');
     });
     
     // Close dropdown when clicking outside
@@ -213,6 +235,8 @@ export class Navigation {
       if (!this.authButton!.contains(e.target as Node) && !dropdown.contains(e.target as Node)) {
         dropdown.style.display = 'none';
         dropdown.classList.remove('show');
+        overlay.style.display = 'none';
+        overlay.classList.remove('show');
       }
     });
     
@@ -229,8 +253,23 @@ export class Navigation {
       link.addEventListener('click', () => {
         dropdown.style.display = 'none';
         dropdown.classList.remove('show');
+        overlay.style.display = 'none';
+        overlay.classList.remove('show');
       });
     });
+  }
+  
+  private closeAllDropdowns(): void {
+    // Close cart
+    const cartDropdown = document.querySelector('.cart-dropdown');
+    const cartOverlay = document.querySelector('.cart-overlay');
+    if (cartDropdown) {
+      cartDropdown.classList.remove('active');
+    }
+    if (cartOverlay) {
+      (cartOverlay as HTMLElement).style.display = 'none';
+    }
+    document.body.classList.remove('no-scroll');
   }
 }
 

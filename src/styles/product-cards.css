@@ -1,0 +1,205 @@
+/* Luxury Product Card Styles - Gucci Inspired */
+
+.product-card {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  background: #FFFFFF;
+  border: 1px solid #E8E8E8;
+  border-radius: 0;
+  padding: 0;
+  overflow: hidden;
+}
+
+.product-card:hover {
+  transform: translateY(-4px);
+  border-color: transparent;
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.08);
+}
+
+/* Product Image Carousel */
+.product-image-carousel {
+  position: relative;
+  width: 100%;
+  height: 400px;
+  overflow: hidden;
+  background: #FFFFFF;
+  border-bottom: 1px solid #E8E8E8;
+}
+
+.product-images {
+  position: relative;
+  width: 100%;
+  height: 100%;
+}
+
+.product-image {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  opacity: 0;
+  transition: opacity 0.6s ease-in-out;
+  padding: 40px;
+}
+
+.product-image.active {
+  opacity: 1;
+  z-index: 1;
+}
+
+.product-image-dots {
+  position: absolute;
+  bottom: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  gap: 10px;
+  z-index: 2;
+}
+
+.dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: #D4D4D4;
+  border: none;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  padding: 0;
+}
+
+.dot.active {
+  background: #1A1A1A;
+  transform: scale(1.25);
+}
+
+.dot:hover {
+  background: #666666;
+}
+
+.product-card h3 {
+  font-size: 1.1rem;
+  font-weight: 400;
+  color: #1A1A1A;
+  margin: 28px 24px 12px;
+  line-height: 1.4;
+  letter-spacing: 0.5px;
+  text-transform: uppercase;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Helvetica Neue', sans-serif;
+  min-height: auto;
+}
+
+/* Product Rating - Minimalist */
+.product-rating {
+  display: flex;
+  gap: 3px;
+  margin: 0 24px 16px;
+  align-items: center;
+}
+
+.product-rating svg {
+  flex-shrink: 0;
+  width: 14px;
+  height: 14px;
+}
+
+/* Product Pricing - Luxury Style */
+.product-pricing {
+  display: flex;
+  align-items: baseline;
+  gap: 12px;
+  margin: 0 24px 28px;
+}
+
+.original-price {
+  font-size: 0.95rem;
+  color: #999999;
+  text-decoration: line-through;
+  font-weight: 300;
+  letter-spacing: 0.3px;
+}
+
+.sale-price {
+  font-size: 1.4rem;
+  font-weight: 400;
+  color: #1A1A1A;
+  letter-spacing: 0.5px;
+}
+
+.product-link {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 16px 32px;
+  background: #0D3D2E;
+  color: #FFFFFF;
+  border-radius: 0;
+  font-weight: 400;
+  font-size: 0.85rem;
+  text-decoration: none;
+  text-transform: uppercase;
+  letter-spacing: 1.5px;
+  transition: all 0.3s ease;
+  margin: auto 24px 28px;
+  border: 1px solid #0D3D2E;
+  margin-top: auto;
+}
+
+.product-link:hover {
+  background: #FFFFFF;
+  color: #0D3D2E;
+  border-color: #0D3D2E;
+}
+
+.product-link svg {
+  transition: transform 0.3s ease;
+  width: 14px;
+  height: 14px;
+}
+
+.product-link:hover svg {
+  transform: translateX(4px);
+}
+
+@media (max-width: 768px) {
+  .product-image-carousel {
+    height: 320px;
+  }
+  
+  .product-image {
+    padding: 30px;
+  }
+  
+  .product-card h3 {
+    font-size: 1rem;
+    margin: 24px 20px 10px;
+  }
+  
+  .product-rating {
+    margin: 0 20px 12px;
+  }
+  
+  .product-pricing {
+    margin: 0 20px 20px;
+  }
+  
+  .sale-price {
+    font-size: 1.2rem;
+  }
+  
+  .original-price {
+    font-size: 0.9rem;
+  }
+  
+  .product-link {
+    margin: 0 20px 24px;
+    padding: 14px 28px;
+    font-size: 0.8rem;
+    letter-spacing: 1.2px;
+  }
+}

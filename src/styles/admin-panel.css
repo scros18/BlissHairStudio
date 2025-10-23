@@ -1,20 +1,22 @@
 /* ================================================
-   Admin Panel Styles
+   Admin Panel Styles - Minimalistic & Professional
    ================================================ */
 
 .admin-panel {
   display: grid;
-  grid-template-columns: 280px 1fr;
+  grid-template-columns: 260px 1fr;
   min-height: 100vh;
-  background: #F8FAFB;
+  background: #FAFAFA;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Helvetica Neue', sans-serif;
 }
 
 .admin-sidebar {
-  background: linear-gradient(180deg, #1F4D3D 0%, #2D6854 100%);
-  color: white;
-  padding: 24px;
+  background: #FFFFFF;
+  border-right: 1px solid #E8E8E8;
+  color: #1A1A2E;
+  padding: 24px 16px;
   position: fixed;
-  width: 280px;
+  width: 260px;
   height: 100vh;
   overflow-y: auto;
   z-index: 100;
@@ -22,69 +24,71 @@
 
 .admin-logo {
   display: flex;
-  flex-direction: column;
   align-items: center;
   gap: 12px;
-  padding-bottom: 32px;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.15);
+  padding: 16px 12px;
   margin-bottom: 32px;
 }
 
 .admin-logo img {
-  width: 60px;
-  height: 60px;
-  filter: brightness(0) invert(1);
+  width: 40px;
+  height: 40px;
 }
 
 .admin-logo h2 {
-  font-size: 1.3rem;
-  font-weight: 700;
+  font-size: 1.1rem;
+  font-weight: 500;
   margin: 0;
-  color: white;
+  color: #1A1A2E;
+  letter-spacing: -0.5px;
 }
 
 .admin-nav {
   display: flex;
   flex-direction: column;
-  gap: 8px;
+  gap: 4px;
 }
 
 .admin-nav-item {
   display: flex;
   align-items: center;
-  gap: 14px;
-  padding: 14px 18px;
-  border-radius: 12px;
+  gap: 12px;
+  padding: 12px 12px;
+  border-radius: 8px;
   background: transparent;
   border: none;
-  color: rgba(255, 255, 255, 0.8);
-  font-size: 15px;
-  font-weight: 500;
+  color: #666;
+  font-size: 0.9rem;
+  font-weight: 400;
   cursor: pointer;
-  transition: all 0.3s ease;
+  transition: all 0.2s ease;
   text-decoration: none;
   width: 100%;
   text-align: left;
+  letter-spacing: 0.3px;
 }
 
 .admin-nav-item:hover {
-  background: rgba(255, 255, 255, 0.1);
-  color: white;
+  background: #F5F5F5;
+  color: #1A1A2E;
 }
 
 .admin-nav-item.active {
-  background: rgba(255, 255, 255, 0.15);
+  background: #0D3D2E;
   color: white;
 }
 
 .admin-nav-item svg {
   flex-shrink: 0;
+  width: 18px;
+  height: 18px;
 }
 
 .admin-main {
-  margin-left: 280px;
-  padding: 40px;
+  margin-left: 260px;
+  padding: 32px;
   min-height: 100vh;
+  max-width: 1400px;
 }
 
 .admin-section {
@@ -106,25 +110,27 @@
 }
 
 .admin-header h1 {
-  font-size: 2.2rem;
-  font-weight: 800;
+  font-size: 1.75rem;
+  font-weight: 400;
   color: #1A1A2E;
   margin: 0 0 8px 0;
-  font-family: 'Poppins', sans-serif;
+  letter-spacing: -0.5px;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Helvetica Neue', sans-serif;
 }
 
 .admin-subtitle {
-  font-size: 1rem;
-  color: #64748B;
+  font-size: 0.9rem;
+  color: #999;
   margin: 0;
+  font-weight: 300;
 }
 
 .admin-card {
   background: white;
-  border-radius: 20px;
-  border: 1px solid #E5E7EB;
+  border-radius: 0;
+  border: 1px solid #E8E8E8;
   overflow: hidden;
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+  box-shadow: none;
 }
 
 /* Products Table */
@@ -138,17 +144,18 @@
 }
 
 .products-table thead {
-  background: #F9FAFB;
-  border-bottom: 2px solid #E5E7EB;
+  background: #FAFAFA;
+  border-bottom: 1px solid #E8E8E8;
 }
 
 .products-table th {
-  padding: 16px 24px;
+  padding: 16px 20px;
   text-align: left;
-  font-size: 0.875rem;
-  font-weight: 700;
-  color: #374151;
+  font-size: 0.8rem;
+  font-weight: 500;
+  color: #666;
   text-transform: uppercase;
+  letter-spacing: 1px;
   letter-spacing: 0.5px;
 }
 
@@ -372,9 +379,19 @@
   }
   
   .admin-sidebar {
-    position: relative;
+    position: sticky;
+    top: 0;
     width: 100%;
     height: auto;
+    border-right: none;
+    border-bottom: 1px solid #E8E8E8;
+    z-index: 100;
+    background: white;
+  }
+  
+  .admin-logo {
+    padding: 12px;
+    margin-bottom: 16px;
   }
   
   .admin-main {
@@ -385,20 +402,34 @@
   .admin-nav {
     flex-direction: row;
     overflow-x: auto;
-    gap: 12px;
+    gap: 8px;
+    padding-bottom: 16px;
+    -webkit-overflow-scrolling: touch;
+  }
+  
+  .admin-nav::-webkit-scrollbar {
+    height: 4px;
+  }
+  
+  .admin-nav::-webkit-scrollbar-thumb {
+    background: #E8E8E8;
+    border-radius: 2px;
   }
   
   .admin-nav-item {
     flex-shrink: 0;
+    white-space: nowrap;
   }
   
   .products-table {
     font-size: 0.85rem;
+    overflow-x: auto;
   }
   
   .products-table th,
   .products-table td {
     padding: 12px 16px;
+    min-width: 100px;
   }
   
   .categories-grid {
@@ -409,6 +440,11 @@
 @media (max-width: 640px) {
   .admin-header {
     flex-direction: column;
+    align-items: stretch;
+  }
+  
+  .admin-header h1 {
+    font-size: 1.5rem;
   }
   
   .admin-header .btn {
@@ -416,33 +452,64 @@
     justify-content: center;
   }
   
+  .admin-main {
+    padding: 20px 12px;
+  }
+  
   .modal-content {
     border-radius: 16px;
+    max-width: 95%;
   }
   
   .modal-content form {
     padding: 20px;
   }
   
-  .products-table td {
+  .products-table {
     display: block;
-    padding: 8px 16px;
   }
   
   .products-table thead {
     display: none;
   }
   
+  .products-table tbody {
+    display: block;
+  }
+  
   .products-table tr {
     display: block;
-    border: 1px solid #E5E7EB;
-    border-radius: 12px;
-    margin-bottom: 12px;
-    padding: 12px;
+    border: 1px solid #E8E8E8;
+    border-radius: 0;
+    margin-bottom: 16px;
+    padding: 16px;
+    background: white;
+  }
+  
+  .products-table td {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 8px 0;
+    border-bottom: 1px solid #F5F5F5;
+    min-width: unset;
+  }
+  
+  .products-table td:last-child {
+    border-bottom: none;
+  }
+  
+  .products-table td::before {
+    content: attr(data-label);
+    font-weight: 500;
+    color: #666;
+    font-size: 0.8rem;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
   }
   
   .product-actions {
-    margin-top: 12px;
     justify-content: flex-end;
+    width: 100%;
   }
 }

@@ -6,7 +6,13 @@
 @import './navigation.css';
 @import './hero.css';
 @import './products.css';
+@import './pages.css';
+@import './auth.css';
 @import './admin.css';
+@import './admin-panel.css';
+@import './performance.css';
+@import './clients.css';
+@import './product-cards.css';
 
 /* Additional sections */
 .about, .services, .testimonials, .contact {

@@ -26,6 +26,11 @@ import { registerPageTemplate } from './pages/register';
 import { adminPanelTemplate } from './pages/admin';
 import { authManager } from './utils/authManager';
 import { productManager } from './utils/productManager';
+import { renderPrivacyPage } from './pages/privacy';
+import { renderTermsPage } from './pages/terms';
+import { renderAccessibilityPage } from './pages/accessibility';
+import { clientsPageTemplate, initClientsGallery } from './pages/clients';
+import { storesPage } from './pages/stores';
 
 class App {
   async init(): Promise<void> {
@@ -128,6 +133,47 @@ class App {
         }
         seoManager.updateMeta({ title: 'Admin Panel - BlissHairStudio', description: 'Admin access', keywords: 'admin, management' });
         this.loadAdminPanel();
+      })
+      .route('/privacy', () => {
+        seoManager.updateMeta({ 
+          title: 'Privacy Policy - BlissHairStudio', 
+          description: 'Learn how we protect your personal data and privacy', 
+          keywords: 'privacy policy, data protection, personal information' 
+        });
+        pageManager.loadPageFromTemplate(renderPrivacyPage);
+      })
+      .route('/terms', () => {
+        seoManager.updateMeta({ 
+          title: 'Terms of Service - BlissHairStudio', 
+          description: 'Terms and conditions for using our services', 
+          keywords: 'terms of service, terms and conditions, legal' 
+        });
+        pageManager.loadPageFromTemplate(renderTermsPage);
+      })
+      .route('/accessibility', () => {
+        seoManager.updateMeta({ 
+          title: 'Accessibility Statement - BlissHairStudio', 
+          description: 'Our commitment to web accessibility and inclusive design', 
+          keywords: 'accessibility, WCAG, inclusive design, web accessibility' 
+        });
+        pageManager.loadPageFromTemplate(renderAccessibilityPage);
+      })
+      .route('/clients', () => {
+        seoManager.updateMeta({
+          title: 'Client Gallery - Hair Transformations | BlissHairStudio',
+          description: 'Browse our stunning gallery of real client hair transformations. See the beautiful work we create at BlissHairStudio - balayage, cuts, colors & more.',
+          keywords: 'hair gallery, client transformations, hair before after, salon portfolio, hair inspiration, BlissHairStudio gallery'
+        });
+        pageManager.loadPageFromTemplate(clientsPageTemplate);
+        setTimeout(() => initClientsGallery(), 100);
+      })
+      .route('/stores', () => {
+        seoManager.updateMeta({
+          title: 'Store Locator - Find Your Nearest Bliss Hair Studio',
+          description: 'Find your nearest Bliss Hair Studio location. Browse our salons across the UK and book an appointment today.',
+          keywords: 'hair salon locations, store locator, find salon, BlissHairStudio near me, salon addresses'
+        });
+        pageManager.loadPageFromTemplate(storesPage);
       })
       .notFound(() => {
         router.navigate('/');

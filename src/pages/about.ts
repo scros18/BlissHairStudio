@@ -4,10 +4,15 @@ export function aboutPageTemplate(): string {
   return `
     <div class="about-page">
       <!-- Hero Section -->
-      <section class="page-hero">
-        <div class="container">
-          <h1>About BlissHairStudio</h1>
-          <p>Where artistry meets expertise to create your perfect look</p>
+      <section class="page-hero about-hero">
+        <div class="about-hero-image">
+          <img src="/about.jpg" alt="Bliss Hair Studio Interior" loading="eager">
+        </div>
+        <div class="about-hero-content">
+          <div class="container">
+            <h1>About BlissHairStudio</h1>
+            <p>Where artistry meets expertise to create your perfect look</p>
+          </div>
         </div>
       </section>
 
@@ -19,16 +24,11 @@ export function aboutPageTemplate(): string {
               <span class="section-tag">Our Story</span>
               <h2>A Passion for Beautiful Hair</h2>
               <p>Founded with a vision to revolutionize hair care, BlissHairStudio has been serving our community for over 20 years. What started as a dream has blossomed into a sanctuary where clients become family.</p>
-              <p>Our journey began with a simple belief: everyone deserves to feel confident and beautiful. Led by Maxine and Carla, our expert stylists bring decades of combined experience, constantly evolving with the latest techniques while honoring timeless craftsmanship.</p>
-              <p>Today, we're proud to be an award-winning salon known for our personalized approach, premium products, and the genuine care we show every client who walks through our doors.</p>
+              <p>Our journey began with a simple belief: everyone deserves to feel confident and beautiful. At BlissHairStudio, we're proud to be home to talented stylists including Carla and Jana, who rent chairs in our welcoming salon space, each bringing their unique expertise and passion for hair artistry.</p>
+              <p>Today, we're known for our collaborative approach, premium products, and the genuine care we show every client who walks through our doors. Our team of skilled professionals is dedicated to creating beautiful transformations and lasting relationships.</p>
             </div>
             <div class="story-image">
-              <div class="image-placeholder">
-                <svg width="120" height="120" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
-                  <path d="M12 2L2 7l10 5 10-5-10-5z"/>
-                  <path d="M2 17l10 5 10-5M2 12l10 5 10-5"/>
-                </svg>
-              </div>
+              <img src="/about.jpg" alt="Bliss Hair Studio" loading="lazy">
             </div>
           </div>
         </div>
@@ -38,35 +38,156 @@ export function aboutPageTemplate(): string {
       <section class="team-section">
         <div class="container">
           <div class="section-header">
-            <span class="section-tag">Our Experts</span>
-            <h2>Meet Our Master Stylists</h2>
+            <span class="section-tag">Our Founder</span>
+            <h2>Meet Maxine Croston</h2>
+            <div class="divider"></div>
+            <p class="section-description">The visionary behind BlissHairStudio - creating a space where talent and beauty flourish</p>
+          </div>
+          
+          <!-- Owner Spotlight -->
+          <div class="owner-spotlight">
+            <div class="owner-card">
+              <div class="owner-image">
+                <div class="avatar avatar-maxine-large">
+                  <svg width="100" height="100" viewBox="0 0 100 100" fill="none">
+                    <!-- Hair - Blonde -->
+                    <ellipse cx="50" cy="30" rx="32" ry="35" fill="#D4A574" opacity="0.95"/>
+                    <path d="M18 32 Q15 18 28 10 Q40 5 50 5 Q60 5 72 10 Q85 18 82 32" fill="#E8C4A8" opacity="0.9"/>
+                    <path d="M20 35 Q18 30 22 25 L30 20 Q35 18 40 20 L45 25" fill="#F5D5C0" opacity="0.7"/>
+                    <path d="M80 35 Q82 30 78 25 L70 20 Q65 18 60 20 L55 25" fill="#F5D5C0" opacity="0.7"/>
+                    <!-- Face -->
+                    <circle cx="50" cy="52" r="28" fill="#FFE5CC"/>
+                    <!-- Eyes -->
+                    <circle cx="42" cy="50" r="3" fill="#5D4E37"/>
+                    <circle cx="58" cy="50" r="3" fill="#5D4E37"/>
+                    <circle cx="43" cy="49" r="1" fill="#FFFFFF"/>
+                    <circle cx="59" cy="49" r="1" fill="#FFFFFF"/>
+                    <!-- Eyebrows -->
+                    <path d="M38 44 Q42 43 46 44" stroke="#A0826D" stroke-width="1.5" fill="none" stroke-linecap="round"/>
+                    <path d="M54 44 Q58 43 62 44" stroke="#A0826D" stroke-width="1.5" fill="none" stroke-linecap="round"/>
+                    <!-- Nose -->
+                    <path d="M50 54 L48 60 L50 61 L52 60 Z" fill="#FFD4B3"/>
+                    <!-- Smile -->
+                    <path d="M42 62 Q50 68 58 62" stroke="#C97676" stroke-width="2" fill="none" stroke-linecap="round"/>
+                    <path d="M44 62 Q50 66 56 62" fill="#FFB6C1" opacity="0.5"/>
+                    <!-- Necklace -->
+                    <ellipse cx="50" cy="78" rx="20" ry="3" fill="#FFD700" opacity="0.8"/>
+                    <circle cx="50" cy="78" r="4" fill="#FFD700"/>
+                  </svg>
+                </div>
+                <div class="owner-badge">
+                  <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
+                    <path d="M12 2L15 8L22 9L17 14L18 21L12 18L6 21L7 14L2 9L9 8L12 2Z"/>
+                  </svg>
+                  Owner
+                </div>
+              </div>
+              <div class="owner-details">
+                <h3>Maxine Croston</h3>
+                <p class="owner-title">Founder & Master Stylist</p>
+                <p class="owner-bio">With over 20 years of passion and dedication, Maxine founded BlissHairStudio with a singular vision: to create a welcoming sanctuary where talented stylists can thrive and clients become family. Her expertise in color treatments and precision cuts, combined with her warm personality, has made BlissHairStudio the go-to destination for hair transformations in the community.</p>
+                <div class="owner-achievements">
+                  <div class="achievement-item">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                      <path d="M12 2L15 8L22 9L17 14L18 21L12 18L6 21L7 14L2 9L9 8L12 2Z"/>
+                    </svg>
+                    <span>20+ Years Experience</span>
+                  </div>
+                  <div class="achievement-item">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                      <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/>
+                      <circle cx="9" cy="7" r="4"/>
+                      <path d="M23 21v-2a4 4 0 0 0-3-3.87"/>
+                      <path d="M16 3.13a4 4 0 0 1 0 7.75"/>
+                    </svg>
+                    <span>10,000+ Happy Clients</span>
+                  </div>
+                  <div class="achievement-item">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                      <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/>
+                    </svg>
+                    <span>Certified Color Specialist</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Our Team -->
+          <div class="section-header" style="margin-top: 80px;">
+            <span class="section-tag">Our Talented Stylists</span>
+            <h2>Chair Rental Artists</h2>
             <div class="divider"></div>
           </div>
           <div class="team-grid">
             <div class="team-card">
               <div class="team-image">
-                <div class="avatar">M</div>
+                <div class="avatar avatar-carla">
+                  <svg width="80" height="80" viewBox="0 0 100 100" fill="none">
+                    <!-- Hair -->
+                    <ellipse cx="50" cy="35" rx="32" ry="38" fill="#8B4513" opacity="0.9"/>
+                    <path d="M18 35 Q15 20 25 10 Q35 5 50 5 Q65 5 75 10 Q85 20 82 35" fill="#654321" opacity="0.8"/>
+                    <!-- Face -->
+                    <circle cx="50" cy="50" r="28" fill="#FFE0BD"/>
+                    <!-- Eyes -->
+                    <circle cx="42" cy="48" r="3" fill="#4A4A4A"/>
+                    <circle cx="58" cy="48" r="3" fill="#4A4A4A"/>
+                    <circle cx="43" cy="47" r="1" fill="#FFFFFF"/>
+                    <circle cx="59" cy="47" r="1" fill="#FFFFFF"/>
+                    <!-- Nose -->
+                    <path d="M50 52 L48 58 L50 59 L52 58 Z" fill="#FFD4A3"/>
+                    <!-- Smile -->
+                    <path d="M42 60 Q50 66 58 60" stroke="#D4A574" stroke-width="2" fill="none" stroke-linecap="round"/>
+                    <!-- Earrings -->
+                    <circle cx="22" cy="52" r="3" fill="#E8A0BF"/>
+                    <circle cx="78" cy="52" r="3" fill="#E8A0BF"/>
+                  </svg>
+                </div>
               </div>
-              <h3>Maxine</h3>
-              <p class="team-role">Lead Stylist & Owner</p>
-              <p class="team-bio">With over 20 years of experience, Maxine brings unparalleled expertise in color treatments and precision cuts. Her warm personality makes every client feel like family.</p>
+              <h3>Carla</h3>
+              <p class="team-role">Chair Rental Stylist</p>
+              <p class="team-bio">Carla brings creative vision and technical mastery to BlissHairStudio. Her expertise in modern cuts and color transformations makes her a favorite among clients seeking fresh, contemporary styles.</p>
               <div class="team-specialties">
+                <span>Modern Cuts</span>
                 <span>Color Expert</span>
-                <span>Precision Cuts</span>
-                <span>Consultations</span>
+                <span>Styling</span>
               </div>
             </div>
             <div class="team-card">
               <div class="team-image">
-                <div class="avatar">C</div>
+                <div class="avatar avatar-jana">
+                  <svg width="80" height="80" viewBox="0 0 100 100" fill="none">
+                    <!-- Hair -->
+                    <path d="M18 40 Q18 15 35 8 Q50 3 65 8 Q82 15 82 40 L82 50 Q82 65 75 70 L70 75 Q65 78 60 78 L40 78 Q35 78 30 75 L25 70 Q18 65 18 50 Z" fill="#2D2D2D" opacity="0.95"/>
+                    <ellipse cx="50" cy="32" rx="30" ry="35" fill="#1A1A1A" opacity="0.9"/>
+                    <!-- Face -->
+                    <circle cx="50" cy="50" r="28" fill="#F5D5C0"/>
+                    <!-- Eyes -->
+                    <circle cx="42" cy="48" r="3" fill="#3D3D3D"/>
+                    <circle cx="58" cy="48" r="3" fill="#3D3D3D"/>
+                    <circle cx="43" cy="47" r="1" fill="#FFFFFF"/>
+                    <circle cx="59" cy="47" r="1" fill="#FFFFFF"/>
+                    <!-- Eyelashes -->
+                    <path d="M39 45 Q38 42 37 44" stroke="#2D2D2D" stroke-width="1" fill="none"/>
+                    <path d="M61 45 Q62 42 63 44" stroke="#2D2D2D" stroke-width="1" fill="none"/>
+                    <!-- Nose -->
+                    <path d="M50 52 L48 58 L50 59 L52 58 Z" fill="#E8C4A8"/>
+                    <!-- Lips -->
+                    <path d="M42 60 Q50 65 58 60" stroke="#C97676" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+                    <path d="M42 60 Q50 63 58 60" fill="#E8A0BF" opacity="0.6"/>
+                    <!-- Earrings -->
+                    <circle cx="22" cy="52" r="3" fill="#4DB6AC"/>
+                    <circle cx="78" cy="52" r="3" fill="#4DB6AC"/>
+                  </svg>
+                </div>
               </div>
-              <h3>Carla</h3>
-              <p class="team-role">Senior Stylist</p>
-              <p class="team-bio">Carla's creative vision and technical mastery make her a favorite among clients seeking transformative styles. She specializes in modern cuts and styling.</p>
+              <h3>Jana</h3>
+              <p class="team-role">Chair Rental Stylist</p>
+              <p class="team-bio">Jana's passion for hair artistry and attention to detail ensure every client leaves feeling beautiful. She specializes in precision styling and personalized consultations.</p>
               <div class="team-specialties">
-                <span>Modern Styles</span>
-                <span>Hair Repair</span>
-                <span>Styling</span>
+                <span>Precision Styling</span>
+                <span>Hair Treatments</span>
+                <span>Consultations</span>
               </div>
             </div>
           </div>
@@ -85,12 +206,13 @@ export function aboutPageTemplate(): string {
             <div class="value-card">
               <div class="value-icon">
                 <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                  <path d="M12 2L2 7l10 5 10-5-10-5z"/>
-                  <path d="M2 17l10 5 10-5M2 12l10 5 10-5"/>
+                  <circle cx="12" cy="12" r="10"/>
+                  <path d="M12 2a10 10 0 0 0 0 20"/>
+                  <circle cx="12" cy="12" r="3"/>
                 </svg>
               </div>
-              <h3>Excellence</h3>
-              <p>We never settle for good enough. Every cut, every color, every style is crafted with meticulous attention to detail.</p>
+              <h3>Colour</h3>
+              <p>From vibrant transformations to subtle enhancements, we're masters of color artistry, creating looks that complement your unique style.</p>
             </div>
             <div class="value-card">
               <div class="value-icon">

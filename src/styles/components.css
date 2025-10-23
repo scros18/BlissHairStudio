@@ -115,8 +115,11 @@
   font-family: inherit;
   font-size: var(--text-base);
   transition: border-color var(--transition-base);
-  background: var(--background);
-  color: var(--text-dark);
+  background: #FFFFFF;
+  color: #1A1A2E;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
 }
 
 .form-input:focus,
@@ -125,6 +128,7 @@
   outline: none;
   border-color: var(--primary-color);
   box-shadow: 0 0 0 3px rgba(232, 180, 184, 0.1);
+  background: #FFFFFF;
 }
 
 .form-input.error,
@@ -136,6 +140,8 @@
 .form-textarea {
   resize: vertical;
   min-height: 120px;
+  background: #FFFFFF;
+  color: #1A1A2E;
 }
 
 .form-error {
@@ -811,7 +817,7 @@ section {
   font-weight: 700;
   color: #1A1A2E;
   margin-bottom: 32px;
-  font-family: 'Poppins', sans-serif;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Helvetica Neue', sans-serif;
 }
 
 .location-details {
@@ -895,9 +901,17 @@ section {
    ================================================ */
 
 .footer {
-  background: transparent;
-  color: #E0E0E0;
+  background: #FFFFFF !important;
+  color: #2D2D2D !important;
   border-top: 3px solid #2D6854;
+  box-shadow: 0 -4px 20px rgba(0, 0, 0, 0.05);
+}
+
+@media (prefers-color-scheme: dark) {
+  .footer, .footer * {
+    background: #FFFFFF !important;
+    color: #2D2D2D !important;
+  }
 }
 
 .footer-top {
@@ -921,7 +935,7 @@ section {
 .footer-tagline {
   font-size: 0.95rem;
   line-height: 1.8;
-  color: #B0B0B0;
+  color: #637887;
   margin-bottom: 32px;
 }
 
@@ -936,18 +950,56 @@ section {
   display: flex;
   align-items: center;
   justify-content: center;
-  background: rgba(0, 137, 123, 0.15);
   border-radius: 50%;
-  color: #2D6854;
   transition: all var(--transition-base);
   border: 2px solid transparent;
 }
 
-.social-link:hover {
-  background: #2D6854;
+/* Instagram - Gradient */
+.social-link:nth-child(1) {
+  background: linear-gradient(45deg, #f09433 0%, #e6683c 25%, #dc2743 50%, #cc2366 75%, #bc1888 100%);
   color: white;
-  transform: translateY(-4px);
-  border-color: #2D6854;
+}
+
+.social-link:nth-child(1):hover {
+  transform: translateY(-4px) scale(1.05);
+  box-shadow: 0 8px 20px rgba(225, 48, 108, 0.4);
+}
+
+/* Facebook - Blue */
+.social-link:nth-child(2) {
+  background: #1877F2;
+  color: white;
+}
+
+.social-link:nth-child(2):hover {
+  transform: translateY(-4px) scale(1.05);
+  box-shadow: 0 8px 20px rgba(24, 119, 242, 0.4);
+  background: #0d6efd;
+}
+
+/* TikTok - Proper Brand Colors */
+.social-link:nth-child(3) {
+  background: linear-gradient(135deg, #00f2ea 0%, #ff0050 50%, #000000 100%);
+  color: #FFFFFF;
+}
+
+.social-link:nth-child(3):hover {
+  transform: translateY(-4px) scale(1.05);
+  box-shadow: 0 8px 20px rgba(0, 242, 234, 0.5);
+  background: linear-gradient(135deg, #00f2ea 0%, #ff0050 40%, #000000 90%);
+}
+
+/* Pinterest - Red */
+.social-link:nth-child(4) {
+  background: #E60023;
+  color: white;
+}
+
+.social-link:nth-child(4):hover {
+  transform: translateY(-4px) scale(1.05);
+  box-shadow: 0 8px 20px rgba(230, 0, 35, 0.4);
+  background: #cc0022;
 }
 
 .footer-links {
@@ -960,7 +1012,7 @@ section {
   font-size: 1.05rem;
   font-weight: 700;
   margin-bottom: 24px;
-  color: #FFFFFF;
+  color: #1A1A2E;
   text-transform: uppercase;
   letter-spacing: 0.5px;
   font-size: 0.95rem;
@@ -975,7 +1027,7 @@ section {
 }
 
 .footer-column ul li a {
-  color: #B0B0B0;
+  color: #2D2D2D !important;
   font-size: 0.9rem;
   transition: all var(--transition-base);
   position: relative;
@@ -1068,7 +1120,7 @@ section {
 .copyright {
   font-size: 0.85rem;
   color: #909090;
-  font-family: 'Poppins', -apple-system, BlinkMacSystemFont, sans-serif;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Helvetica Neue', sans-serif;
   font-weight: 500;
 }
 
@@ -1082,7 +1134,7 @@ section {
   font-size: 0.85rem;
   color: #B0B0B0;
   transition: color var(--transition-base);
-  font-family: 'Poppins', -apple-system, BlinkMacSystemFont, sans-serif;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Helvetica Neue', sans-serif;
   font-weight: 500;
 }
 
@@ -1097,7 +1149,7 @@ section {
 .footer-credit {
   font-size: 0.85rem;
   color: #909090;
-  font-family: 'Poppins', -apple-system, BlinkMacSystemFont, sans-serif;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Helvetica Neue', sans-serif;
   font-weight: 500;
 }
 

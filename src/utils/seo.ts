@@ -16,7 +16,7 @@ export class SEOManager {
   
   updateMeta(config: SEOConfig): void {
     // Update title
-    document.title = `${config.title} | BlissHairStudio - Award-Winning Hair Salon`;
+    document.title = config.title === 'BlissHairStudio' ? 'BlissHairStudio - Premium Hair Salon & Luxury Hair Care' : `${config.title} | BlissHairStudio`;
     
     // Update meta description
     this.setMetaTag('description', config.description);
@@ -85,9 +85,9 @@ export class SEOManager {
   // Page-specific SEO configs
   getHomeSEO(): SEOConfig {
     return {
-      title: 'Home',
-      description: 'Award-winning hair salon in the UK. Expert stylists Maxine & Carla offer precision cuts, color treatments, and hair repair. 500+ 5-star reviews. Book your transformation today!',
-      keywords: 'hair salon uk, best hairdresser, hair color, hair cuts, bliss hair studio, maxine hair stylist, carla hairdresser, balayage, keratin treatment, hair repair',
+      title: 'BlissHairStudio',
+      description: 'BlissHairStudio - Where beauty meets luxury. Premium hair salon offering expert styling services and luxury hair care products. Book your transformation today.',
+      keywords: 'BlissHairStudio, hair salon, luxury hair care, premium hair products, professional hairstyling, hair salon UK, hair care boutique, salon services',
       ogType: 'website',
       schema: {
         "@context": "https://schema.org",
