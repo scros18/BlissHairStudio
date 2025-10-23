@@ -6,6 +6,7 @@ import './styles/admin.css';
 import './styles/admin-panel.css';
 import './styles/performance.css';
 import './styles/auth.css';
+import './styles/luxury-products.css';
 import { navigation } from './components/navigation';
 import { productsDisplay } from './components/products';
 import { cartUI } from './components/cart';
