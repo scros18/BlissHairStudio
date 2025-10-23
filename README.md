@@ -70,9 +70,35 @@ To add more products, find the sample product in `index.html` and duplicate the 
     <div class="product-image">
         <!-- Add your product image here -->
         <img src="path-to-image.jpg" alt="Product Name" itemprop="image">
-    </div>
-    <div class="product-info">
-        <h3 class="product-title" itemprop="name">Your Product Name</h3>
+
+## VPS: Run-once instructions (fresh Ubuntu/Debian VPS)
+
+1. SSH into the VPS as root or a sudo-capable user.
+2. Ensure your domain's A record points to the VPS public IP and that ports 80 and 443 are accessible.
+3. Clone the repo somewhere (or transfer this repo):
+
+```bash
+git clone https://github.com/scros18/blisshairstudio.git /opt/blisshairstudio
+cd /opt/blisshairstudio
+```
+
+4. Edit `deploy_vps.sh` and set `DOMAIN` and `EMAIL` near the top to your domain and contact email.
+5. Run the script as root (it will install Node.js, nginx, certbot, build the site and request SSL):
+
+```bash
+sudo bash deploy_vps.sh
+```
+
+DNS & firewall notes:
+- Make sure an A record exists for your domain pointing to the VPS IP before running the script so Certbot can complete the HTTP challenge.
+- If the VPS has ufw enabled, allow http/https:
+
+```bash
+sudo ufw allow 80/tcp
+sudo ufw allow 443/tcp
+```
+
+That's it — the script is designed to be idempotent, so re-running it will update the site and renew the certificate if needed.
         <p class="product-description" itemprop="description">Your product description</p>
         <div class="product-details">
             <span class="product-price" itemprop="offers" itemscope itemtype="http://schema.org/Offer">
