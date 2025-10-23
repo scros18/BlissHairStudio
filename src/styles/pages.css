@@ -1218,6 +1218,29 @@
   overflow: hidden;
 }
 
+/* Mobile hero readability and overlay adjustments */
+@media (max-width: 768px) {
+  .page-hero,
+  .about-hero,
+  .products-hero {
+    background: var(--background) !important;
+  }
+
+  .page-hero .hero-content,
+  .about-hero .hero-content {
+    color: var(--text-dark) !important;
+    -webkit-text-fill-color: var(--text-dark) !important;
+  }
+
+  /* remove heavy overlays on mobile for legibility */
+  .page-hero::before,
+  .about-hero::before,
+  .page-hero::after,
+  .about-hero::after {
+    display: none !important;
+  }
+}
+
 .page-hero::before {
   content: '';
   position: absolute;

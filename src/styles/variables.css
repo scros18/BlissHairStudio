@@ -114,3 +114,21 @@
     --background-accent: #3a2a2c;
   }
 }
+
+/* Mobile-specific color overrides to ensure a distinct, lighter mobile palette
+   and keep hero text readable on small screens. These only apply at <=768px. */
+@media (max-width: 768px) {
+  :root {
+    --background: #ffffff;
+    --background-soft: #fbfcfb;
+    --background-accent: #f1f6f4;
+    --primary-color: #2D6854; /* keep brand green */
+    --primary-light: #4f8e75;
+    --text-dark: #0b1a16; /* darker headings on mobile for contrast */
+    --text-heading: #07221c;
+    --text-body: #263732;
+    --text-light: #485a52;
+    --text-muted: #6b7c75;
+    --border-color: #e6efe9;
+  }
+}
