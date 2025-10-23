@@ -2598,3 +2598,60 @@ p, span, div {
 .trust-badges {
   color: inherit !important;
 }
+
+/* ================================================
+   MOBILE BUTTON FIXES: Improve visibility and sizing
+   ================================================ */
+@media (max-width: 768px) {
+  /* Hero buttons - make smaller and more visible text */
+  .hero-buttons .btn {
+    padding: 14px 28px !important;
+    font-size: 0.95rem !important;
+    font-weight: 700 !important;
+  }
+  
+  /* Primary button (Shop Premium Collection) - ensure white text is visible */
+  .hero-buttons .btn-primary,
+  .btn-primary {
+    background: linear-gradient(135deg, #1B4D3E 0%, #2D6854 100%) !important;
+    color: #FFFFFF !important;
+    text-shadow: 0 1px 3px rgba(0, 0, 0, 0.3) !important;
+    border: none !important;
+  }
+  
+  /* Secondary button (Book a Service) - ensure dark text is visible on light bg */
+  .hero-buttons .btn-secondary-outline {
+    background: #FFFFFF !important;
+    color: #1B4D3E !important;
+    border: 2px solid #2D6854 !important;
+    text-shadow: none !important;
+    font-weight: 700 !important;
+  }
+  
+  /* Product page Add to Cart button - ensure white text is visible */
+  .btn-add-to-cart,
+  button[class*="add"] {
+    background: linear-gradient(135deg, #1B4D3E 0%, #2D6854 100%) !important;
+    color: #FFFFFF !important;
+    text-shadow: 0 1px 3px rgba(0, 0, 0, 0.3) !important;
+    font-weight: 700 !important;
+    padding: 12px 20px !important;
+    font-size: 0.9rem !important;
+  }
+  
+  /* Product card titles and text - ensure visible on mobile */
+  .product-card h3,
+  .product-card .product-title,
+  .product-price {
+    color: #0F1E1A !important;
+    font-weight: 600 !important;
+    text-shadow: none !important;
+  }
+  
+  /* Product card descriptions */
+  .product-card p,
+  .product-description {
+    color: #2C3E39 !important;
+    font-weight: 400 !important;
+  }
+}
