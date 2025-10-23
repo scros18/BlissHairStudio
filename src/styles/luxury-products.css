@@ -175,6 +175,9 @@
   cursor: pointer;
   transition: opacity 0.3s;
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  text-shadow: none;
+  filter: none;
+  -webkit-filter: none;
 }
 
 .luxury-filter-trigger:hover {
@@ -293,10 +296,32 @@
   line-height: 1.4;
 }
 
+.luxury-product-stars {
+  font-size: 0.75rem;
+  color: #FFD700;
+  margin-bottom: 8px;
+  text-align: center;
+  letter-spacing: 1px;
+}
+
+.luxury-product-pricing {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+}
+
+.luxury-product-price-old {
+  font-size: 0.8rem;
+  color: #999;
+  text-decoration: line-through;
+  font-weight: 400;
+}
+
 .luxury-product-price {
   font-size: 0.85rem;
-  color: #666;
-  font-weight: 400;
+  color: #1A1A1A;
+  font-weight: 500;
 }
 
 /* Product Detail View */
@@ -614,14 +639,31 @@
 
   .luxury-product-info {
     padding: 12px 12px 20px;
+    text-align: center;
   }
 
   .luxury-product-name {
     font-size: 0.85rem;
+    text-align: center;
+  }
+
+  .luxury-product-stars {
+    font-size: 0.7rem;
+    text-align: center;
+  }
+
+  .luxury-product-pricing {
+    justify-content: center;
+  }
+
+  .luxury-product-price-old {
+    font-size: 0.75rem;
+    text-align: center;
   }
 
   .luxury-product-price {
     font-size: 0.8rem;
+    text-align: center;
   }
 
   .luxury-detail-title {

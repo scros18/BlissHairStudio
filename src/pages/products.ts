@@ -58,7 +58,11 @@ export const productsPageTemplate = (): string => {
                 </div>
                 <div class="luxury-product-info">
                     <h3 class="luxury-product-name">Moisture Senses Hydrating Conditioner</h3>
-                    <p class="luxury-product-price">£29.95</p>
+                    <div class="luxury-product-stars">★★★★★</div>
+                    <div class="luxury-product-pricing">
+                        <span class="luxury-product-price-old">£34.95</span>
+                        <span class="luxury-product-price">£29.95</span>
+                    </div>
                 </div>
             </div>
 
@@ -76,7 +80,11 @@ export const productsPageTemplate = (): string => {
                 </div>
                 <div class="luxury-product-info">
                     <h3 class="luxury-product-name">Protein Hair Rebuilder</h3>
-                    <p class="luxury-product-price">£39.95</p>
+                    <div class="luxury-product-stars">★★★★★</div>
+                    <div class="luxury-product-pricing">
+                        <span class="luxury-product-price-old">£44.95</span>
+                        <span class="luxury-product-price">£39.95</span>
+                    </div>
                 </div>
             </div>
 
@@ -94,7 +102,11 @@ export const productsPageTemplate = (): string => {
                 </div>
                 <div class="luxury-product-info">
                     <h3 class="luxury-product-name">Shine Fluid & Thermaprotect Duo</h3>
-                    <p class="luxury-product-price">£34.95</p>
+                    <div class="luxury-product-stars">★★★★★</div>
+                    <div class="luxury-product-pricing">
+                        <span class="luxury-product-price-old">£39.90</span>
+                        <span class="luxury-product-price">£34.95</span>
+                    </div>
                 </div>
             </div>
         </div>
