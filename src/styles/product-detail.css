@@ -131,13 +131,15 @@
   align-items: center;
   gap: 8px;
   margin-bottom: 20px;
+  height: 20px;
 }
 
 .stars {
   color: #FFD700;
   font-size: 1rem;
   letter-spacing: 2px;
-  line-height: 1;
+  line-height: 20px;
+  height: 20px;
   display: flex;
   align-items: center;
 }
@@ -145,7 +147,8 @@
 .review-count {
   color: #666;
   font-size: 0.9rem;
-  line-height: 1;
+  line-height: 20px;
+  height: 20px;
   display: flex;
   align-items: center;
 }
@@ -242,7 +245,7 @@
   padding: 12px 24px;
   border: 1px solid #E8E8E8;
   background: white;
-  color: #666;
+  color: #1A1A1A;
   font-size: 0.9rem;
   font-weight: 500;
   cursor: pointer;
@@ -291,10 +294,12 @@
   cursor: pointer;
   transition: background 0.3s;
   color: #1A1A1A;
+  font-weight: 500;
 }
 
 .qty-btn:hover {
   background: #F5F5F5;
+  color: #1A1A1A;
 }
 
 #qtyInput {
@@ -307,6 +312,7 @@
   font-size: 1rem;
   font-weight: 500;
   background: white;
+  color: #1A1A1A;
 }
 
 /* Product Actions */

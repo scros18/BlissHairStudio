@@ -593,10 +593,10 @@
 
 .trust-badges {
   display: flex;
-  gap: 32px;
+  gap: 16px;
   justify-content: center;
   flex-wrap: wrap;
-  padding: 24px;
+  padding: 16px;
   background: transparent;
   max-width: 900px;
   margin: 0 auto;
@@ -607,52 +607,57 @@
 .badge-item {
   display: flex;
   align-items: center;
-  gap: 12px;
-  padding: 12px 20px;
-  background: linear-gradient(135deg, #F5F5F5, #FFFFFF);
-  border-radius: 50px;
+  gap: 8px;
+  padding: 8px 16px;
+  background: rgba(255, 255, 255, 0.6);
+  border: 1px solid rgba(0, 137, 123, 0.1);
+  border-radius: 30px;
   transform: translateZ(0);
   transition: all 0.3s ease;
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
 }
 
 .badge-item:hover {
-  transform: translateY(-4px);
-  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+  transform: translateY(-2px);
+  background: rgba(255, 255, 255, 0.8);
+  border-color: rgba(0, 137, 123, 0.2);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.06);
 }
 
 .badge-item svg {
-  width: 24px;
-  height: 24px;
+  width: 20px;
+  height: 20px;
   flex-shrink: 0;
+  opacity: 0.85;
+}
+
+.badge-item span {
+  font-size: 0.85rem;
+  font-weight: 500;
+  color: #1A1A1A;
+  letter-spacing: 0.3px;
 }
 
 /* Star Icon - Gold */
 .badge-item:nth-child(1) svg {
   fill: #FFD700;
-  filter: drop-shadow(0 2px 4px rgba(255, 215, 0, 0.3));
+  filter: drop-shadow(0 1px 2px rgba(255, 215, 0, 0.25));
 }
 
-/* Shield Icon - Light Green */
+/* Shield Icon - Teal */
 .badge-item:nth-child(2) svg {
-  fill: #7BC96F;
-  filter: drop-shadow(0 2px 4px rgba(123, 201, 111, 0.3));
+  fill: #00897B;
+  filter: drop-shadow(0 1px 2px rgba(0, 137, 123, 0.25));
 }
 
-/* Heart Icon - Heart Red */
+/* Heart Icon - Pink/Rose */
 .badge-item:nth-child(3) svg {
-  stroke: #E63946;
+  stroke: #E91E63;
   fill: none;
   stroke-width: 2;
-  filter: drop-shadow(0 2px 4px rgba(230, 57, 70, 0.3));
-}
-
-.badge-item span {
-  font-size: 0.95rem;
-  font-weight: 500;
-  color: #1A1A2E;
-  white-space: nowrap;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Helvetica Neue', sans-serif;
-  letter-spacing: 0.3px;
+  filter: drop-shadow(0 1px 2px rgba(233, 30, 99, 0.25));
+  opacity: 0.85;
 }
 
 /* Floating Decorations */
@@ -945,13 +950,13 @@
   }
   
   .trust-badges {
-    flex-direction: column;
-    gap: 12px;
+    flex-direction: row;
+    gap: 8px;
     align-items: center;
     justify-content: center;
     width: 100%;
     max-width: 100%;
-    padding: 0;
+    padding: 12px 8px;
     margin: 0;
     background: transparent;
     text-align: center;
@@ -960,13 +965,23 @@
   .badge-item {
     justify-content: center !important;
     width: auto !important;
-    max-width: 90%;
-    margin-left: auto !important;
-    margin-right: auto !important;
+    flex: 0 1 auto;
+    margin: 0 !important;
     text-align: center;
-    padding: 12px 20px;
+    padding: 8px 12px;
     display: flex !important;
     align-items: center !important;
+    font-size: 0.8rem;
+  }
+  
+  .badge-item svg {
+    width: 16px;
+    height: 16px;
+  }
+  
+  .badge-item span {
+    font-size: 0.75rem;
+    white-space: nowrap;
   }
   
   /* Make floating icons visible and attractive on mobile */

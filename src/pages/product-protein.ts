@@ -149,48 +149,64 @@ export const productProteinTemplate = (): string => {
     </div>
 
     <script>
-      // Thumbnail image switcher
-      const thumbnails = document.querySelectorAll('.thumbnail');
-      const mainImages = document.querySelectorAll('.main-image');
-      
-      thumbnails.forEach(thumb => {
-        thumb.addEventListener('click', () => {
-          const index = parseInt(thumb.getAttribute('data-index'));
-          
-          mainImages.forEach(img => img.classList.remove('active'));
-          mainImages[index].classList.add('active');
-          
-          thumbnails.forEach(t => t.classList.remove('active'));
-          thumb.classList.add('active');
+      // Wait for DOM to be ready
+      setTimeout(() => {
+        // Thumbnail image switcher
+        const thumbnails = document.querySelectorAll('.thumbnail');
+        const mainImages = document.querySelectorAll('.main-image');
+        
+        thumbnails.forEach((thumb, idx) => {
+          thumb.addEventListener('click', (e) => {
+            e.preventDefault();
+            const index = parseInt(thumb.getAttribute('data-index'));
+            
+            // Remove active class from all images
+            mainImages.forEach(img => img.classList.remove('active'));
+            // Add active class to selected image
+            mainImages[index].classList.add('active');
+            
+            // Remove active class from all thumbnails
+            thumbnails.forEach(t => t.classList.remove('active'));
+            // Add active class to clicked thumbnail
+            thumb.classList.add('active');
+          });
         });
-      });
 
-      // Quantity selector
-      const qtyInput = document.getElementById('qtyInput');
-      document.getElementById('increaseQty').addEventListener('click', () => {
-        const current = parseInt(qtyInput.value);
-        if (current < 10) qtyInput.value = current + 1;
-      });
-      document.getElementById('decreaseQty').addEventListener('click', () => {
-        const current = parseInt(qtyInput.value);
-        if (current > 1) qtyInput.value = current - 1;
-      });
+        // Quantity selector
+        const qtyInput = document.getElementById('qtyInput');
+        const increaseBtn = document.getElementById('increaseQty');
+        const decreaseBtn = document.getElementById('decreaseQty');
+        
+        if (increaseBtn && qtyInput) {
+          increaseBtn.addEventListener('click', () => {
+            const current = parseInt(qtyInput.value);
+            if (current < 10) qtyInput.value = current + 1;
+          });
+        }
+        
+        if (decreaseBtn && qtyInput) {
+          decreaseBtn.addEventListener('click', () => {
+            const current = parseInt(qtyInput.value);
+            if (current > 1) qtyInput.value = current - 1;
+          });
+        }
 
-      // Size selector
-      document.querySelectorAll('.size-option').forEach(btn => {
-        btn.addEventListener('click', () => {
-          document.querySelectorAll('.size-option').forEach(b => b.classList.remove('active'));
-          btn.classList.add('active');
+        // Size selector
+        document.querySelectorAll('.size-option').forEach(btn => {
+          btn.addEventListener('click', () => {
+            document.querySelectorAll('.size-option').forEach(b => b.classList.remove('active'));
+            btn.classList.add('active');
+          });
         });
-      });
 
-      // Collapsible sections
-      document.querySelectorAll('.section-header').forEach(header => {
-        header.addEventListener('click', () => {
-          const section = header.parentElement;
-          section.classList.toggle('active');
+        // Collapsible sections
+        document.querySelectorAll('.section-header').forEach(header => {
+          header.addEventListener('click', () => {
+            const section = header.parentElement;
+            section.classList.toggle('active');
+          });
         });
-      });
+      }, 100);
     </script>
   `;
 };

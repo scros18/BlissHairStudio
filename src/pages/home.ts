@@ -35,22 +35,22 @@ export const homePageTemplate = (): string => {
                 <div class="hero-trust">
                     <div class="trust-badges">
                         <div class="badge-item">
-                            <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
                                 <path d="M12 2L15 8L22 9L17 14L18 21L12 18L6 21L7 14L2 9L9 8L12 2Z"/>
                             </svg>
-                            <span>500+ 5-Star Reviews</span>
+                            <span>500+ Reviews</span>
                         </div>
                         <div class="badge-item">
-                            <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
                                 <path d="M12 1L3 5v6c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V5l-9-4z"/>
                             </svg>
-                            <span>100% Authentic Products</span>
+                            <span>Authentic Products</span>
                         </div>
                         <div class="badge-item">
-                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                                 <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/>
                             </svg>
-                            <span>Loved by 10,000+ Clients</span>
+                            <span>10,000+ Clients</span>
                         </div>
                     </div>
                 </div>
@@ -140,7 +140,7 @@ export const homePageTemplate = (): string => {
     <section class="about luxury-products" id="about">
         <div class="container">
             <div class="section-header centered luxury-header">
-                <h2 style="font-weight: 300; font-size: 2.5rem; letter-spacing: 2px; text-transform: uppercase; color: #1A1A1A; margin-bottom: 60px;">Featured Collection</h2>
+                <h2 style="font-weight: 300; font-size: 2.5rem; letter-spacing: 2px; text-transform: uppercase; color: #1A1A1A; margin-bottom: 60px; text-align: center;">Featured Collection</h2>
             </div>
             <div class="about-content">
                 <div class="about-features-grid luxury-grid">
