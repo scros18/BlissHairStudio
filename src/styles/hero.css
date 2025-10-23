@@ -967,12 +967,15 @@
   }
   
   .badge-item {
-    justify-content: center;
-    width: auto;
+    justify-content: center !important;
+    width: auto !important;
     max-width: 90%;
-    margin: 0;
+    margin-left: auto !important;
+    margin-right: auto !important;
     text-align: center;
     padding: 12px 20px;
+    display: flex !important;
+    align-items: center !important;
   }
   
   /* Make floating icons visible and attractive on mobile */

@@ -62,14 +62,14 @@ export const storesPage = () => `
             cursor: pointer;
             transition: color 0.3s ease;
             font-family: inherit;
-            color: #0D3D2E;
+            color: #1A1A2E !important;
             border-bottom: 1px solid #E8E8E8;
             width: 100%;
             justify-content: flex-start;
         }
 
         .use-location-btn:hover {
-            color: #1A3D2E;
+            color: #1A1A2E !important;
             background: #FAFAFA;
         }
 
