@@ -65,26 +65,25 @@ export function clientsPageTemplate(): string {
   `;
 }
 
-// Gallery Data - Client Hair Transformations
-const galleryData = [
-  { id: 1, image: '/clients/1.jpeg', alt: 'Beautiful hair transformation - Before and after' },
-  { id: 2, image: '/clients/2.jpeg', alt: 'Stunning balayage and color treatment' },
-  { id: 3, image: '/clients/3.jpeg', alt: 'Professional hair styling and cut' },
-  { id: 4, image: '/clients/4.jpeg', alt: 'Gorgeous hair color transformation' },
-  { id: 5, image: '/clients/5.jpeg', alt: 'Hair makeover and styling' },
-  { id: 6, image: '/clients/6.jpeg', alt: 'Beautiful salon results' },
-  { id: 7, image: '/clients/7.jpeg', alt: 'Professional hair treatment' },
-  { id: 8, image: '/clients/8.jpeg', alt: 'Amazing hair transformation' },
-  { id: 9, image: '/clients/9.jpeg', alt: 'Expert hair styling' },
-  { id: 10, image: '/clients/10.jpeg', alt: 'Stunning hair color and cut' },
-  { id: 11, image: '/clients/11.jpeg', alt: 'Beautiful hair work' },
-  { id: 12, image: '/clients/12.jpeg', alt: 'Luxury hair transformation' },
-];
+// Gallery Data - Dynamically load all JPEG images from /public/clients/
+let galleryData: Array<{id: number, image: string, alt: string}> = [];
+
+// Generate gallery data from image count (will be populated on init)
+function generateGalleryData() {
+  // These will be loaded dynamically - the actual images are in /public/clients/
+  const imageCount = 12; // Update this if you add more images
+  galleryData = Array.from({ length: imageCount }, (_, i) => ({
+    id: i + 1,
+    image: `/clients/${i + 1}.jpeg`,
+    alt: `Beautiful hair transformation and styling by BlissHairStudio - Image ${i + 1}`
+  }));
+}
 
 let currentImageIndex = 0;
-let visibleItems = 9;
+let visibleItems = 12; // Show all items by default
 
 export function initClientsGallery() {
+  generateGalleryData();
   loadGalleryItems();
   setupLightbox();
   setupLoadMore();
@@ -99,9 +98,9 @@ function loadGalleryItems() {
   grid.innerHTML = itemsToShow.map((item, index) => `
     <div class="gallery-item" data-index="${index}">
       <div class="gallery-item-inner">
-        <img src="${item.image}" alt="${item.alt}" loading="lazy" />
+        <img src="${item.image}" alt="${item.alt}" loading="lazy" width="400" height="400" />
         <div class="gallery-item-overlay">
-          <button class="gallery-view-btn">
+          <button class="gallery-view-btn" aria-label="View full image">
             <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
               <circle cx="11" cy="11" r="8"></circle>
               <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
@@ -127,16 +126,7 @@ function setupLoadMore() {
   const loadMoreBtn = document.getElementById('loadMoreBtn');
   if (!loadMoreBtn) return;
 
-  loadMoreBtn.addEventListener('click', () => {
-    visibleItems += 6;
-    if (visibleItems >= galleryData.length) {
-      visibleItems = galleryData.length;
-      loadMoreBtn.style.display = 'none';
-    }
-    loadGalleryItems();
-  });
-
-  // Hide if all items are visible
+  // Hide load more button since we're showing all images
   if (visibleItems >= galleryData.length) {
     loadMoreBtn.style.display = 'none';
   }
