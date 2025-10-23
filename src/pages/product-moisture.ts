@@ -46,10 +46,6 @@ export const productMoistureTemplate = (): string => {
               <span class="price-save">Save £5.00</span>
             </div>
 
-            <div class="product-description">
-              <p>Davroe Moisture Senses Hydrating Conditioner is a luxurious treatment designed to deeply nourish and hydrate dry, damaged hair. Infused with natural botanical extracts, this conditioner restores moisture balance while leaving hair silky smooth and manageable.</p>
-            </div>
-
             <div class="product-size-selector">
               <label>Size:</label>
               <div class="size-options">
@@ -110,12 +106,15 @@ export const productMoistureTemplate = (): string => {
                   </svg>
                 </button>
                 <div class="section-content">
+                  <p>Davroe Moisture Senses Hydrating Conditioner is a luxurious treatment designed to deeply nourish and hydrate dry, damaged hair. This professional 325ml conditioner is enriched with natural botanical extracts that restore moisture balance while leaving hair silky smooth and manageable.</p>
                   <ul>
                     <li>325ml professional salon conditioner</li>
                     <li>Suitable for dry, damaged, or color-treated hair</li>
                     <li>Enriched with natural botanical extracts</li>
                     <li>Free from sulfates and parabens</li>
                     <li>Vegan-friendly and cruelty-free</li>
+                    <li>Restores moisture balance and shine</li>
+                    <li>Leaves hair silky smooth and manageable</li>
                   </ul>
                 </div>
               </div>

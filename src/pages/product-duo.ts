@@ -46,10 +46,6 @@ export const productDuoTemplate = (): string => {
               <span class="price-save">Save £4.95</span>
             </div>
 
-            <div class="product-description">
-              <p>The ultimate styling duo for gorgeous, protected hair. This set includes Davroe Shine Fluid (75ml) for brilliant shine and smoothness, and Thermaprotect (200ml) to shield your hair from heat damage up to 230°C. Perfect for daily styling and heat protection.</p>
-            </div>
-
             <div class="product-bundle-items">
               <h3>This Bundle Includes:</h3>
               <ul>
@@ -110,12 +106,15 @@ export const productDuoTemplate = (): string => {
                   </svg>
                 </button>
                 <div class="section-content">
+                  <p>The ultimate styling duo for gorgeous, protected hair. This professional bundle combines two essential products for complete hair care and styling.</p>
                   <ul>
                     <li>Complete styling and protection duo</li>
-                    <li>Shine Fluid: Lightweight, non-greasy formula</li>
-                    <li>Thermaprotect: Guards against heat up to 230°C</li>
+                    <li>Shine Fluid 75ml: Lightweight, non-greasy finishing serum</li>
+                    <li>Thermaprotect 200ml: Guards against heat up to 230°C</li>
                     <li>Suitable for all hair types</li>
                     <li>Professional salon quality</li>
+                    <li>Perfect for daily heat styling</li>
+                    <li>Adds brilliant shine and smoothness</li>
                   </ul>
                 </div>
               </div>

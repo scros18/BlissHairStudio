@@ -46,10 +46,6 @@ export const productProteinTemplate = (): string => {
               <span class="price-save">Save £5.00</span>
             </div>
 
-            <div class="product-description">
-              <p>Davroe Protein Hair Rebuilder is an intensive reparative treatment that reconstructs and strengthens damaged hair from within. This professional-grade formula uses hydrolyzed proteins to repair broken bonds, restore elasticity, and protect against future damage.</p>
-            </div>
-
             <div class="product-size-selector">
               <label>Size:</label>
               <div class="size-options">
@@ -110,12 +106,15 @@ export const productProteinTemplate = (): string => {
                   </svg>
                 </button>
                 <div class="section-content">
+                  <p>Davroe Protein Hair Rebuilder is an intensive reparative treatment that reconstructs and strengthens damaged hair from within. This professional-grade 200ml formula uses hydrolyzed proteins to repair broken bonds, restore elasticity, and protect against future damage.</p>
                   <ul>
                     <li>200ml intensive protein treatment</li>
                     <li>Ideal for severely damaged or chemically treated hair</li>
                     <li>Contains hydrolyzed wheat and soy proteins</li>
                     <li>Restores strength and elasticity</li>
+                    <li>Repairs broken bonds from within</li>
                     <li>Professional salon formula</li>
+                    <li>Protects against future damage</li>
                   </ul>
                 </div>
               </div>
