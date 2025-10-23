@@ -326,6 +326,7 @@
     0 3px 12px rgba(0, 0, 0, 0.06),
     inset 0 2px 0 rgba(255, 255, 255, 0.8);
   border: 4px solid rgba(255, 255, 255, 0.9);
+  -webkit-backdrop-filter: blur(12px) saturate(105%);
   backdrop-filter: blur(12px) saturate(105%);
   transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
 }
@@ -379,6 +380,7 @@
 
 .logo-badge-inner:hover {
   transform: scale(1.02);
+  -webkit-backdrop-filter: blur(25px) saturate(140%);
   backdrop-filter: blur(25px) saturate(140%);
   border-color: rgba(255, 255, 255, 0.5);
 }
@@ -938,13 +940,30 @@
     justify-content: center;
   }
   
+  .hero-trust {
+    margin-top: 40px;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  
   .trust-badges {
     flex-direction: column;
-    gap: 16px;
+    gap: 12px;
+    align-items: center;
+    width: 100%;
+    max-width: 100%;
+    padding: 12px;
+    margin: 0 auto;
+    background: transparent;
   }
   
   .badge-item {
     justify-content: center;
+    width: 90%;
+    max-width: 300px;
+    margin: 0 auto;
   }
   
   /* Make floating icons visible and attractive on mobile */

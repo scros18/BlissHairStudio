@@ -148,12 +148,12 @@ export const homePageTemplate = (): string => {
                     <div class="feature feature-card-enhanced product-card">
                         <div class="product-image-carousel">
                             <div class="product-images">
-                                <img src="/Davroe_Moisture_Senses_Hydrating_Conditioner_325ml__99636.jpg" alt="Davroe Moisture Senses Hydrating Conditioner" class="product-image active">
-                                <img src="/Davroe_Repair_Senses_Revitalising_Conditioner_325ml_2__32801.jpg" alt="Davroe Repair Senses Revitalising Conditioner" class="product-image">
+                                <img src="/Davroe_Moisture_Senses_Hydrating_Conditioner_325ml__99636.jpg" alt="Davroe Moisture Senses Hydrating Conditioner" class="product-image active" width="259" height="259" loading="lazy">
+                                <img src="/Davroe_Repair_Senses_Revitalising_Conditioner_325ml_2__32801.jpg" alt="Davroe Repair Senses Revitalising Conditioner" class="product-image" width="259" height="259" loading="lazy">
                             </div>
                             <div class="product-image-dots">
-                                <button class="dot active" data-index="0"></button>
-                                <button class="dot" data-index="1"></button>
+                                <button class="dot active" data-index="0" aria-label="View image 1 of Moisture Senses Hydrating Conditioner"></button>
+                                <button class="dot" data-index="1" aria-label="View image 2 of Moisture Senses Hydrating Conditioner"></button>
                             </div>
                         </div>
                         <h3>Moisture Senses Hydrating Conditioner</h3>
@@ -180,12 +180,12 @@ export const homePageTemplate = (): string => {
                     <div class="feature feature-card-enhanced product-card">
                         <div class="product-image-carousel">
                             <div class="product-images">
-                                <img src="/Davroe_Protein_Hair_Rebuilder_200ml__77435.jpg" alt="Davroe Protein Hair Rebuilder" class="product-image active">
-                                <img src="/__Davroe_Replenish_Jojoba_Crme_Treatment_200ml__26186.jpg" alt="Davroe Replenish Jojoba Crème Treatment" class="product-image">
+                                <img src="/Davroe_Protein_Hair_Rebuilder_200ml__77435.jpg" alt="Davroe Protein Hair Rebuilder" class="product-image active" width="259" height="259" loading="lazy">
+                                <img src="/__Davroe_Replenish_Jojoba_Crme_Treatment_200ml__26186.jpg" alt="Davroe Replenish Jojoba Crème Treatment" class="product-image" width="259" height="259" loading="lazy">
                             </div>
                             <div class="product-image-dots">
-                                <button class="dot active" data-index="0"></button>
-                                <button class="dot" data-index="1"></button>
+                                <button class="dot active" data-index="0" aria-label="View image 1 of Protein Hair Rebuilder"></button>
+                                <button class="dot" data-index="1" aria-label="View image 2 of Protein Hair Rebuilder"></button>
                             </div>
                         </div>
                         <h3>Protein Hair Rebuilder</h3>
@@ -212,12 +212,12 @@ export const homePageTemplate = (): string => {
                     <div class="feature feature-card-enhanced product-card">
                         <div class="product-image-carousel">
                             <div class="product-images">
-                                <img src="/Davroe_Thermaprotect_200ml__47285.jpg" alt="Davroe Thermaprotect" class="product-image active">
-                                <img src="/Davroe_Shine_Fluid_75ml_2__31573.jpg" alt="Davroe Shine Fluid" class="product-image">
+                                <img src="/Davroe_Thermaprotect_200ml__47285.jpg" alt="Davroe Thermaprotect" class="product-image active" width="259" height="259" loading="lazy">
+                                <img src="/Davroe_Shine_Fluid_75ml_2__31573.jpg" alt="Davroe Shine Fluid" class="product-image" width="259" height="259" loading="lazy">
                             </div>
                             <div class="product-image-dots">
-                                <button class="dot active" data-index="0"></button>
-                                <button class="dot" data-index="1"></button>
+                                <button class="dot active" data-index="0" aria-label="View image 1 of Shine Fluid & Thermaprotect Duo"></button>
+                                <button class="dot" data-index="1" aria-label="View image 2 of Shine Fluid & Thermaprotect Duo"></button>
                             </div>
                         </div>
                         <h3>Shine Fluid & Thermaprotect Duo</h3>

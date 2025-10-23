@@ -307,9 +307,9 @@ install_certbot(){
 setup_app_dir(){
   echoinfo "Ensuring application directory exists: ${APP_DIR}"
   mkdir -p "${APP_DIR}"
-  if [ -n "${SUDO_USER:-}" ]; then
-    chown -R "${SUDO_USER}:root" "${APP_DIR}" || true
-  fi
+    if [ -n "${SUDO_USER:-}" ]; then
+      chown -R "${SUDO_USER}:root" "${APP_DIR}" || true
+    fi
   chmod -R 755 "${APP_DIR}"
 }
 
@@ -335,8 +335,8 @@ build_site(){
   if [ ! -d "${APP_DIR}/dist" ]; then
     echoerr "Build did not produce a dist/ directory"
     exit 1
-  fi
-  # Copy built files to APP_DIR (already inside APP_DIR/dist)
+    git -C "${APP_DIR}" reset --hard origin/main || true
+    git -C "${APP_DIR}" pull origin main || true
   rsync -a --delete "${APP_DIR}/dist/" "${APP_DIR}/current/" || true
   chown -R www-data:www-data "${APP_DIR}/current"
 }
