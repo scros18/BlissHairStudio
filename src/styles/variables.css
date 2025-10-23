@@ -104,8 +104,8 @@
   --z-tooltip: 1070;
 }
 
-/* Dark Mode Support (Optional) */
-@media (prefers-color-scheme: dark) {
+/* Dark Mode Support - DISABLED to ensure consistent light colors on all devices */
+/* @media (prefers-color-scheme: dark) {
   :root {
     --text-dark: #f5f5f5;
     --text-light: #cccccc;
@@ -113,5 +113,5 @@
     --background-soft: #2d2d2d;
     --background-accent: #3a2a2c;
   }
-}
+} */
 

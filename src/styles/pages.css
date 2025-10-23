@@ -2531,3 +2531,70 @@ body > .overlay, html > .overlay, .site-overlay {
     padding: 20px;
   }
 }
+
+/* ================================================
+   MOBILE FIX: Force all pages to use white backgrounds
+   and dark text to match desktop view exactly
+   ================================================ */
+body,
+html,
+.hero,
+.page-hero,
+.about-hero,
+.products-hero,
+.products-section,
+.about,
+.services,
+.testimonials,
+.contact,
+main,
+section,
+article {
+  background: #FFFFFF !important;
+  background-color: #FFFFFF !important;
+  color: #1A1A2E !important;
+}
+
+/* Force text to be dark and visible */
+body *,
+.hero *,
+.page-hero *,
+.about-hero *,
+.products-hero *,
+.products-section *,
+h1, h2, h3, h4, h5, h6,
+p, span, div {
+  color: #1A1A2E !important;
+}
+
+/* Remove all dark overlays and pseudo-elements that create black backgrounds */
+.hero::before,
+.hero::after,
+.page-hero::before,
+.page-hero::after,
+.about-hero::before,
+.about-hero::after,
+.products-hero::before,
+.products-hero::after,
+.products-section::before,
+.products-section::after {
+  display: none !important;
+  background: transparent !important;
+}
+
+/* Ensure specific content areas use white */
+.hero-content,
+.page-hero-content,
+.about-hero-content,
+.products-hero-content {
+  background: #FFFFFF !important;
+  color: #1A1A2E !important;
+}
+
+/* Keep only specific elements with intentional colors (buttons, badges, etc) */
+.btn,
+.badge,
+.hero-badge,
+.trust-badges {
+  color: inherit !important;
+}
