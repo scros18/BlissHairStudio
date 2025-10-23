@@ -65,20 +65,20 @@ export function clientsPageTemplate(): string {
   `;
 }
 
-// Gallery Data - Add Instagram photos here
+// Gallery Data - Client Hair Transformations
 const galleryData = [
-  { id: 1, image: '/gallery/client-1.jpg', alt: 'Beautiful balayage transformation' },
-  { id: 2, image: '/gallery/client-2.jpg', alt: 'Stunning hair color' },
-  { id: 3, image: '/gallery/client-3.jpg', alt: 'Precision haircut' },
-  { id: 4, image: '/gallery/client-4.jpg', alt: 'Gorgeous highlights' },
-  { id: 5, image: '/gallery/client-5.jpg', alt: 'Hair transformation' },
-  { id: 6, image: '/gallery/client-6.jpg', alt: 'Beautiful styling' },
-  { id: 7, image: '/gallery/client-7.jpg', alt: 'Hair color magic' },
-  { id: 8, image: '/gallery/client-8.jpg', alt: 'Perfect cut and style' },
-  { id: 9, image: '/gallery/client-9.jpg', alt: 'Amazing hair work' },
-  { id: 10, image: '/gallery/client-10.jpg', alt: 'Hair excellence' },
-  { id: 11, image: '/gallery/client-11.jpg', alt: 'Stunning results' },
-  { id: 12, image: '/gallery/client-12.jpg', alt: 'Beautiful hair transformation' },
+  { id: 1, image: '/clients/1.jpeg', alt: 'Beautiful hair transformation - Before and after' },
+  { id: 2, image: '/clients/2.jpeg', alt: 'Stunning balayage and color treatment' },
+  { id: 3, image: '/clients/3.jpeg', alt: 'Professional hair styling and cut' },
+  { id: 4, image: '/clients/4.jpeg', alt: 'Gorgeous hair color transformation' },
+  { id: 5, image: '/clients/5.jpeg', alt: 'Hair makeover and styling' },
+  { id: 6, image: '/clients/6.jpeg', alt: 'Beautiful salon results' },
+  { id: 7, image: '/clients/7.jpeg', alt: 'Professional hair treatment' },
+  { id: 8, image: '/clients/8.jpeg', alt: 'Amazing hair transformation' },
+  { id: 9, image: '/clients/9.jpeg', alt: 'Expert hair styling' },
+  { id: 10, image: '/clients/10.jpeg', alt: 'Stunning hair color and cut' },
+  { id: 11, image: '/clients/11.jpeg', alt: 'Beautiful hair work' },
+  { id: 12, image: '/clients/12.jpeg', alt: 'Luxury hair transformation' },
 ];
 
 let currentImageIndex = 0;
