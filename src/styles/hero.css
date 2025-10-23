@@ -406,12 +406,13 @@
 
 .tagline-main {
   font-size: clamp(2.8rem, 5.5vw, 4rem);
-  font-weight: 300;
+  font-weight: 600;
   color: #1A1A2E;
-  letter-spacing: 0.15em;
+  letter-spacing: 0.02em;
   line-height: 1.2;
-  font-family: 'Georgia', 'Times New Roman', serif;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Inter', 'Roboto', 'Helvetica Neue', Arial, sans-serif;
   text-transform: uppercase;
+  text-shadow: none;
 }
 
 @keyframes textShimmer {
@@ -480,16 +481,16 @@
   font-size: clamp(1.15rem, 2.2vw, 1.4rem);
   color: #637887;
   margin-bottom: 52px;
-  font-weight: 300;
+  font-weight: 400;
   line-height: 1.65;
   max-width: 640px;
   margin-left: auto;
   margin-right: auto;
   opacity: 0.95;
   transform: translateZ(0);
-  font-family: 'Georgia', 'Times New Roman', serif;
-  letter-spacing: 0.05em;
-  font-style: italic;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Inter', 'Roboto', 'Helvetica Neue', Arial, sans-serif;
+  letter-spacing: 0.01em;
+  font-style: normal;
 }
 
 .hero-buttons {
