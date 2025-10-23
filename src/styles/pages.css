@@ -2610,17 +2610,25 @@ p, span, div {
     font-weight: 700 !important;
   }
   
-  /* Primary button (Shop Premium Collection) - ensure white text is visible */
+  /* ALL BUTTONS - Force white text on all buttons globally */
+  .hero-buttons .btn,
+  .btn,
+  .btn-primary,
   .hero-buttons .btn-primary,
-  .btn-primary {
+  button,
+  a.btn,
+  input[type="button"],
+  input[type="submit"] {
     background: linear-gradient(135deg, #1B4D3E 0%, #2D6854 100%) !important;
     color: #FFFFFF !important;
-    text-shadow: 0 1px 3px rgba(0, 0, 0, 0.3) !important;
+    text-shadow: 0 1px 3px rgba(0, 0, 0, 0.4) !important;
     border: none !important;
+    font-weight: 700 !important;
   }
   
-  /* Secondary button (Book a Service) - ensure dark text is visible on light bg */
-  .hero-buttons .btn-secondary-outline {
+  /* Secondary outline button - white background with dark green text */
+  .hero-buttons .btn-secondary-outline,
+  .btn-secondary-outline {
     background: #FFFFFF !important;
     color: #1B4D3E !important;
     border: 2px solid #2D6854 !important;
@@ -2633,7 +2641,7 @@ p, span, div {
   button[class*="add"] {
     background: linear-gradient(135deg, #1B4D3E 0%, #2D6854 100%) !important;
     color: #FFFFFF !important;
-    text-shadow: 0 1px 3px rgba(0, 0, 0, 0.3) !important;
+    text-shadow: 0 1px 3px rgba(0, 0, 0, 0.4) !important;
     font-weight: 700 !important;
     padding: 12px 20px !important;
     font-size: 0.9rem !important;
@@ -2653,5 +2661,30 @@ p, span, div {
   .product-description {
     color: #2C3E39 !important;
     font-weight: 400 !important;
+  }
+  
+  /* Remove white background sheet from trust badges section */
+  .trust-badges {
+    background: transparent !important;
+    backdrop-filter: none !important;
+    box-shadow: none !important;
+    padding: 16px 0 !important;
+    margin: 0 auto !important;
+    width: 100% !important;
+    max-width: 100% !important;
+  }
+  
+  /* Center trust badges properly on mobile */
+  .badge-item {
+    margin: 0 auto !important;
+    max-width: 90% !important;
+    justify-content: center !important;
+    background: rgba(255, 255, 255, 0.85) !important;
+  }
+  
+  /* Ensure badge text is dark and readable */
+  .badge-item span {
+    color: #1A1A2E !important;
+    font-weight: 600 !important;
   }
 }
