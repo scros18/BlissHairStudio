@@ -132,6 +132,8 @@
   height: 20px;
   transition: none;
   stroke-width: 2;
+  color: #1A1A2E;
+  stroke: #1A1A2E;
 }
 
 .cart-icon {

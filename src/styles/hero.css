@@ -498,6 +498,8 @@
   margin-right: auto;
   opacity: 0.95;
   transform: translateZ(0);
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Helvetica Neue', sans-serif;
+  letter-spacing: 0.5px;
 }
 
 .hero-buttons {
@@ -655,9 +657,11 @@
 
 .badge-item span {
   font-size: 0.95rem;
-  font-weight: 600;
+  font-weight: 500;
   color: #1A1A2E;
   white-space: nowrap;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Helvetica Neue', sans-serif;
+  letter-spacing: 0.3px;
 }
 
 /* Floating Decorations */
@@ -952,11 +956,13 @@
     flex-direction: column;
     gap: 12px;
     align-items: center;
+    justify-content: center;
     width: 100%;
     max-width: 100%;
     padding: 12px;
     margin: 0 auto;
     background: transparent;
+    text-align: center;
   }
   
   .badge-item {
@@ -964,6 +970,7 @@
     width: 90%;
     max-width: 300px;
     margin: 0 auto;
+    text-align: center;
   }
   
   /* Make floating icons visible and attractive on mobile */
