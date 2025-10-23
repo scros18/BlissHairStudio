@@ -86,7 +86,7 @@
 
 .product-image {
   height: 300px;
-  background: linear-gradient(135deg, var(--primary-light) 0%, var(--accent-color) 100%);
+  background: white;
   display: flex;
   align-items: center;
   justify-content: center;
