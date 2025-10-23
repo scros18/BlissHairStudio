@@ -91,16 +91,32 @@ export function initClientsGallery() {
 
 function loadGalleryItems() {
   const grid = document.getElementById('galleryGrid');
-  if (!grid) return;
+  if (!grid) {
+    console.error('Gallery grid not found');
+    return;
+  }
 
   const itemsToShow = galleryData.slice(0, visibleItems);
   
   console.log('Loading gallery items:', itemsToShow); // Debug log
   
+  if (itemsToShow.length === 0) {
+    grid.innerHTML = '<p style="text-align: center; padding: 40px; color: #666;">No images available yet. Coming soon!</p>';
+    return;
+  }
+  
   grid.innerHTML = itemsToShow.map((item, index) => `
     <div class="gallery-item" data-index="${index}">
       <div class="gallery-item-inner">
-        <img src="${item.image}" alt="${item.alt}" loading="lazy" width="400" height="400" onerror="console.error('Failed to load image:', this.src)" />
+        <img 
+          src="${item.image}" 
+          alt="${item.alt}" 
+          loading="lazy" 
+          width="400" 
+          height="400"
+          style="width: 100%; height: 100%; object-fit: cover;"
+          onerror="this.style.display='none'; this.parentElement.innerHTML='<div style=\\'display:flex;align-items:center;justify-content:center;height:100%;background:#f0f0f0;color:#666;\\'>Image ${index + 1}</div>'; console.error('Failed to load:', this.src);" 
+        />
         <div class="gallery-item-overlay">
           <button class="gallery-view-btn" aria-label="View full image">
             <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">

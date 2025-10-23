@@ -1,5 +1,4 @@
 /* ================================================
-   Products Section & Cards
    ================================================ */
 
 .products {
@@ -61,6 +60,7 @@
   padding: 2px;
   background: linear-gradient(135deg, var(--primary-light), var(--accent-color));
   -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+  mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
   -webkit-mask-composite: xor;
   mask-composite: exclude;
   opacity: 0;
@@ -261,47 +261,46 @@
   color: var(--text-light);
 }
 
-.products-empty p {
-  color: var(--text-muted);
-}
 
-/* Cart Dropdown Modal */
-.cart-overlay {
-  position: fixed;
-  top: 0;
-  left: 0;
+
+/* --- HOMEPAGE HERO CENTERING FIXES --- */
+.hero-logo-center {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-bottom: 2rem;
+}
+.hero-logo-img {
+  display: block;
+  margin: 0 auto;
+  max-width: 280px;
   width: 100%;
-  height: 100%;
-  background: rgba(0, 0, 0, 0.1);
-  backdrop-filter: blur(2px);
-  z-index: calc(var(--z-modal) + 9);
-  opacity: 0;
-  transition: opacity 0.3s ease;
+  height: auto;
 }
-
-.cart-overlay[style*="display: flex"] {
-  opacity: 1;
-}
-
-.cart-dropdown {
-  position: fixed;
-  top: 90px;
-  right: 10px;
-  width: 400px;
-  max-height: calc(100vh - 110px);
-  background: white;
-  border-radius: 20px;
-  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.08);
-  z-index: calc(var(--z-modal) + 10);
-  opacity: 0;
-  transform: translate3d(0, -10px, 0);
-  pointer-events: none;
-  transition: opacity 0.2s ease, transform 0.2s ease;
+.hero-content {
   display: flex;
   flex-direction: column;
-  overflow: hidden;
-  border: none;
-  will-change: transform, opacity;
+  align-items: center;
+  text-align: center;
+}
+.hero-buttons {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 1.2rem;
+  margin: 2rem 0 1.5rem 0;
+}
+.hero-buttons .btn {
+  margin: 0 0.5rem;
+}
+@media (max-width: 600px) {
+  .hero-buttons {
+    flex-direction: column;
+    gap: 1rem;
+  }
+  .hero-logo-img {
+    max-width: 180px;
+  }
 }
 
 .cart-dropdown.active {

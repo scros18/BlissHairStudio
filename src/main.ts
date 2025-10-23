@@ -35,6 +35,7 @@ import { storesPage } from './pages/stores';
 import { productMoistureTemplate } from './pages/product-moisture';
 import { productProteinTemplate } from './pages/product-protein';
 import { productDuoTemplate } from './pages/product-duo';
+import { cartManager } from './utils/cartManager';
 
 class App {
   async init(): Promise<void> {
@@ -42,6 +43,9 @@ class App {
       // Initialize components
       navigation.init();
       cartUI.init();
+      
+      // Setup cart event listener for product pages
+      this.setupCartEvents();
       
       // Setup routing
       this.setupRoutes();
@@ -61,6 +65,32 @@ class App {
     } catch (error) {
       console.error('App initialization error:', error);
     }
+  }
+
+  private setupCartEvents(): void {
+    // Listen for addToCart events from product pages
+    window.addEventListener('addToCart', ((event: CustomEvent) => {
+      const { id, title, price, image, size, description, quantity } = event.detail;
+      
+      const product = {
+        id,
+        title,
+        price,
+        image,
+        size,
+        description,
+        createdAt: Date.now(),
+        updatedAt: Date.now()
+      };
+      
+      // Add to cart
+      for (let i = 0; i < quantity; i++) {
+        cartManager.addItem(product);
+      }
+      
+      // Show success notification
+      UI.showNotification(`✨ Added ${quantity} x ${title} to cart!`, { type: 'success' });
+    }) as EventListener);
   }
 
   private setupRoutes(): void {

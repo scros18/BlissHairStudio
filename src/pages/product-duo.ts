@@ -156,15 +156,23 @@ export const productDuoTemplate = (): string => {
         const thumbnails = document.querySelectorAll('.thumbnail');
         const mainImages = document.querySelectorAll('.main-image');
         
+        console.log('Thumbnails found:', thumbnails.length);
+        console.log('Main images found:', mainImages.length);
+        
         thumbnails.forEach((thumb, idx) => {
           thumb.addEventListener('click', (e) => {
             e.preventDefault();
+            e.stopPropagation();
             const index = parseInt(thumb.getAttribute('data-index'));
+            
+            console.log('Clicked thumbnail index:', index);
             
             // Remove active class from all images
             mainImages.forEach(img => img.classList.remove('active'));
             // Add active class to selected image
-            mainImages[index].classList.add('active');
+            if (mainImages[index]) {
+              mainImages[index].classList.add('active');
+            }
             
             // Remove active class from all thumbnails
             thumbnails.forEach(t => t.classList.remove('active'));
@@ -204,27 +212,19 @@ export const productDuoTemplate = (): string => {
         const addToBagBtn = document.querySelector('.btn-add-to-bag');
         if (addToBagBtn) {
           addToBagBtn.addEventListener('click', () => {
-            const quantity = parseInt((document.getElementById('qtyInput') as HTMLInputElement).value) || 1;
+            const quantity = parseInt(document.getElementById('qtyInput').value) || 1;
             
-            // Import cartManager dynamically
-            import('../utils/cartManager').then(({ cartManager }) => {
-              const product = {
+            // Trigger custom event that main.ts will handle
+            window.dispatchEvent(new CustomEvent('addToCart', {
+              detail: {
                 id: 'product-shine-duo',
                 title: 'Shine Fluid & Thermaprotect Duo',
                 price: 34.95,
                 image: '/Davroe_Thermaprotect_200ml__47285.jpg',
-                description: 'Perfect duo for heat styling protection and brilliant shine'
-              };
-              
-              for (let i = 0; i < quantity; i++) {
-                cartManager.addItem(product);
+                description: 'Perfect duo for heat styling protection and brilliant shine',
+                quantity: quantity
               }
-              
-              import('../components/ui').then(({ UI }) => {
-                const msg = 'Added ' + quantity + ' x ' + product.title + ' to cart!';
-                UI.showNotification(msg, { type: 'success' });
-              });
-            });
+            }));
           });
         }
   `;
