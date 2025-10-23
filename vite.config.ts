@@ -14,7 +14,20 @@ export default defineConfig({
     terserOptions: {
       compress: {
         drop_console: true,
-        drop_debugger: true
+        drop_debugger: true,
+        pure_funcs: ['console.log', 'console.info', 'console.debug', 'console.warn'],
+        passes: 2,
+        unsafe: true,
+        unsafe_arrows: true,
+        unsafe_methods: true,
+        unsafe_proto: true,
+        unsafe_regexp: true
+      },
+      mangle: {
+        safari10: true
+      },
+      format: {
+        comments: false
       }
     },
     rollupOptions: {
