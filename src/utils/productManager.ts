@@ -7,9 +7,14 @@ const PRODUCTS_KEY = 'products';
 
 class ProductManager {
   private products: Product[] = [];
+  private initialized: Promise<void>;
 
   constructor() {
-    this.loadProducts();
+    this.initialized = this.loadProducts();
+  }
+
+  async waitForInit(): Promise<void> {
+    await this.initialized;
   }
 
   private async loadProducts(): Promise<void> {
@@ -18,18 +23,25 @@ class ProductManager {
       const response = await fetch('/products.json');
       if (response.ok) {
         this.products = await response.json();
+        console.log('✅ Loaded products from products.json:', this.products.length);
         // Also save to localStorage as backup
         storage.set(PRODUCTS_KEY, this.products);
         return;
       }
     } catch (error) {
-      console.log('Could not load products.json, checking localStorage...');
+      console.log('⚠️ Could not load products.json, checking localStorage...');
     }
 
     // Fallback to localStorage
     const stored = storage.get<Product[]>(PRODUCTS_KEY);
-    this.products = stored || this.getDefaultProducts();
-    this.saveProducts();
+    if (stored && stored.length > 0) {
+      this.products = stored;
+      console.log('✅ Loaded products from localStorage:', this.products.length);
+    } else {
+      this.products = this.getDefaultProducts();
+      console.log('✅ Loaded default products:', this.products.length);
+      this.saveProducts();
+    }
   }
 
   private getDefaultProducts(): Product[] {

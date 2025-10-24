@@ -694,7 +694,10 @@ class App {
     setTimeout(() => this.setupAdminPanel(), 200);
   }
 
-  private setupAdminPanel(): void {
+  private async setupAdminPanel(): Promise<void> {
+    // Wait for products to load
+    await productManager.waitForInit();
+    
     // Tab navigation (simpler than before)
     document.querySelectorAll('.admin-tab[data-section]').forEach(tab => {
       tab.addEventListener('click', (e) => {
@@ -859,7 +862,6 @@ class App {
       <div class="product-card">
         <div class="product-card-main">
           <h3 class="product-card-title">${product.title}</h3>
-          <p class="product-card-description">${product.description}</p>
           <div class="product-card-meta">
             <div class="product-card-price">£${product.price.toFixed(2)}</div>
             ${product.badge ? `<span class="product-badge">${product.badge}</span>` : ''}

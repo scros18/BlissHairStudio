@@ -2677,20 +2677,13 @@ button,
 .hero-buttons .btn,
 .hero-buttons .btn-primary,
 .hero-buttons a,
-.product-card a,
-.product-card button {
-  color: #FFFFFF !important;
-  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.5) !important;
-  font-weight: 700 !important;
-}
-
 /* LIGHT BACKGROUND BUTTONS (outline buttons) = DARK TEXT */
 .btn-secondary,
 .btn-secondary-outline,
 .hero-buttons .btn-secondary-outline {
   color: #1A1A2E !important;
   text-shadow: none !important;
-  font-weight: 700 !important;
+  font-weight: 600;
 }
 
 /* Keep only specific elements with intentional colors (badges, etc) */

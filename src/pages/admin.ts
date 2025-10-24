@@ -45,11 +45,12 @@ export function adminPanelTemplate(): string {
         </button>
       </div>
 
+      <div class="admin-main">
         
         <!-- Products Section -->
         <div class="admin-section active" data-section-content="products">
+          <h2 class="admin-section-title">Your Products</h2>
           <div class="admin-section-header">
-            <h2 class="admin-section-title">Your Products</h2>
             <div class="admin-section-buttons">
               <button class="btn btn-add-large" id="addProductBtn" title="Click to add a new product">
                 <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
@@ -78,8 +79,8 @@ export function adminPanelTemplate(): string {
 
         <!-- Categories Section -->
         <div class="admin-section" data-section-content="categories">
+          <h2 class="admin-section-title">Product Categories</h2>
           <div class="admin-section-header">
-            <h2 class="admin-section-title">Product Categories</h2>
             <button class="btn btn-add-large" id="addCategoryBtn" title="Click to add a new category">
               <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
                 <line x1="12" y1="5" x2="12" y2="19"/>

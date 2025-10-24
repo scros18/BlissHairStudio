@@ -125,6 +125,10 @@
   position: relative;
 }
 
+.admin-tab span {
+  color: #0F172A;
+}
+
 .admin-tab svg {
   flex-shrink: 0;
   stroke: currentColor;
@@ -140,6 +144,10 @@
   border-color: #BBF7D0;
 }
 
+.admin-tab:hover span {
+  color: #0D3D2E;
+}
+
 .admin-tab:hover svg {
   color: #0D3D2E;
 }
@@ -149,6 +157,10 @@
   background: #ECFDF5;
   border-color: #0D3D2E;
   font-weight: 700;
+}
+
+.admin-tab.active span {
+  color: #0D3D2E;
 }
 
 .admin-tab.active svg {
@@ -192,12 +204,11 @@
 
 .admin-section-header {
   display: flex;
-  justify-content: space-between;
+  justify-content: center;
   align-items: center;
   margin-bottom: 32px;
   flex-wrap: wrap;
   gap: 20px;
-  padding-right: 20px;
 }
 
 .admin-section-buttons {
@@ -207,28 +218,20 @@
 }
 
 .admin-section-title {
-  font-size: 2.8rem;
+  font-size: 1.4rem;
   font-weight: 600;
   color: #0F172A;
-  margin: 0;
-  letter-spacing: 3px;
+  margin: 32px 0 24px 0;
+  letter-spacing: 1.5px;
   line-height: 1.2;
   text-transform: uppercase;
-  font-family: 'Playfair Display', 'Cormorant Garamond', Georgia, serif;
-  position: relative;
-  padding-bottom: 16px;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
   text-align: center;
-}
-
-.admin-section-title::after {
-  content: '';
-  position: absolute;
-  bottom: 0;
-  left: 50%;
-  transform: translateX(-50%);
-  width: 80px;
-  height: 2px;
-  background: linear-gradient(90deg, #0D3D2E 0%, transparent 100%);
+  padding: 12px 32px;
+  background: linear-gradient(135deg, #F9FAFB 0%, #F3F4F6 100%);
+  border: 1px solid #E5E7EB;
+  border-radius: 12px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
 }
 
 .admin-content {
@@ -791,7 +794,8 @@
   }
 
   .admin-section-title {
-    font-size: 2rem;
+    font-size: 1.3rem;
+    padding: 12px 28px;
   }
 
   .admin-section-header {
@@ -913,15 +917,10 @@
   }
 
   .admin-section-title {
-    font-size: 1.75rem;
-    text-align: center;
+    font-size: 1.1rem;
     letter-spacing: 1px;
-  }
-
-  .admin-section-title::after {
-    left: 50%;
-    transform: translateX(-50%);
-    width: 60px;
+    padding: 10px 24px;
+    margin: 24px 0 20px 0;
   }
 
   .btn-add-large {
@@ -1058,7 +1057,8 @@
   }
 
   .admin-section-title {
-    font-size: 1.5rem;
+    font-size: 1.2rem;
+    padding: 10px 20px;
   }
 
   .admin-tab {
