@@ -66,7 +66,10 @@ export default defineConfig({
     host: true,
     open: true,
     strictPort: false,
-    historyApiFallback: true
+    historyApiFallback: {
+      disableDotRule: true
+    },
+    middlewareMode: false
   },
   preview: {
     port: 4173,

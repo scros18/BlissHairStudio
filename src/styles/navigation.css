@@ -562,6 +562,8 @@
     height: 100vh;
     height: 100dvh;
     background: #FFFFFF !important;
+    backdrop-filter: none !important;
+    -webkit-backdrop-filter: none !important;
     flex-direction: column;
     justify-content: flex-start;
     padding: 0;
@@ -590,6 +592,8 @@
     letter-spacing: 1.5px;
     border-bottom: 2px solid #F0F0F0;
     background: #FFFFFF !important;
+    backdrop-filter: none !important;
+    -webkit-backdrop-filter: none !important;
     position: sticky;
     top: 0;
     z-index: 10;
@@ -602,6 +606,8 @@
     transform: translateX(20px);
     transition: all 0.3s cubic-bezier(0.34, 1.26, 0.64, 1);
     background: #FFFFFF !important;
+    backdrop-filter: none !important;
+    -webkit-backdrop-filter: none !important;
   }
   
   .nav-menu.active li {
@@ -640,6 +646,8 @@
     transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
     border-bottom: 1px solid #F5F5F5;
     background: #FFFFFF !important;
+    backdrop-filter: none !important;
+    -webkit-backdrop-filter: none !important;
   }
   
   .nav-menu li a::before {
@@ -694,12 +702,11 @@
   
   /* Force white background on all mobile menu elements */
   .nav-menu,
-  .nav-menu *,
   .nav-menu ul,
-  .nav-menu li,
-  .nav-menu li a,
-  .nav-menu::before {
+  .nav-menu li {
     background-color: #FFFFFF !important;
+    backdrop-filter: none !important;
+    -webkit-backdrop-filter: none !important;
   }
   
   .logo img {
