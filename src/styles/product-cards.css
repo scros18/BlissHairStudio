@@ -42,7 +42,7 @@
   height: 100%;
   object-fit: contain;
   opacity: 0;
-  transition: opacity 0.6s ease-in-out;
+  transition: opacity 0.5s cubic-bezier(0.4, 0, 0.2, 1);
   padding: 40px;
 }
 
@@ -53,26 +53,31 @@
 
 .product-image-dots {
   position: absolute;
-  bottom: 20px;
+  bottom: 16px;
   left: 50%;
   transform: translateX(-50%);
   display: flex;
-  gap: 8px;
+  gap: 12px;
   z-index: 2;
+  background: rgba(255, 255, 255, 0.85);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  padding: 8px 16px;
+  border-radius: 24px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
 }
 
 .dot {
   /* Minimum 44x44px touch target for accessibility */
-  width: 44px;
-  height: 44px;
+  width: 12px;
+  height: 12px;
   border-radius: 50%;
   background: transparent;
-  border: none;
+  border: 2px solid #D4D4D4;
   cursor: pointer;
-  transition: all 0.3s ease;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
   padding: 0;
   position: relative;
-  /* Create visual dot inside the touch target */
 }
 
 .dot::before {
@@ -81,23 +86,36 @@
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-  width: 10px;
-  height: 10px;
+  width: 4px;
+  height: 4px;
   border-radius: 50%;
   background: #D4D4D4;
-  transition: all 0.3s ease;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
-.dot.active::before {
+.dot.active {
+  border-color: #1A1A1A;
   background: #1A1A1A;
   width: 12px;
   height: 12px;
+  box-shadow: 0 2px 4px rgba(26, 26, 46, 0.2);
+}
+
+.dot.active::before {
+  background: transparent;
+  width: 0;
+  height: 0;
+}
+
+.dot:hover {
+  border-color: #666666;
+  background: rgba(102, 102, 102, 0.2);
 }
 
 .dot:hover::before {
   background: #666666;
-  width: 12px;
-  height: 12px;
+  width: 6px;
+  height: 6px;
 }
 
 .product-card h3 {
