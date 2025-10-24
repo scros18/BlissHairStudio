@@ -35,9 +35,12 @@ export const productsPageTemplate = (): string => {
                 </button>
                 <button class="luxury-filter-trigger" id="filterTrigger">
                     <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                        <polygon points="22 3 2 3 10 12.46 10 19 14 21 14 12.46 22 3"/>
+                        <path d="M3 3h7v7H3z"/>
+                        <path d="M14 3h7v7h-7z"/>
+                        <path d="M14 14h7v7h-7z"/>
+                        <path d="M3 14h7v7H3z"/>
                     </svg>
-                    <span>Filters</span>
+                    <span>Categories</span>
                 </button>
             </div>
         </div>
@@ -45,6 +48,24 @@ export const productsPageTemplate = (): string => {
         <!-- Products Grid - Dynamically loaded -->
         <div class="luxury-products-grid" id="productsGrid">
             <!-- Products will be loaded dynamically from productManager -->
+        </div>
+
+        <!-- Category Filter Modal -->
+        <div class="category-filter-modal" id="categoryFilterModal">
+            <div class="category-filter-content">
+                <div class="category-filter-header">
+                    <h3>Filter by Category</h3>
+                    <button class="category-filter-close" id="closeCategoryFilter">
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <line x1="18" y1="6" x2="6" y2="18"></line>
+                            <line x1="6" y1="6" x2="18" y2="18"></line>
+                        </svg>
+                    </button>
+                </div>
+                <div class="category-filter-list" id="categoryFilterList">
+                    <!-- Categories will be loaded dynamically -->
+                </div>
+            </div>
         </div>
 
         <!-- Product Detail Modal (Hidden by default) -->
@@ -157,6 +178,26 @@ export const productsPageTemplate = (): string => {
           banner.classList.add('show');
         }
       }, 500);
+
+      // Category filter button
+      const filterTrigger = document.getElementById('filterTrigger');
+      const categoryFilterModal = document.getElementById('categoryFilterModal');
+      const closeCategoryFilter = document.getElementById('closeCategoryFilter');
+
+      filterTrigger?.addEventListener('click', () => {
+        categoryFilterModal?.classList.add('active');
+      });
+
+      closeCategoryFilter?.addEventListener('click', () => {
+        categoryFilterModal?.classList.remove('active');
+      });
+
+      // Close on backdrop click
+      categoryFilterModal?.addEventListener('click', (e) => {
+        if (e.target === categoryFilterModal) {
+          categoryFilterModal.classList.remove('active');
+        }
+      });
 
       // Copy coupon code to clipboard
       const couponCode = document.getElementById('couponCode');

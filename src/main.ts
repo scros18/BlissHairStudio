@@ -27,6 +27,7 @@ import { registerPageTemplate } from './pages/register';
 import { adminPanelTemplate } from './pages/admin';
 import { authManager } from './utils/authManager';
 import { productManager } from './utils/productManager';
+import { categoryManager } from './utils/categoryManager';
 import { renderPrivacyPage } from './pages/privacy';
 import { renderTermsPage } from './pages/terms';
 import { renderAccessibilityPage } from './pages/accessibility';
@@ -695,8 +696,9 @@ class App {
   }
 
   private async setupAdminPanel(): Promise<void> {
-    // Wait for products to load
+    // Wait for products and categories to load
     await productManager.waitForInit();
+    await categoryManager.waitForInit();
     
     // Tab navigation (simpler than before)
     document.querySelectorAll('.admin-tab[data-section]').forEach(tab => {
@@ -789,10 +791,13 @@ class App {
       const formData = new FormData(categoryForm);
       const name = formData.get('name') as string;
       
-      // Add category to storage (simple implementation)
-      const categories = JSON.parse(localStorage.getItem('categories') || '[]');
-      categories.push({ id: Date.now().toString(), name });
-      localStorage.setItem('categories', JSON.stringify(categories));
+      if (!name.trim()) {
+        UI.showNotification('Please enter a category name', { type: 'error' });
+        return;
+      }
+
+      // Add category using categoryManager
+      categoryManager.addCategory(name);
 
       UI.showNotification('✨ Category added successfully!', { type: 'success' });
       categoryModal?.classList.remove('active');
@@ -804,7 +809,7 @@ class App {
     const grid = document.getElementById('categoriesGrid');
     if (!grid) return;
 
-    const categories = JSON.parse(localStorage.getItem('categories') || '[]');
+    const categories = categoryManager.getAllCategories();
 
     if (categories.length === 0) {
       grid.innerHTML = `
@@ -816,7 +821,7 @@ class App {
       return;
     }
 
-    grid.innerHTML = categories.map((cat: any) => `
+    grid.innerHTML = categories.map(cat => `
       <div class="category-card">
         <div class="category-header">
           <h3 class="category-name">${cat.name}</h3>
@@ -833,9 +838,7 @@ class App {
     // Global delete function
     (window as any).deleteCategory = (id: string) => {
       if (confirm('Are you sure you want to delete this category?')) {
-        const categories = JSON.parse(localStorage.getItem('categories') || '[]');
-        const filtered = categories.filter((c: any) => c.id !== id);
-        localStorage.setItem('categories', JSON.stringify(filtered));
+        categoryManager.deleteCategory(id);
         UI.showNotification('Category deleted', { type: 'info' });
         this.loadCategoriesGrid();
       }
@@ -951,6 +954,85 @@ class App {
         
         // Note: Actual filtering logic would go here
         // For now, all products are shown since we don't have categories implemented yet
+      });
+    });
+
+    // Load categories into filter modal
+    this.loadCategoryFilter();
+  }
+
+  private async loadCategoryFilter(): Promise<void> {
+    // Wait for categories to load
+    await categoryManager.waitForInit();
+    
+    const categoryList = document.getElementById('categoryFilterList');
+    if (!categoryList) return;
+
+    const categories = categoryManager.getAllCategories();
+
+    if (categories.length === 0) {
+      categoryList.innerHTML = `
+        <div class="category-filter-empty">
+          <div class="category-filter-empty-icon">📦</div>
+          <p>No categories available yet.</p>
+          <p style="font-size: 0.85rem; margin-top: 8px;">Categories can be added from the admin panel.</p>
+        </div>
+      `;
+      return;
+    }
+
+    // Add "All Products" option
+    let html = `
+      <div class="category-filter-item active" data-category="all">
+        <span>All Products</span>
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <polyline points="20 6 9 17 4 12"></polyline>
+        </svg>
+      </div>
+    `;
+
+    // Add category options
+    categories.forEach(cat => {
+      html += `
+        <div class="category-filter-item" data-category="${cat.id}">
+          <span>${cat.name}</span>
+        </div>
+      `;
+    });
+
+    categoryList.innerHTML = html;
+
+    // Handle category selection
+    const items = categoryList.querySelectorAll('.category-filter-item');
+    items.forEach(item => {
+      item.addEventListener('click', () => {
+        // Update active state
+        items.forEach(i => {
+          i.classList.remove('active');
+          i.querySelector('svg')?.remove();
+        });
+        item.classList.add('active');
+        
+        // Add checkmark
+        if (!item.querySelector('svg')) {
+          item.innerHTML += `
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <polyline points="20 6 9 17 4 12"></polyline>
+            </svg>
+          `;
+        }
+
+        const categoryId = (item as HTMLElement).dataset.category;
+        console.log('Category selected:', categoryId);
+        
+        // TODO: Filter products by category
+        // For now, this just logs the selection
+        // Future enhancement: Filter productsDisplay by category
+        
+        // Close modal after selection
+        setTimeout(() => {
+          document.getElementById('categoryFilterModal')?.classList.remove('active');
+        }, 300);
       });
     });
   }
