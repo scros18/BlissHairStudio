@@ -127,29 +127,26 @@
 }
 
 .product-detail-rating {
-  display: flex;
+  display: inline-flex;
   align-items: center;
   gap: 8px;
   margin-bottom: 20px;
-  height: 20px;
 }
 
 .stars {
   color: #FFD700;
   font-size: 1rem;
   letter-spacing: 2px;
-  line-height: 20px;
-  height: 20px;
-  display: flex;
+  line-height: 1;
+  display: inline-flex;
   align-items: center;
 }
 
 .review-count {
   color: #666;
   font-size: 0.9rem;
-  line-height: 20px;
-  height: 20px;
-  display: flex;
+  line-height: 1;
+  display: inline-flex;
   align-items: center;
 }
 
@@ -396,7 +393,8 @@
   width: 100%;
   display: flex;
   align-items: center;
-  justify-content: space-between;
+  justify-content: flex-start; /* move content to the left */
+  gap: 10px; /* spacing between icon and text */
   padding: 20px 0;
   background: none;
   border: none;
@@ -419,6 +417,7 @@
 }
 
 .section-header svg {
+  order: -1; /* icon first, left of text */
   transition: transform 0.3s;
   flex-shrink: 0;
   transform: rotate(180deg);

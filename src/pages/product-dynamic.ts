@@ -105,7 +105,7 @@ export function dynamicProductTemplate(product: Product): string {
 
             <!-- Collapsible Sections -->
             <div class="product-details-sections">
-              <div class="detail-section">
+              <div class="detail-section collapsed">
                 <button class="section-header">
                   <span>Product Details</span>
                   <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
@@ -124,7 +124,7 @@ export function dynamicProductTemplate(product: Product): string {
                 </div>
               </div>
 
-              <div class="detail-section">
+              <div class="detail-section collapsed">
                 <button class="section-header">
                   <span>How to Use</span>
                   <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
@@ -136,7 +136,7 @@ export function dynamicProductTemplate(product: Product): string {
                 </div>
               </div>
 
-              <div class="detail-section">
+              <div class="detail-section collapsed">
                 <button class="section-header">
                   <span>Shipping & Returns</span>
                   <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
