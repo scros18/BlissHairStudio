@@ -98,6 +98,7 @@
   border-bottom: 1px solid #E5E7EB;
   padding: 12px 40px;
   display: flex;
+  justify-content: center;
   gap: 12px;
   overflow-x: auto;
   -webkit-overflow-scrolling: touch;
