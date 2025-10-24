@@ -196,9 +196,17 @@ export const storesPage = () => `
             }
 
             .stores-map {
-                height: 350px;
-                min-height: 350px;
+                height: 60vh;
+                min-height: 400px;
+                max-height: 600px;
                 order: 2;
+                width: 100%;
+            }
+
+            .stores-map iframe {
+                width: 100%;
+                height: 100%;
+                border: none;
             }
 
             .store-item {

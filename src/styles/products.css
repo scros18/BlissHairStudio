@@ -308,10 +308,63 @@
   }
 }
 
+/* ================================================
+   Cart Dropdown - Redesigned to match Auth Dropdown
+   ================================================ */
+
+.cart-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.3);
+  backdrop-filter: blur(4px);
+  -webkit-backdrop-filter: blur(4px);
+  z-index: 999;
+  opacity: 1;
+  transition: opacity 0.3s ease;
+}
+
+.cart-dropdown {
+  position: absolute;
+  top: calc(100% + 12px);
+  right: 0;
+  min-width: 380px;
+  max-width: 420px;
+  background: white;
+  border-radius: 20px;
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.08);
+  z-index: 1000;
+  opacity: 0;
+  transform: translate3d(0, -10px, 0);
+  transition: opacity 0.2s ease, transform 0.2s ease;
+  overflow: hidden;
+  border: none;
+  will-change: transform, opacity;
+  pointer-events: none;
+  display: flex;
+  flex-direction: column;
+  max-height: 600px;
+}
+
 .cart-dropdown.active {
   opacity: 1;
   transform: translate3d(0, 0, 0);
   pointer-events: all;
+}
+
+.cart-dropdown::before {
+  content: '';
+  position: absolute;
+  top: -6px;
+  right: 20px;
+  width: 12px;
+  height: 12px;
+  background: white;
+  transform: rotate(45deg);
+  box-shadow: -2px -2px 4px rgba(0, 0, 0, 0.05);
+  z-index: 1001;
 }
 
 .cart-header {
@@ -520,11 +573,25 @@
   }
   
   .cart-dropdown {
-    right: 10px;
-    width: 340px;
-    max-width: calc(100vw - 20px);
+    position: fixed;
     top: 90px;
-    border-radius: 20px;
+    right: 10px;
+    left: auto;
+    min-width: 340px;
+    max-width: calc(100vw - 20px);
+    margin: 0;
+    transform: translateY(-20px);
+    max-height: calc(100vh - 110px);
+  }
+  
+  .cart-dropdown.active {
+    transform: translateY(0);
+  }
+  
+  .cart-dropdown::before {
+    right: 20px;
+    left: auto;
+    transform: rotate(45deg);
   }
   
   .cart-header {
@@ -537,15 +604,13 @@
   
   .cart-body {
     padding: 14px 18px;
+    max-height: none;
+    flex: 1;
+    overflow-y: auto;
   }
   
   .cart-footer {
     padding: 14px 18px 18px 18px;
-  }
-  
-  .cart-body {
-    padding: 16px 20px;
-    max-height: 350px;
   }
   
   .cart-item {
@@ -560,9 +625,5 @@
   
   .cart-item-title {
     font-size: 0.9rem;
-  }
-  
-  .cart-footer {
-    padding: 18px 20px 20px;
   }
 }
