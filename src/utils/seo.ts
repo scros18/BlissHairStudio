@@ -126,7 +126,7 @@ export class SEOManager {
   getProductsSEO(): SEOConfig {
     return {
       title: 'Premium Hair Products',
-      description: 'Shop professional-grade hair care products at BlissHairStudio. Authentic brands, expert recommendations, and products used by our award-winning stylists.',
+      description: 'Shop professional-grade hair care products at BlissHairStudio. Authentic brands, expert recommendations, and products used by our professional stylists.',
       keywords: 'hair products uk, professional hair care, shampoo, conditioner, hair treatment, styling products, authentic hair products',
       schema: {
         "@context": "https://schema.org",

@@ -13,7 +13,7 @@ export function servicesPageTemplate(): string {
             <span>Premium Services</span>
           </div>
           <h1>Our Menu of Luxury</h1>
-          <p>Experience award-winning hair care artistry</p>
+          <p>Experience professional hair care artistry</p>
         </div>
       </section>
 
