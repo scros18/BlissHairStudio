@@ -10,7 +10,6 @@ export function adminPanelTemplate(): string {
           <img src="/logo-transparent.svg" alt="Bliss Hair Studio" class="admin-brand-logo" />
           <div>
             <h1 class="admin-brand-title">Admin Dashboard</h1>
-            <p class="admin-brand-subtitle">Manage your store</p>
           </div>
         </div>
         <div class="admin-header-actions">
