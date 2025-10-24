@@ -860,12 +860,14 @@ class App {
 
     container.innerHTML = products.map(product => `
       <div class="product-card">
+        ${product.image ? `
+          <div class="product-card-image">
+            <img src="${product.image}" alt="${product.title}" loading="lazy" />
+          </div>
+        ` : ''}
         <div class="product-card-main">
           <h3 class="product-card-title">${product.title}</h3>
-          <div class="product-card-meta">
-            <div class="product-card-price">£${product.price.toFixed(2)}</div>
-            ${product.badge ? `<span class="product-badge">${product.badge}</span>` : ''}
-          </div>
+          <div class="product-card-price">£${product.price.toFixed(2)}</div>
         </div>
         <div class="product-card-actions">
           <button class="btn-action" onclick="window.editProduct('${product.id}')" title="Edit this product">
