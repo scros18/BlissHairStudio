@@ -291,11 +291,16 @@
   overflow: hidden;
   border: none;
   will-change: transform, opacity;
+  pointer-events: none;
+  display: flex;
+  flex-direction: column;
+  max-height: 600px;
 }
 
 .auth-dropdown.show {
   opacity: 1;
   transform: translate3d(0, 0, 0);
+  pointer-events: all;
 }
 
 .auth-dropdown::before {
@@ -308,6 +313,7 @@
   background: white;
   transform: rotate(45deg);
   box-shadow: -2px -2px 4px rgba(0, 0, 0, 0.05);
+  z-index: 1001;
 }
 
 @media (max-width: 768px) {
@@ -337,8 +343,9 @@
   display: flex;
   align-items: center;
   gap: 12px;
-  margin-bottom: 16px;
-  padding: 20px 20px 0 20px;
+  padding: 20px 20px 16px 20px;
+  border-bottom: 1px solid #E8E8E8;
+  background: white;
 }
 
 .auth-dropdown-avatar {
@@ -360,9 +367,11 @@
 
 .auth-dropdown-name {
   font-size: 1rem;
-  font-weight: 700;
+  font-weight: 500;
   color: #1A1A2E;
   margin-bottom: 2px;
+  letter-spacing: 0.5px;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Helvetica Neue', sans-serif;
 }
 
 .auth-dropdown-email {
@@ -371,12 +380,13 @@
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Helvetica Neue', sans-serif;
 }
 
 .auth-dropdown-divider {
   height: 1px;
-  background: linear-gradient(90deg, transparent, #E0E0E0, transparent);
-  margin: 16px 20px;
+  background: #E8E8E8;
+  margin: 16px 0;
 }
 
 .auth-dropdown-item {
@@ -386,7 +396,7 @@
   padding: 12px 20px;
   color: #1A1A2E;
   text-decoration: none;
-  border-radius: 12px;
+  border-radius: 0;
   transition: all 0.2s ease;
   font-size: 0.95rem;
   font-weight: 500;
@@ -395,27 +405,31 @@
   background: none;
   width: 100%;
   text-align: left;
-  margin: 0 0;
+  margin: 0;
+  border-bottom: 1px solid #F5F5F5;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Helvetica Neue', sans-serif;
 }
 
 .auth-dropdown-item:hover {
   background: rgba(0, 137, 123, 0.08);
   color: #00897B;
-  transform: translateX(4px);
 }
 
 .auth-dropdown-item svg {
   flex-shrink: 0;
   transition: transform 0.2s ease;
+  color: #1A1A2E;
 }
 
 .auth-dropdown-item:hover svg {
-  transform: scale(1.1);
+  transform: scale(1.05);
+  color: #00897B;
 }
 
 .auth-dropdown-logout {
   color: #DC2626;
-  margin-bottom: 20px;
+  border-top: 1px solid #E8E8E8;
+  border-bottom: none;
 }
 
 .auth-dropdown-logout:hover {
@@ -425,7 +439,7 @@
 
 .auth-dropdown-guest {
   text-align: center;
-  padding: 20px;
+  padding: 24px 20px 20px 20px;
 }
 
 .auth-dropdown-guest svg {
@@ -434,15 +448,18 @@
 }
 
 .auth-dropdown-guest h4 {
-  font-size: 1.15rem;
-  font-weight: 700;
+  font-size: 1.05rem;
+  font-weight: 600;
   color: #1A1A2E;
   margin-bottom: 8px;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Helvetica Neue', sans-serif;
 }
 
 .auth-dropdown-guest p {
   font-size: 0.9rem;
   color: #666;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Helvetica Neue', sans-serif;
+  margin: 0;
 }
 
 .auth-dropdown-btn {
@@ -456,25 +473,28 @@
   font-weight: 600;
   text-decoration: none;
   transition: all 0.3s ease;
-  margin: 0 20px 12px 20px;
+  margin: 8px 16px;
+  border: none;
+  cursor: pointer;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Helvetica Neue', sans-serif;
 }
 
 .auth-dropdown-btn-primary {
-  background: linear-gradient(135deg, #00897B, #26A69A);
+  background: #1A3A3A;
   color: white;
-  box-shadow: 0 4px 12px rgba(0, 137, 123, 0.3);
+  box-shadow: 0 2px 8px rgba(26, 58, 58, 0.2);
 }
 
 .auth-dropdown-btn-primary:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 6px 16px rgba(0, 137, 123, 0.4);
+  background: #0F2020;
+  box-shadow: 0 4px 12px rgba(26, 58, 58, 0.3);
+  transform: translateY(-1px);
 }
 
 .auth-dropdown-btn-secondary {
-  background: rgba(0, 137, 123, 0.08);
+  background: rgba(0, 137, 123, 0.1);
   color: #00897B;
-  border: 2px solid rgba(0, 137, 123, 0.2);
-  margin-bottom: 20px;
+  border: 1.5px solid rgba(0, 137, 123, 0.2);
 }
 
 .auth-dropdown-btn-secondary:hover {

@@ -182,10 +182,14 @@
                     </svg>
                 </button>
                 <div class="cart-icon" id="cartIcon" role="button" aria-label="Shopping cart" tabindex="0">
-                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
-                        <path d="M9 2L6 6H3L6 20H18L21 6H18L15 2M9 2H15M9 2V6M15 2V6"/>
-                        <circle cx="9" cy="20" r="1"/>
-                        <circle cx="15" cy="20" r="1"/>
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                        <!-- Shopping bag/cart body -->
+                        <path d="M9 2L7.5 6H3L5 18C5.2 19.1 6.2 20 7.5 20H16.5C17.8 20 18.8 19.1 19 18L21 6H16.5L15 2"/>
+                        <!-- Handle -->
+                        <path d="M9 2C9 2 9 1 12 1C15 1 15 2 15 2"/>
+                        <!-- Circles for wheels -->
+                        <circle cx="7.5" cy="20" r="1"/>
+                        <circle cx="16.5" cy="20" r="1"/>
                     </svg>
                     <span class="cart-count" id="cartCount" aria-live="polite">0</span>
                 </div>

@@ -18,8 +18,8 @@ export const homePageTemplate = (): string => {
                     <h1 class="hero-tagline">
                         <span class="tagline-main">WHERE BEAUTY MEETS LUXURY</span>
                     </h1>
+                    <p class="hero-subtitle-inline">Transform your hair with expert salon services and premium products</p>
                 </div>
-                <p class="hero-subtitle">Transform your hair with expert salon services and premium products</p>
                 <div class="hero-buttons">
                     <a href="/products" class="btn btn-primary">
                         <span>Shop Premium Collection</span>
