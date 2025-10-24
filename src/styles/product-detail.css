@@ -426,9 +426,10 @@
 
 .section-header svg {
   order: -1; /* icon first, left of text */
-  transition: transform 0.3s;
+  transition: transform 200ms ease, opacity 200ms ease;
   flex-shrink: 0;
   transform: rotate(180deg);
+  opacity: 0.8;
 }
 
 .detail-section.collapsed .section-header svg {
@@ -438,7 +439,7 @@
 .section-content {
   max-height: 1000px;
   overflow: hidden;
-  transition: max-height 0.3s ease;
+  transition: max-height 240ms ease;
   padding-bottom: 20px;
 }
 

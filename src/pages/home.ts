@@ -402,10 +402,20 @@ export function initProductDetailInteractions(details: {
 
     // Collapsible sections (default collapsed). Use event delegation for robustness
     const sections = Array.from(document.querySelectorAll<HTMLElement>('.detail-section'));
-    // Ensure initial state collapsed unless explicitly marked active
-    sections.forEach(sec => {
+    // Ensure initial state collapsed unless explicitly marked active and wire ARIA
+    sections.forEach((sec, idx) => {
         if (!sec.classList.contains('collapsed') && !sec.classList.contains('active')) {
             sec.classList.add('collapsed');
+        }
+        const header = sec.querySelector<HTMLButtonElement>('.section-header');
+        const content = sec.querySelector<HTMLElement>('.section-content');
+        if (header && content) {
+            const cid = content.id || `section-content-${idx}`;
+            content.id = cid;
+            header.setAttribute('aria-controls', cid);
+            const expanded = !sec.classList.contains('collapsed');
+            header.setAttribute('aria-expanded', expanded ? 'true' : 'false');
+            content.setAttribute('aria-hidden', expanded ? 'false' : 'true');
         }
     });
 
@@ -414,15 +424,35 @@ export function initProductDetailInteractions(details: {
         if (!header) return;
         const section = header.parentElement as HTMLElement | null;
         if (!section) return;
-        const isCollapsed = section.classList.contains('collapsed');
-        // close others on mobile to reduce scroll (optional behavior)
-        // sections.forEach(s => { if (s !== section) s.classList.add('collapsed'); });
-        if (isCollapsed) {
+        const clickedWasCollapsed = section.classList.contains('collapsed');
+
+        // Accordion behavior: close all others
+        sections.forEach((s) => {
+            if (s !== section) {
+                s.classList.add('collapsed');
+                s.classList.remove('active');
+                const h = s.querySelector<HTMLButtonElement>('.section-header');
+                const c = s.querySelector<HTMLElement>('.section-content');
+                h?.setAttribute('aria-expanded', 'false');
+                c?.setAttribute('aria-hidden', 'true');
+            }
+        });
+
+        // Toggle clicked section
+        if (clickedWasCollapsed) {
             section.classList.remove('collapsed');
             section.classList.add('active');
+            const h = section.querySelector<HTMLButtonElement>('.section-header');
+            const c = section.querySelector<HTMLElement>('.section-content');
+            h?.setAttribute('aria-expanded', 'true');
+            c?.setAttribute('aria-hidden', 'false');
         } else {
             section.classList.add('collapsed');
             section.classList.remove('active');
+            const h = section.querySelector<HTMLButtonElement>('.section-header');
+            const c = section.querySelector<HTMLElement>('.section-content');
+            h?.setAttribute('aria-expanded', 'false');
+            c?.setAttribute('aria-hidden', 'true');
         }
     });
 
