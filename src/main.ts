@@ -947,6 +947,7 @@ class App {
       document.getElementById('productId')!.setAttribute('value', '');
       document.getElementById('productModalTitle')!.textContent = 'Add New Product';
       productModal?.classList.add('active');
+      document.body.classList.add('modal-open');
     });
 
     document.getElementById('exportProductsBtn')?.addEventListener('click', () => {
@@ -956,10 +957,12 @@ class App {
 
     document.getElementById('closeProductModal')?.addEventListener('click', () => {
       productModal?.classList.remove('active');
+      document.body.classList.remove('modal-open');
     });
 
     document.getElementById('cancelProductBtn')?.addEventListener('click', () => {
       productModal?.classList.remove('active');
+      document.body.classList.remove('modal-open');
     });
 
     productForm?.addEventListener('submit', (e) => {
@@ -985,6 +988,7 @@ class App {
       }
 
       productModal?.classList.remove('active');
+      document.body.classList.remove('modal-open');
       this.loadProductsTable();
       productsDisplay.init(); // Refresh products page
     });
@@ -1125,6 +1129,7 @@ class App {
       
       document.getElementById('productModalTitle')!.textContent = 'Edit Product';
       document.getElementById('productModal')?.classList.add('active');
+      document.body.classList.add('modal-open');
     };
 
     (window as any).deleteProduct = (id: string) => {
