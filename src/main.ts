@@ -723,6 +723,11 @@ class App {
       productModal?.classList.add('active');
     });
 
+    document.getElementById('exportProductsBtn')?.addEventListener('click', () => {
+      productManager.downloadJSON();
+      UI.showNotification('✨ Products exported successfully!', { type: 'success' });
+    });
+
     document.getElementById('closeProductModal')?.addEventListener('click', () => {
       productModal?.classList.remove('active');
     });

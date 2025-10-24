@@ -12,7 +12,21 @@ class ProductManager {
     this.loadProducts();
   }
 
-  private loadProducts(): void {
+  private async loadProducts(): Promise<void> {
+    try {
+      // Try to load from products.json first
+      const response = await fetch('/products.json');
+      if (response.ok) {
+        this.products = await response.json();
+        // Also save to localStorage as backup
+        storage.set(PRODUCTS_KEY, this.products);
+        return;
+      }
+    } catch (error) {
+      console.log('Could not load products.json, checking localStorage...');
+    }
+
+    // Fallback to localStorage
     const stored = storage.get<Product[]>(PRODUCTS_KEY);
     this.products = stored || this.getDefaultProducts();
     this.saveProducts();
@@ -22,9 +36,30 @@ class ProductManager {
     return [
       {
         id: this.generateId(),
-        title: 'Luxury Hydrating Hair Serum',
-        description: 'Nourishing serum infused with argan oil and vitamins for silky, smooth hair. Perfect for all hair types.',
-        price: 24.99,
+        title: 'Moisture Senses Hydrating Conditioner',
+        description: 'Deeply nourish and hydrate dry, damaged hair with this luxurious salon treatment by Davroe. Perfect for all hair types needing moisture and shine.',
+        price: 29.95,
+        image: '/Davroe_Moisture_Senses_Hydrating_Conditioner_325ml__99636.jpg',
+        badge: 'Popular',
+        createdAt: Date.now(),
+        updatedAt: Date.now()
+      },
+      {
+        id: this.generateId(),
+        title: 'Protein Hair Rebuilder',
+        description: 'Intensive reparative treatment that reconstructs and strengthens damaged hair from within. Restores elasticity and vitality to weakened strands.',
+        price: 39.95,
+        image: '/Davroe_Protein_Hair_Rebuilder_200ml__77435.jpg',
+        badge: 'Best Seller',
+        createdAt: Date.now(),
+        updatedAt: Date.now()
+      },
+      {
+        id: this.generateId(),
+        title: 'Shine Fluid & Thermaprotect Duo',
+        description: 'The ultimate styling duo - Davroe Shine Fluid and Thermaprotect for gorgeous, protected hair with brilliant shine. Perfect for heat styling.',
+        price: 34.95,
+        image: '/Davroe_Thermaprotect_200ml__47285.jpg',
         badge: 'New',
         createdAt: Date.now(),
         updatedAt: Date.now()
@@ -94,6 +129,21 @@ class ProductManager {
       p.title.toLowerCase().includes(lowerQuery) ||
       p.description.toLowerCase().includes(lowerQuery)
     );
+  }
+
+  exportToJSON(): string {
+    return JSON.stringify(this.products, null, 2);
+  }
+
+  downloadJSON(): void {
+    const json = this.exportToJSON();
+    const blob = new Blob([json], { type: 'application/json' });
+    const url = URL.createObjectURL(blob);
+    const link = document.createElement('a');
+    link.href = url;
+    link.download = `products-${new Date().toISOString().split('T')[0]}.json`;
+    link.click();
+    URL.revokeObjectURL(url);
   }
 }
 
