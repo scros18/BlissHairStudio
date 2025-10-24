@@ -13,9 +13,12 @@ export const homePageTemplate = (): string => {
                     <div class="logo-glow-ambient"></div>
                     <img src="/logo.png" alt="BlissHairStudio - Premium Hair Salon & Luxury Hair Care" class="hero-logo-elegant" />
                 </div>
-                <h1 class="hero-tagline">
-                    <span class="tagline-main">WHERE BEAUTY MEETS LUXURY</span>
-                </h1>
+                <div class="hero-tagline-wrapper">
+                    <div class="tagline-glass-backdrop"></div>
+                    <h1 class="hero-tagline">
+                        <span class="tagline-main">WHERE BEAUTY MEETS LUXURY</span>
+                    </h1>
+                </div>
                 <p class="hero-subtitle">Transform your hair with expert salon services and premium products</p>
                 <div class="hero-buttons">
                     <a href="/products" class="btn btn-primary">
@@ -133,6 +136,32 @@ export const homePageTemplate = (): string => {
                     <circle cx="50" cy="50" r="8" fill="white"/>
                 </svg>
             </div>
+            <!-- Rabbit Icon -->
+            <div class="floating-icon icon-rabbit">
+                <svg width="45" height="45" viewBox="0 0 100 100" fill="currentColor" opacity="0.6">
+                    <ellipse cx="50" cy="60" rx="20" ry="25"/>
+                    <circle cx="50" cy="40" r="15"/>
+                    <ellipse cx="40" cy="20" rx="6" ry="18" transform="rotate(-15 40 20)"/>
+                    <ellipse cx="60" cy="20" rx="6" ry="18" transform="rotate(15 60 20)"/>
+                    <circle cx="45" cy="38" r="2" fill="white"/>
+                    <circle cx="55" cy="38" r="2" fill="white"/>
+                    <circle cx="50" cy="85" r="8"/>
+                </svg>
+            </div>
+            <!-- Elephant Icon -->
+            <div class="floating-icon icon-elephant">
+                <svg width="50" height="50" viewBox="0 0 100 100" fill="currentColor" opacity="0.6">
+                    <ellipse cx="55" cy="50" rx="25" ry="30"/>
+                    <circle cx="50" cy="35" r="18"/>
+                    <ellipse cx="35" cy="25" rx="8" ry="12"/>
+                    <ellipse cx="65" cy="25" rx="8" ry="12"/>
+                    <path d="M35 45 Q30 60 28 75" stroke="currentColor" stroke-width="6" fill="none" stroke-linecap="round"/>
+                    <circle cx="45" cy="32" r="2" fill="white"/>
+                    <circle cx="55" cy="32" r="2" fill="white"/>
+                    <ellipse cx="40" cy="75" rx="8" ry="5"/>
+                    <ellipse cx="60" cy="75" rx="8" ry="5"/>
+                </svg>
+            </div>
         </div>
     </section>
 
@@ -168,7 +197,7 @@ export const homePageTemplate = (): string => {
                             <span class="original-price">£34.95</span>
                             <span class="sale-price">£29.95</span>
                         </div>
-                        <a href="/products" class="product-link">
+                        <a href="/products#moisture-conditioner" class="product-link">
                             <span>Shop Now</span>
                             <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                                 <path d="M5 12h14M12 5l7 7-7 7"/>
@@ -200,7 +229,7 @@ export const homePageTemplate = (): string => {
                             <span class="original-price">£44.95</span>
                             <span class="sale-price">£39.95</span>
                         </div>
-                        <a href="/products" class="product-link">
+                        <a href="/products#protein-rebuilder" class="product-link">
                             <span>Shop Now</span>
                             <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                                 <path d="M5 12h14M12 5l7 7-7 7"/>
@@ -232,7 +261,7 @@ export const homePageTemplate = (): string => {
                             <span class="original-price">£39.90</span>
                             <span class="sale-price">£34.95</span>
                         </div>
-                        <a href="/products" class="product-link">
+                        <a href="/products#shine-thermaprotect-duo" class="product-link">
                             <span>Shop Now</span>
                             <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                                 <path d="M5 12h14M12 5l7 7-7 7"/>

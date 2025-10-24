@@ -28,7 +28,8 @@ export class Navigation {
   }
 
   private setupMobileMenu(): void {
-    this.menuToggle!.addEventListener('click', () => {
+    this.menuToggle!.addEventListener('click', (e) => {
+      e.stopPropagation();
       const isActive = this.menuToggle!.classList.toggle('active');
       this.navMenu!.classList.toggle('active');
       document.body.classList.toggle('no-scroll');
@@ -37,14 +38,32 @@ export class Navigation {
       this.menuToggle!.setAttribute('aria-expanded', isActive.toString());
     });
     
+    // Close menu when clicking outside (on the overlay area)
+    document.addEventListener('click', (e) => {
+      const target = e.target as HTMLElement;
+      const isMenuActive = this.navMenu!.classList.contains('active');
+      
+      // If menu is open and click is outside menu and toggle button
+      if (isMenuActive && 
+          !this.navMenu!.contains(target) && 
+          !this.menuToggle!.contains(target)) {
+        this.closeMobileMenu();
+      }
+    });
+    
+    // Close menu when clicking menu links
     this.navMenu!.querySelectorAll('a').forEach(link => {
       link.addEventListener('click', () => {
-        this.menuToggle!.classList.remove('active');
-        this.navMenu!.classList.remove('active');
-        document.body.classList.remove('no-scroll');
-        this.menuToggle!.setAttribute('aria-expanded', 'false');
+        this.closeMobileMenu();
       });
     });
+  }
+  
+  private closeMobileMenu(): void {
+    this.menuToggle!.classList.remove('active');
+    this.navMenu!.classList.remove('active');
+    document.body.classList.remove('no-scroll');
+    this.menuToggle!.setAttribute('aria-expanded', 'false');
   }
 
   private setupScrollEffect(): void {

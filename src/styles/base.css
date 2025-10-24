@@ -393,7 +393,8 @@ section {
 .feature-card-enhanced:hover {
   transform: translateY(-8px);
   box-shadow: 0 12px 40px rgba(45, 104, 84, 0.15);
-  border-color: rgba(45, 104, 84, 0.2);
+  border: 2px solid rgba(45, 104, 84, 0.3);
+  background: rgba(255, 255, 255, 0.85);
 }
 
 .feature-icon-wrap {
