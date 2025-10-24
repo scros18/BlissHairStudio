@@ -95,9 +95,9 @@
 }
 
 .stars {
-  color: #ffd700;
+  color: gold;
   font-size: var(--text-lg);
-  margin-bottom: 15px;
+  margin-bottom: 4px;
 }
 
 .testimonial-card p {

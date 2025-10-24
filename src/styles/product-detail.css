@@ -131,17 +131,14 @@
   align-items: center;
   gap: 8px;
   /* Nudge the stars/reviews down more for perfect baseline alignment */
-  margin-top: 10px;
+  margin-top: 20px;
   margin-bottom: 20px;
 }
 
 .stars {
-  color: #FFD700;
-  font-size: 1rem;
-  letter-spacing: 2px;
-  line-height: 1;
-  display: inline-flex;
-  align-items: center;
+  color: gold;
+  font-size: var(--text-lg);
+  margin-bottom: 4px;
 }
 
 .review-count {

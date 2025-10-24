@@ -373,8 +373,15 @@ export function initProductDetailInteractions(details: {
     defaultSize?: string;
 }): void {
     const root = document.querySelector('.luxury-product-detail-page') as HTMLElement | null;
-    if (!root) return;
-    if (root.dataset.interactionsInit === '1') return;
+    console.log('🚀 initProductDetailInteractions called, root found:', !!root);
+    if (!root) {
+        console.warn('❌ .luxury-product-detail-page not found!');
+        return;
+    }
+    if (root.dataset.interactionsInit === '1') {
+        console.log('⏭️  Already initialized, skipping');
+        return;
+    }
     root.dataset.interactionsInit = '1';
 
     // Quantity
@@ -400,8 +407,10 @@ export function initProductDetailInteractions(details: {
         });
     });
 
-    // Collapsible sections (default collapsed). Use event delegation for robustness
+    // Collapsible sections (default collapsed). Direct listeners on each header.
     const sections = Array.from(document.querySelectorAll<HTMLElement>('.detail-section'));
+    console.log('🔍 Found sections:', sections.length);
+    
     // Ensure initial state collapsed unless explicitly marked active and wire ARIA
     sections.forEach((sec, idx) => {
         if (!sec.classList.contains('collapsed') && !sec.classList.contains('active')) {
@@ -409,6 +418,8 @@ export function initProductDetailInteractions(details: {
         }
         const header = sec.querySelector<HTMLButtonElement>('.section-header');
         const content = sec.querySelector<HTMLElement>('.section-content');
+        console.log(`📦 Section ${idx}: header=${!!header}, content=${!!content}, collapsed=${sec.classList.contains('collapsed')}`);
+        
         if (header && content) {
             const cid = content.id || `section-content-${idx}`;
             content.id = cid;
@@ -416,51 +427,45 @@ export function initProductDetailInteractions(details: {
             const expanded = !sec.classList.contains('collapsed');
             header.setAttribute('aria-expanded', expanded ? 'true' : 'false');
             content.setAttribute('aria-hidden', expanded ? 'false' : 'true');
-        }
-    });
+            
+            // Attach click listener directly to this header
+            header.addEventListener('click', (e) => {
+                e.preventDefault();
+                e.stopPropagation();
+                
+                const clickedWasCollapsed = sec.classList.contains('collapsed');
+                console.log('🔧 Section clicked:', idx, 'was collapsed:', clickedWasCollapsed);
 
-    root.addEventListener('click', (e) => {
-        const header = (e.target as HTMLElement).closest('.section-header') as HTMLElement | null;
-        if (!header) return;
-        
-        e.preventDefault(); // Prevent any default button behavior
-        e.stopPropagation(); // Stop event bubbling
-        
-        const section = header.parentElement as HTMLElement | null;
-        if (!section || !section.classList.contains('detail-section')) return;
-        
-        const clickedWasCollapsed = section.classList.contains('collapsed');
-        console.log('🔧 Section clicked:', section, 'was collapsed:', clickedWasCollapsed);
+                // Accordion behavior: close all others
+                sections.forEach((other) => {
+                    if (other !== sec) {
+                        other.classList.add('collapsed');
+                        other.classList.remove('active');
+                        const otherHeader = other.querySelector<HTMLButtonElement>('.section-header');
+                        const otherContent = other.querySelector<HTMLElement>('.section-content');
+                        otherHeader?.setAttribute('aria-expanded', 'false');
+                        otherContent?.setAttribute('aria-hidden', 'true');
+                    }
+                });
 
-        // Accordion behavior: close all others
-        sections.forEach((s) => {
-            if (s !== section) {
-                s.classList.add('collapsed');
-                s.classList.remove('active');
-                const h = s.querySelector<HTMLButtonElement>('.section-header');
-                const c = s.querySelector<HTMLElement>('.section-content');
-                h?.setAttribute('aria-expanded', 'false');
-                c?.setAttribute('aria-hidden', 'true');
-            }
-        });
-
-        // Toggle clicked section
-        if (clickedWasCollapsed) {
-            section.classList.remove('collapsed');
-            section.classList.add('active');
-            const h = section.querySelector<HTMLButtonElement>('.section-header');
-            const c = section.querySelector<HTMLElement>('.section-content');
-            h?.setAttribute('aria-expanded', 'true');
-            c?.setAttribute('aria-hidden', 'false');
-            console.log('✅ Section opened:', section);
+                // Toggle clicked section
+                if (clickedWasCollapsed) {
+                    sec.classList.remove('collapsed');
+                    sec.classList.add('active');
+                    header.setAttribute('aria-expanded', 'true');
+                    content.setAttribute('aria-hidden', 'false');
+                    console.log('✅ Section opened:', idx);
+                } else {
+                    sec.classList.add('collapsed');
+                    sec.classList.remove('active');
+                    header.setAttribute('aria-expanded', 'false');
+                    content.setAttribute('aria-hidden', 'true');
+                    console.log('✅ Section closed:', idx);
+                }
+            });
+            console.log(`✅ Click listener attached to section ${idx}`);
         } else {
-            section.classList.add('collapsed');
-            section.classList.remove('active');
-            const h = section.querySelector<HTMLButtonElement>('.section-header');
-            const c = section.querySelector<HTMLElement>('.section-content');
-            h?.setAttribute('aria-expanded', 'false');
-            c?.setAttribute('aria-hidden', 'true');
-            console.log('✅ Section closed:', section);
+            console.warn(`❌ Section ${idx}: Missing header or content`);
         }
     });
 
