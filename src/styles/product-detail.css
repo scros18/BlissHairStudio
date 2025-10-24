@@ -130,8 +130,8 @@
   display: inline-flex;
   align-items: center;
   gap: 8px;
-  /* Nudge the stars/reviews down a touch for nicer alignment */
-  margin-top: 6px;
+  /* Nudge the stars/reviews down more for perfect baseline alignment */
+  margin-top: 10px;
   margin-bottom: 20px;
 }
 
@@ -407,17 +407,20 @@
   color: #1A1A1A !important;
   cursor: pointer;
   transition: opacity 0.3s;
-  text-align: left;
+  text-align: left !important;
 }
 
 /* Force left alignment in case a global button style centers text */
 .product-details-sections .section-header {
   justify-content: flex-start !important;
   text-align: left !important;
+  display: flex !important;
 }
 
 .section-header span {
   color: #1A1A1A !important;
+  text-align: left !important;
+  flex: 0 1 auto;
 }
 
 .section-header:hover {

@@ -5,6 +5,7 @@ import { resolve } from 'path';
 
 export default defineConfig({
   root: '.',
+  base: '/',
   publicDir: 'public',
   build: {
     outDir: 'dist',
@@ -66,9 +67,6 @@ export default defineConfig({
     host: true,
     open: true,
     strictPort: false,
-    historyApiFallback: {
-      disableDotRule: true
-    },
     middlewareMode: false
   },
   preview: {

@@ -422,9 +422,15 @@ export function initProductDetailInteractions(details: {
     root.addEventListener('click', (e) => {
         const header = (e.target as HTMLElement).closest('.section-header') as HTMLElement | null;
         if (!header) return;
+        
+        e.preventDefault(); // Prevent any default button behavior
+        e.stopPropagation(); // Stop event bubbling
+        
         const section = header.parentElement as HTMLElement | null;
-        if (!section) return;
+        if (!section || !section.classList.contains('detail-section')) return;
+        
         const clickedWasCollapsed = section.classList.contains('collapsed');
+        console.log('🔧 Section clicked:', section, 'was collapsed:', clickedWasCollapsed);
 
         // Accordion behavior: close all others
         sections.forEach((s) => {
@@ -446,6 +452,7 @@ export function initProductDetailInteractions(details: {
             const c = section.querySelector<HTMLElement>('.section-content');
             h?.setAttribute('aria-expanded', 'true');
             c?.setAttribute('aria-hidden', 'false');
+            console.log('✅ Section opened:', section);
         } else {
             section.classList.add('collapsed');
             section.classList.remove('active');
@@ -453,6 +460,7 @@ export function initProductDetailInteractions(details: {
             const c = section.querySelector<HTMLElement>('.section-content');
             h?.setAttribute('aria-expanded', 'false');
             c?.setAttribute('aria-hidden', 'true');
+            console.log('✅ Section closed:', section);
         }
     });
 
