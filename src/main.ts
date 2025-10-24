@@ -977,25 +977,22 @@ class App {
       }, 300);
     });
 
-    productForm?.addEventListener('submit', (e) => {
+    productForm?.addEventListener('submit', async (e) => {
       e.preventDefault();
       const formData = new FormData(productForm);
       const productId = formData.get('id') as string;
-      
       const productData = {
         title: formData.get('title') as string,
         description: formData.get('description') as string,
         price: parseFloat(formData.get('price') as string),
-        badge: formData.get('badge') as string || undefined
+        badge: (formData.get('badge') as string) || undefined
       };
 
       if (productId) {
-        // Update existing product
-        productManager.updateProduct(productId, productData);
+        await productManager.updateProduct(productId, productData);
         UI.showNotification('✨ Product updated successfully!', { type: 'success' });
       } else {
-        // Add new product
-        productManager.addProduct(productData);
+        await productManager.addProduct(productData);
         UI.showNotification('✨ Product added successfully!', { type: 'success' });
       }
 
@@ -1004,7 +1001,7 @@ class App {
         productModal?.classList.remove('active', 'closing');
         document.body.classList.remove('modal-open');
         this.loadProductsTable();
-        productsDisplay.init(); // Refresh products page
+        productsDisplay.init();
       }, 300);
     });
 
@@ -1166,12 +1163,12 @@ class App {
       document.body.classList.add('modal-open');
     };
 
-    (window as any).deleteProduct = (id: string) => {
+    (window as any).deleteProduct = async (id: string) => {
       if (confirm('Are you sure you want to delete this product? This cannot be undone.')) {
-        productManager.deleteProduct(id);
-        UI.showNotification('Product deleted successfully', { type: 'info' });
+        await productManager.deleteProduct(id);
+        UI.showNotification('🗑️ Product deleted', { type: 'success' });
         this.loadProductsTable();
-        productsDisplay.init(); // Refresh products page
+        productsDisplay.init();
       }
     };
   }

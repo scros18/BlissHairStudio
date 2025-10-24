@@ -67,7 +67,15 @@ export default defineConfig({
     host: true,
     open: true,
     strictPort: false,
-    middlewareMode: false
+    middlewareMode: false,
+    proxy: {
+      '/api': {
+        target: 'http://localhost:8787',
+        changeOrigin: true,
+        secure: false,
+        rewrite: (path) => path.replace(/^\/api/, '/api')
+      }
+    }
   },
   preview: {
     port: 4173,

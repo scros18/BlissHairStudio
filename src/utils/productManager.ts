@@ -4,6 +4,7 @@ import { storage } from './storage';
 import type { Product } from './types';
 
 const PRODUCTS_KEY = 'products';
+const API_BASE = '/api/products';
 
 class ProductManager {
   private products: Product[] = [];
@@ -17,19 +18,31 @@ class ProductManager {
     await this.initialized;
   }
 
+  private async fetchJson(input: RequestInfo, init?: RequestInit) {
+    const res = await fetch(input, init);
+    if (!res.ok) throw new Error(`HTTP ${res.status}`);
+    return res.status === 204 ? null : res.json();
+  }
+
   private async loadProducts(): Promise<void> {
     try {
-      // Try to load from products.json first
-      const response = await fetch('/products.json');
-      if (response.ok) {
-        this.products = await response.json();
-        console.log('✅ Loaded products from products.json:', this.products.length);
-        // Also save to localStorage as backup
-        storage.set(PRODUCTS_KEY, this.products);
-        return;
-      }
-    } catch (error) {
-      console.log('⚠️ Could not load products.json, checking localStorage...');
+      // Prefer API if available
+      const apiProducts = await this.fetchJson(API_BASE);
+      this.products = apiProducts as Product[];
+      storage.set(PRODUCTS_KEY, this.products);
+      console.log('✅ Loaded products from API:', this.products.length);
+      return;
+    } catch {
+      // Try static file
+      try {
+        const response = await fetch('/products.json');
+        if (response.ok) {
+          this.products = await response.json();
+          storage.set(PRODUCTS_KEY, this.products);
+          console.log('✅ Loaded products from products.json:', this.products.length);
+          return;
+        }
+      } catch {}
     }
 
     // Fallback to localStorage
@@ -39,8 +52,8 @@ class ProductManager {
       console.log('✅ Loaded products from localStorage:', this.products.length);
     } else {
       this.products = this.getDefaultProducts();
+      storage.set(PRODUCTS_KEY, this.products);
       console.log('✅ Loaded default products:', this.products.length);
-      this.saveProducts();
     }
   }
 
@@ -79,7 +92,7 @@ class ProductManager {
     ];
   }
 
-  private saveProducts(): void {
+  private saveLocal(): void {
     storage.set(PRODUCTS_KEY, this.products);
   }
 
@@ -95,52 +108,49 @@ class ProductManager {
     return this.products.find(p => p.id === id);
   }
 
-  addProduct(productData: Omit<Product, 'id' | 'createdAt' | 'updatedAt'>): Product {
-    const product: Product = {
-      ...productData,
-      id: this.generateId(),
-      createdAt: Date.now(),
-      updatedAt: Date.now()
-    };
-    
-    this.products.push(product);
-    this.saveProducts();
-    return product;
+  async addProduct(productData: Omit<Product, 'id' | 'createdAt' | 'updatedAt'>): Promise<Product> {
+    try {
+      const created = await this.fetchJson(API_BASE, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(productData)
+      });
+      this.products.push(created as Product);
+    } catch {
+      const product: Product = { ...productData, id: this.generateId(), createdAt: Date.now(), updatedAt: Date.now() };
+      this.products.push(product);
+    }
+    this.saveLocal();
+    return this.products[this.products.length - 1];
   }
 
-  updateProduct(id: string, updates: Partial<Omit<Product, 'id' | 'createdAt'>>): Product | null {
+  async updateProduct(id: string, updates: Partial<Omit<Product, 'id' | 'createdAt'>>): Promise<Product | null> {
     const index = this.products.findIndex(p => p.id === id);
-    
     if (index === -1) return null;
-    
-    this.products[index] = {
-      ...this.products[index],
-      ...updates,
-      updatedAt: Date.now()
-    };
-    
-    this.saveProducts();
+    try {
+      const updated = await this.fetchJson(`${API_BASE}/${id}`, {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(updates)
+      });
+      this.products[index] = updated as Product;
+    } catch {
+      this.products[index] = { ...this.products[index], ...updates, updatedAt: Date.now() } as Product;
+    }
+    this.saveLocal();
     return this.products[index];
   }
 
-  deleteProduct(id: string): boolean {
+  async deleteProduct(id: string): Promise<boolean> {
     const initialLength = this.products.length;
-    this.products = this.products.filter(p => p.id !== id);
-    
-    if (this.products.length < initialLength) {
-      this.saveProducts();
-      return true;
+    try {
+      await this.fetchJson(`${API_BASE}/${id}`, { method: 'DELETE' });
+      this.products = this.products.filter(p => p.id !== id);
+    } catch {
+      this.products = this.products.filter(p => p.id !== id);
     }
-    
-    return false;
-  }
-
-  searchProducts(query: string): Product[] {
-    const lowerQuery = query.toLowerCase();
-    return this.products.filter(p => 
-      p.title.toLowerCase().includes(lowerQuery) ||
-      p.description.toLowerCase().includes(lowerQuery)
-    );
+    this.saveLocal();
+    return this.products.length < initialLength;
   }
 
   exportToJSON(): string {
