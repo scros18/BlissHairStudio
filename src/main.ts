@@ -942,6 +942,12 @@ class App {
     const productModal = document.getElementById('productModal');
     const productForm = document.getElementById('productForm') as HTMLFormElement;
     
+    // Move modal to body to escape admin-panel container
+    if (productModal && productModal.parentElement) {
+      document.body.appendChild(productModal);
+      console.log('✅ Product modal moved to body');
+    }
+    
     document.getElementById('addProductBtn')?.addEventListener('click', () => {
       productForm?.reset();
       document.getElementById('productId')!.setAttribute('value', '');
@@ -998,17 +1004,26 @@ class App {
     const categoryModal = document.getElementById('categoryModal');
     const categoryForm = document.getElementById('categoryForm') as HTMLFormElement;
 
+    // Move category modal to body to escape admin-panel container
+    if (categoryModal && categoryModal.parentElement) {
+      document.body.appendChild(categoryModal);
+      console.log('✅ Category modal moved to body');
+    }
+
     document.getElementById('addCategoryBtn')?.addEventListener('click', () => {
       categoryForm?.reset();
       categoryModal?.classList.add('active');
+      document.body.classList.add('modal-open');
     });
 
     document.getElementById('closeCategoryModal')?.addEventListener('click', () => {
       categoryModal?.classList.remove('active');
+      document.body.classList.remove('modal-open');
     });
 
     document.getElementById('cancelCategoryBtn')?.addEventListener('click', () => {
       categoryModal?.classList.remove('active');
+      document.body.classList.remove('modal-open');
     });
 
     categoryForm?.addEventListener('submit', (e) => {
@@ -1026,6 +1041,7 @@ class App {
 
       UI.showNotification('✨ Category added successfully!', { type: 'success' });
       categoryModal?.classList.remove('active');
+      document.body.classList.remove('modal-open');
       this.loadCategoriesGrid();
     });
   }

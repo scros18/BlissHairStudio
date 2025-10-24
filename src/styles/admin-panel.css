@@ -579,55 +579,47 @@ body.modal-open {
 }
 
 /* ================================================
-   Modal (Clean & Accessible with Centered Layout)
+   Admin Modals (Product + Category)
+   - Centered on desktop, full-screen on mobile
+   - Single internal scrollbar, page locked
    ================================================ */
-.modal {
+#productModal,
+#categoryModal {
   display: none;
 }
 
-.modal.active {
-  display: flex;
+#productModal.active,
+#categoryModal.active {
+  display: grid;            /* reliable centering */
+  place-items: center;
   position: fixed;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background: rgba(0, 0, 0, 0.5);
-  z-index: 999999;
-  align-items: center;
-  justify-content: center;
-  padding: 20px;
-  overflow: hidden;
+  inset: 0;                 /* full viewport */
+  background: rgba(0, 0, 0, 0.45);
+  z-index: 10000;
+  padding: min(24px, 4vw);
+  overflow: hidden;         /* avoid outer scrollbars */
+  width: 100vw;             /* override global .modal max-width */
+  height: 100dvh;
+  max-width: none;
 }
 
-@keyframes fadeIn {
-  from { opacity: 0; }
-  to { opacity: 1; }
-}
-
-.modal-content {
+#productModal .modal-content,
+#categoryModal .modal-content {
   background: #FFFFFF;
-  border-radius: 24px;
-  width: 100%;
-  max-width: 540px;
-  max-height: 90vh;
+  border-radius: 20px;
+  width: min(560px, 92vw);
+  max-height: 90dvh;        /* viewport aware */
   display: flex;
   flex-direction: column;
-  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
-  animation: modalPopIn 0.3s ease;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.28);
+  animation: modalPopIn 0.25s ease;
   position: relative;
-  overflow: hidden;
+  overflow: auto;           /* single scrollbar lives here */
 }
 
 @keyframes modalPopIn {
-  from {
-    transform: scale(0.9);
-    opacity: 0;
-  }
-  to {
-    transform: scale(1);
-    opacity: 1;
-  }
+  from { transform: translateY(6px) scale(0.98); opacity: 0; }
+  to { transform: translateY(0)   scale(1);      opacity: 1; }
 }
 
 .modal-header {
@@ -677,11 +669,11 @@ body.modal-open {
   height: 20px;
 }
 
-.modal-content form {
+#productModal .modal-content form,
+#categoryModal .modal-content form {
   padding: 32px;
-  overflow-y: auto;
+  overflow: visible; /* the container scrolls */
   flex: 1;
-  max-height: calc(90vh - 120px);
 }
 
 /* ================================================
@@ -1088,14 +1080,18 @@ body.modal-open {
     font-size: 1rem;
   }
 
-  .modal.active {
-    padding: 16px;
-  }
+  /* Modal: full-screen on phones */
+  #productModal,
+  #categoryModal { padding: 0; }
 
-  .modal-content {
-    max-width: 100%;
-    max-height: 92vh;
-    border-radius: 20px;
+  #productModal .modal-content,
+  #categoryModal .modal-content {
+    width: 100vw;
+  height: 100dvh;
+  height: 100svh; /* Safari stable viewport */
+    max-width: none;
+    max-height: none;
+    border-radius: 0;
   }
 
   .modal-header {
@@ -1112,9 +1108,9 @@ body.modal-open {
     padding: 8px;
   }
 
-  .modal-content form {
-    padding: 24px;
-    max-height: calc(92vh - 100px);
+  #productModal .modal-content form,
+  #categoryModal .modal-content form {
+    padding: 20px;
   }
 
   .form-group {
@@ -1190,38 +1186,6 @@ body.modal-open {
   .btn-add-large {
     padding: 12px 18px;
     font-size: 0.85rem;
-  /* Modal adjustments for very small screens */
-  .modal.active {
-    padding: 12px;
-  }
-
-  .modal-content {
-    max-height: 95vh;
-    border-radius: 18px;
-  }
-
-  .modal-content form {
-    padding: 18px;
-    max-height: calc(95vh - 90px);
-  } max-height: calc(95vh - 90px);
-  }
-
-  .modal-header {
-    padding: 16px 18px;
-  }
-
-  .modal-header h2 {
-    font-size: 1.2rem;
-  }
-
-  .form-group {
-    margin-bottom: 18px;
-  }
-
-  .btn-cancel,
-  .btn-save {
-    padding: 12px 16px;
-    font-size: 0.9rem;
   }
 }
 
@@ -1237,18 +1201,7 @@ body.modal-open {
 
 /* High Contrast Mode */
 @media (prefers-contrast: high) {
-  .admin-panel {
-    background: #FFFFFF;
-  }
-
-  .admin-header,
-  .admin-tabs,
-  .admin-content,
-  .product-card,
-  .category-card {
-    border-width: 2px;
-    border-color: #000000;
-  }
+  .admin-panel { background: #FFFFFF; }
 }
 
 /* Focus Visible for Keyboard Navigation */
