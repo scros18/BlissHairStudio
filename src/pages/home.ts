@@ -197,7 +197,7 @@ export const homePageTemplate = (): string => {
                             <span class="original-price">£34.95</span>
                             <span class="sale-price">£29.95</span>
                         </div>
-                        <a href="/products#moisture-conditioner" class="product-link">
+                        <a href="/product/moisture-senses" class="product-link">
                             <span>Shop Now</span>
                             <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                                 <path d="M5 12h14M12 5l7 7-7 7"/>
@@ -229,7 +229,7 @@ export const homePageTemplate = (): string => {
                             <span class="original-price">£44.95</span>
                             <span class="sale-price">£39.95</span>
                         </div>
-                        <a href="/products#protein-rebuilder" class="product-link">
+                        <a href="/product/protein-rebuilder" class="product-link">
                             <span>Shop Now</span>
                             <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                                 <path d="M5 12h14M12 5l7 7-7 7"/>
@@ -261,7 +261,7 @@ export const homePageTemplate = (): string => {
                             <span class="original-price">£39.90</span>
                             <span class="sale-price">£34.95</span>
                         </div>
-                        <a href="/products#shine-thermaprotect-duo" class="product-link">
+                        <a href="/product/shine-duo" class="product-link">
                             <span>Shop Now</span>
                             <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                                 <path d="M5 12h14M12 5l7 7-7 7"/>

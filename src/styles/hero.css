@@ -412,7 +412,9 @@
 /* Hero Tagline with Glass Backdrop */
 .hero-tagline-wrapper {
   position: relative;
-  display: inline-block;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
   margin-bottom: 28px;
 }
 
@@ -471,7 +473,7 @@
   z-index: 1;
   margin-bottom: 0;
   text-align: center;
-  padding: 12px 24px;
+  padding: 20px 24px;
 }
 
 .tagline-main {
