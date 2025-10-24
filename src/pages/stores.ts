@@ -172,34 +172,119 @@ export const storesPage = () => `
         @media (max-width: 768px) {
             .stores-container {
                 flex-direction: column;
-                padding-top: 80px;
+                padding-top: 70px;
+                height: auto;
+                min-height: 100vh;
             }
 
             .stores-sidebar {
                 width: 100%;
-                height: 50vh;
+                height: auto;
+                max-height: none;
                 order: 1;
+                box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
             }
 
             .stores-header {
-                padding: 30px 25px 25px;
+                padding: 20px 16px 16px;
             }
 
             .stores-header h1 {
-                font-size: 1.6rem;
+                font-size: 1.3rem;
+                margin-bottom: 12px;
+                letter-spacing: 1.5px;
             }
 
             .stores-map {
-                height: 50vh;
+                height: 350px;
+                min-height: 350px;
                 order: 2;
             }
 
             .store-item {
-                padding: 24px 25px;
+                padding: 20px 16px;
+            }
+
+            .store-name {
+                font-size: 0.95rem;
+                margin-bottom: 8px;
+            }
+
+            .store-address {
+                font-size: 0.8rem;
+                line-height: 1.5;
+                margin-bottom: 12px;
+            }
+
+            .store-details {
+                font-size: 0.75rem;
+                gap: 6px;
+            }
+
+            .store-detail-item {
+                gap: 6px;
+            }
+
+            .store-detail-item svg {
+                width: 12px;
+                height: 12px;
+                flex-shrink: 0;
             }
 
             .use-location-btn {
-                padding: 16px 25px;
+                padding: 14px 16px;
+                font-size: 0.75rem;
+            }
+
+            .use-location-btn svg {
+                width: 14px;
+                height: 14px;
+            }
+
+            .book-appointment-btn {
+                padding: 10px 16px;
+                font-size: 0.65rem;
+                margin-top: 12px;
+                letter-spacing: 1px;
+            }
+
+            .stores-list {
+                max-height: none;
+                overflow-y: visible;
+            }
+        }
+
+        /* Small mobile phones */
+        @media (max-width: 400px) {
+            .stores-header h1 {
+                font-size: 1.2rem;
+            }
+
+            .store-name {
+                font-size: 0.9rem;
+            }
+
+            .store-address {
+                font-size: 0.75rem;
+            }
+
+            .store-details {
+                font-size: 0.7rem;
+            }
+        }
+
+        /* Tablet adjustments */
+        @media (max-width: 1024px) and (min-width: 769px) {
+            .stores-sidebar {
+                width: 380px;
+            }
+
+            .stores-header {
+                padding: 40px 30px 30px;
+            }
+
+            .store-item {
+                padding: 28px 30px;
             }
         }
 

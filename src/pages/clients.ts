@@ -5,7 +5,7 @@ export function clientsPageTemplate(): string {
       <!-- Hero Section -->
       <section class="page-hero clients-hero">
         <div class="container">
-          <h1>Our Beautiful Clients</h1>
+          <h1 class="clients-main-title">OUR BEAUTIFUL CLIENTS</h1>
           <p>Real transformations, real results</p>
         </div>
       </section>
@@ -14,7 +14,7 @@ export function clientsPageTemplate(): string {
       <section class="clients-gallery-section">
         <div class="container">
           <div class="gallery-header">
-            <h2>Hair Transformations</h2>
+            <h2 class="transformations-title">HAIR TRANSFORMATIONS</h2>
             <p class="gallery-subtitle">Discover the stunning work we create for our valued clients</p>
           </div>
 

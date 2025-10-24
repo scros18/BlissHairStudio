@@ -28,11 +28,22 @@
 }
 
 .clients-hero h1 {
-  font-size: clamp(2.5rem, 6vw, 4rem);
-  font-weight: 700;
+  font-size: clamp(2.2rem, 6vw, 4rem);
+  font-weight: 800;
   margin-bottom: 16px;
   position: relative;
   z-index: 1;
+  letter-spacing: -0.01em;
+  text-transform: uppercase;
+  line-height: 1.25;
+}
+
+.clients-main-title {
+  font-size: clamp(2.2rem, 6vw, 4rem);
+  font-weight: 800;
+  letter-spacing: -0.01em;
+  text-transform: uppercase;
+  line-height: 1.25;
 }
 
 .clients-hero p {
@@ -55,9 +66,21 @@
 
 .gallery-header h2 {
   font-size: clamp(2rem, 4vw, 3rem);
-  font-weight: 700;
-  color: #1A3A2E;
+  font-weight: 800;
+  color: #1A1A2E;
   margin-bottom: 16px;
+  letter-spacing: -0.01em;
+  text-transform: uppercase;
+  line-height: 1.25;
+}
+
+.transformations-title {
+  font-size: clamp(2rem, 4vw, 3rem);
+  font-weight: 800;
+  color: #1A1A2E;
+  letter-spacing: -0.01em;
+  text-transform: uppercase;
+  line-height: 1.25;
 }
 
 .gallery-subtitle {
@@ -112,12 +135,14 @@
 
 .gallery-item-inner img {
   position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
+  top: -3%;
+  left: -3%;
+  width: 106%;
+  height: 106%;
   object-fit: cover;
   transition: transform 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+  /* Crop edges to hide watermarks */
+  clip-path: inset(3% 3% 3% 3%);
 }
 
 .gallery-item:hover img {
@@ -247,6 +272,9 @@
   object-fit: contain;
   border-radius: 8px;
   box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
+  /* Crop edges to hide watermarks in lightbox view */
+  transform: scale(1.06);
+  clip-path: inset(3% 3% 3% 3%);
 }
 
 /* Lightbox Controls */
@@ -307,11 +335,11 @@
 }
 
 .lightbox-counter {
-  position: absolute;
-  bottom: -60px;
+  position: fixed;
+  bottom: 30px;
   left: 50%;
   transform: translateX(-50%);
-  background: rgba(255, 255, 255, 0.1);
+  background: rgba(0, 0, 0, 0.75);
   backdrop-filter: blur(10px);
   padding: 12px 24px;
   border-radius: 50px;
@@ -319,6 +347,7 @@
   font-weight: 600;
   font-size: 0.95rem;
   border: 2px solid rgba(255, 255, 255, 0.2);
+  z-index: 10002;
 }
 
 /* Mobile Optimizations */
@@ -356,8 +385,17 @@
   }
 
   .lightbox-counter {
-    bottom: -50px;
-    font-size: 0.9rem;
+    bottom: 20px;
+    font-size: 0.85rem;
     padding: 10px 20px;
+  }
+
+  .lightbox-content {
+    max-width: 95vw;
+    max-height: 85vh;
+  }
+
+  .lightbox-content img {
+    max-height: 85vh;
   }
 }
