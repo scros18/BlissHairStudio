@@ -15,7 +15,7 @@ import { UI } from './components/ui';
 import { router } from './utils/router';
 import { pageManager } from './utils/pageManager';
 import { seoManager } from './utils/seo';
-import { homePageTemplate } from './pages/home';
+import { homePageTemplate, initProductCarousel } from './pages/home';
 import { productsPageTemplate } from './pages/products';
 import { aboutPageTemplate } from './pages/about';
 import { servicesPageTemplate } from './pages/services';
@@ -98,6 +98,9 @@ class App {
       .route('/', () => {
         seoManager.updateMeta(seoManager.getHomeSEO());
         pageManager.loadPageFromTemplate(homePageTemplate);
+        setTimeout(() => {
+          initProductCarousel();
+        }, 100);
       })
       .route('/products', () => {
         seoManager.updateMeta(seoManager.getProductsSEO());

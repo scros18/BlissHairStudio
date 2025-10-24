@@ -272,27 +272,31 @@ export const homePageTemplate = (): string => {
             </div>
         </div>
     </section>
-    
-    <script>
-      // Product image carousel functionality
-      document.querySelectorAll('.product-card').forEach(card => {
-        const images = card.querySelectorAll('.product-image');
-        const dots = card.querySelectorAll('.dot');
-        
-        dots.forEach(dot => {
-          dot.addEventListener('click', () => {
-            const index = parseInt(dot.getAttribute('data-index'));
-            
-            // Update active image
-            images.forEach(img => img.classList.remove('active'));
-            images[index].classList.add('active');
-            
-            // Update active dot
-            dots.forEach(d => d.classList.remove('active'));
-            dot.classList.add('active');
-          });
-        });
-      });
-    </script>
   `;
 };
+
+// Initialize product carousel
+export function initProductCarousel(): void {
+  document.querySelectorAll('.product-card').forEach(card => {
+    const images = card.querySelectorAll('.product-image');
+    const dots = card.querySelectorAll('.dot');
+    
+    dots.forEach(dot => {
+      dot.addEventListener('click', (e) => {
+        e.preventDefault();
+        e.stopPropagation();
+        const index = parseInt(dot.getAttribute('data-index') || '0');
+        
+        // Update active image
+        images.forEach(img => img.classList.remove('active'));
+        if (images[index]) {
+          images[index].classList.add('active');
+        }
+        
+        // Update active dot
+        dots.forEach(d => d.classList.remove('active'));
+        dot.classList.add('active');
+      });
+    });
+  });
+}
