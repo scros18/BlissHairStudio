@@ -400,12 +400,30 @@ export function initProductDetailInteractions(details: {
         });
     });
 
-    // Collapsible sections
-    document.querySelectorAll<HTMLElement>('.section-header').forEach(header => {
-        header.addEventListener('click', () => {
-            const section = header.parentElement as HTMLElement | null;
-            section?.classList.toggle('collapsed');
-        });
+    // Collapsible sections (default collapsed). Use event delegation for robustness
+    const sections = Array.from(document.querySelectorAll<HTMLElement>('.detail-section'));
+    // Ensure initial state collapsed unless explicitly marked active
+    sections.forEach(sec => {
+        if (!sec.classList.contains('collapsed') && !sec.classList.contains('active')) {
+            sec.classList.add('collapsed');
+        }
+    });
+
+    root.addEventListener('click', (e) => {
+        const header = (e.target as HTMLElement).closest('.section-header') as HTMLElement | null;
+        if (!header) return;
+        const section = header.parentElement as HTMLElement | null;
+        if (!section) return;
+        const isCollapsed = section.classList.contains('collapsed');
+        // close others on mobile to reduce scroll (optional behavior)
+        // sections.forEach(s => { if (s !== section) s.classList.add('collapsed'); });
+        if (isCollapsed) {
+            section.classList.remove('collapsed');
+            section.classList.add('active');
+        } else {
+            section.classList.add('collapsed');
+            section.classList.remove('active');
+        }
     });
 
     // Add to Bag

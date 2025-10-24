@@ -131,7 +131,7 @@ class App {
       .route('/account', () => {
         // Check if user is logged in
         if (!authManager.isLoggedIn()) {
-          router.navigate('/login');
+              image: product.image || '/logo.png',
           return;
         }
         const user = authManager.getCurrentUser();

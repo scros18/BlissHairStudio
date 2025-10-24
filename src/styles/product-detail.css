@@ -130,6 +130,8 @@
   display: inline-flex;
   align-items: center;
   gap: 8px;
+  /* Nudge the stars/reviews down a touch for nicer alignment */
+  margin-top: 6px;
   margin-bottom: 20px;
 }
 
@@ -406,6 +408,12 @@
   cursor: pointer;
   transition: opacity 0.3s;
   text-align: left;
+}
+
+/* Force left alignment in case a global button style centers text */
+.product-details-sections .section-header {
+  justify-content: flex-start !important;
+  text-align: left !important;
 }
 
 .section-header span {
