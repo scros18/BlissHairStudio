@@ -277,26 +277,42 @@ export const homePageTemplate = (): string => {
 
 // Initialize product carousel
 export function initProductCarousel(): void {
-  document.querySelectorAll('.product-card').forEach(card => {
+  console.log('🎠 Initializing product carousel...');
+  
+  const productCards = document.querySelectorAll('.product-card');
+  console.log('Found product cards:', productCards.length);
+  
+  productCards.forEach((card, cardIndex) => {
     const images = card.querySelectorAll('.product-image');
     const dots = card.querySelectorAll('.dot');
+    
+    console.log(`Card ${cardIndex}: ${images.length} images, ${dots.length} dots`);
     
     dots.forEach(dot => {
       dot.addEventListener('click', (e) => {
         e.preventDefault();
         e.stopPropagation();
+        
         const index = parseInt(dot.getAttribute('data-index') || '0');
+        console.log(`Dot clicked: index ${index}`);
         
         // Update active image
-        images.forEach(img => img.classList.remove('active'));
+        images.forEach(img => {
+          img.classList.remove('active');
+        });
+        
         if (images[index]) {
           images[index].classList.add('active');
+          console.log(`Activated image ${index}`);
         }
         
         // Update active dot
         dots.forEach(d => d.classList.remove('active'));
         dot.classList.add('active');
+        console.log(`Activated dot for image ${index}`);
       });
     });
   });
+  
+  console.log('✅ Carousel initialization complete');
 }

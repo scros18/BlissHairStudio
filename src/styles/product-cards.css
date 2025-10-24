@@ -69,15 +69,19 @@
 
 .dot {
   /* Minimum 44x44px touch target for accessibility */
-  width: 12px;
-  height: 12px;
+  width: 44px;
+  height: 44px;
   border-radius: 50%;
   background: transparent;
-  border: 2px solid #D4D4D4;
+  border: none;
   cursor: pointer;
   transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
   padding: 0;
   position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: -16px;
 }
 
 .dot::before {
@@ -86,36 +90,38 @@
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-  width: 4px;
-  height: 4px;
+  width: 8px;
+  height: 8px;
   border-radius: 50%;
-  background: #D4D4D4;
+  border: 2px solid #D4D4D4;
+  background: transparent;
   transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  pointer-events: none;
 }
 
 .dot.active {
-  border-color: #1A1A1A;
-  background: #1A1A1A;
-  width: 12px;
-  height: 12px;
-  box-shadow: 0 2px 4px rgba(26, 26, 46, 0.2);
+  border-color: transparent;
+  background: transparent;
 }
 
 .dot.active::before {
-  background: transparent;
-  width: 0;
-  height: 0;
+  background: #1A1A1A;
+  border-color: #1A1A1A;
+  width: 10px;
+  height: 10px;
+  box-shadow: 0 2px 4px rgba(26, 26, 46, 0.2);
 }
 
 .dot:hover {
-  border-color: #666666;
-  background: rgba(102, 102, 102, 0.2);
+  border-color: transparent;
+  background: transparent;
 }
 
 .dot:hover::before {
-  background: #666666;
-  width: 6px;
-  height: 6px;
+  border-color: #666666;
+  background: rgba(102, 102, 102, 0.2);
+  width: 10px;
+  height: 10px;
 }
 
 .product-card h3 {
