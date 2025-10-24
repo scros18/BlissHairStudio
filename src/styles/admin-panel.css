@@ -397,6 +397,7 @@
   flex-direction: row;
   gap: 12px;
   justify-content: center;
+  align-items: center;
   width: 100%;
   margin-top: auto;
   padding-top: 12px;
@@ -872,11 +873,15 @@
   .product-card-actions {
     flex-direction: row;
     width: 100%;
+    justify-content: center;
+    align-items: center;
   }
 
   .btn-action {
     flex: 1;
     min-width: auto;
+    max-width: 140px;
+    justify-content: center;
   }
 
   .categories-grid {
@@ -1028,13 +1033,16 @@
     margin-top: 0;
     flex-direction: row;
     width: 100%;
+    justify-content: center;
+    align-items: center;
   }
 
   .btn-action {
     padding: 10px 14px;
     font-size: 0.8rem;
     flex: 1;
-    max-width: none;
+    max-width: 140px;
+    justify-content: center;
   }
 
   .categories-grid {

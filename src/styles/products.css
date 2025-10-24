@@ -63,7 +63,6 @@
   inset: 0;
   border-radius: 24px;
   padding: 2px;
-  background: linear-gradient(135deg, var(--primary-light), var(--accent-color));
   -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
   mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
   -webkit-mask-composite: xor;
