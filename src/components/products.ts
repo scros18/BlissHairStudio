@@ -1,8 +1,6 @@
 // Products Display Component
 
 import { productManager } from '../utils/productManager';
-import { cartManager } from '../utils/cartManager';
-import { UI } from './ui';
 
 export class ProductsDisplay {
   private container: HTMLElement | null = null;
@@ -66,35 +64,6 @@ export class ProductsDisplay {
       .toLowerCase()
       .replace(/[^a-z0-9]+/g, '-')
       .replace(/^-|-$/g, '');
-  }
-
-  private addToCart(productId: string, button: HTMLElement): void {
-    const product = productManager.getProduct(productId);
-    if (!product) return;
-    
-    cartManager.addItem(product, 1);
-    
-    // Visual feedback
-    const originalText = button.textContent;
-    button.textContent = 'Added! ✓';
-    button.classList.add('btn-success');
-    
-    // Animate cart icon
-    const cartIcon = document.querySelector('.cart-icon') as HTMLElement;
-    if (cartIcon) {
-      cartIcon.style.transform = 'scale(1.2)';
-      setTimeout(() => {
-        cartIcon.style.transform = 'scale(1)';
-      }, 300);
-    }
-    
-    // Reset button
-    setTimeout(() => {
-      button.textContent = originalText;
-      button.classList.remove('btn-success');
-    }, 2000);
-    
-    UI.showNotification(`${product.title} added to cart!`);
   }
 }
 
