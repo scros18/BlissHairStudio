@@ -600,9 +600,9 @@
 
 .hero-buttons .btn-primary {
   background: linear-gradient(135deg, 
-    #0D3D2E 0%, 
+    #16A34A 0%, 
     #1B5E4D 50%,
-    #0D3D2E 100%
+    #16A34A 100%
   );
   background-size: 200% 100%;
   border: 2px solid rgba(255, 255, 255, 0.1);
@@ -631,8 +631,8 @@
     rgba(255, 255, 255, 0.98) 0%,
     rgba(255, 255, 255, 1) 100%
   );
-  color: #0D3D2E;
-  border: 2px solid #0D3D2E;
+  color: #16A34A;
+  border: 2px solid #16A34A;
   box-shadow: 
     0 10px 30px rgba(13, 61, 46, 0.25),
     inset 0 1px 0 rgba(255, 255, 255, 1),
@@ -643,9 +643,9 @@
 
 .hero-buttons .btn-secondary-outline:hover {
   background: linear-gradient(135deg, 
-    #0D3D2E 0%, 
+    #16A34A 0%, 
     #1B5E4D 50%,
-    #0D3D2E 100%
+    #16A34A 100%
   );
   color: white;
   border-color: rgba(255, 255, 255, 0.2);

@@ -181,7 +181,7 @@
   justify-content: center;
   gap: 8px;
   padding: 16px 32px;
-  background: #0D3D2E;
+  background: #16A34A;
   color: #FFFFFF;
   border-radius: 0;
   font-weight: 400;
@@ -191,14 +191,14 @@
   letter-spacing: 1.5px;
   transition: all 0.3s ease;
   margin: auto 24px 28px;
-  border: 1px solid #0D3D2E;
+  border: 1px solid #16A34A;
   margin-top: auto;
 }
 
 .product-link:hover {
   background: #FFFFFF;
-  color: #0D3D2E;
-  border-color: #0D3D2E;
+  color: #16A34A;
+  border-color: #16A34A;
 }
 
 .product-link svg {

@@ -42,73 +42,9 @@ export const productsPageTemplate = (): string => {
             </div>
         </div>
 
-        <!-- Products Grid -->
-        <div class="luxury-products-grid">
-            <!-- Product 1 -->
-            <a href="/product/moisture-senses" class="luxury-product-card" data-product="1">
-                <div class="luxury-product-image">
-                    <div class="luxury-product-carousel">
-                        <img src="/Davroe_Moisture_Senses_Hydrating_Conditioner_325ml__99636.jpg" alt="Moisture Senses Hydrating Conditioner" class="carousel-image active" loading="lazy">
-                        <img src="/Davroe_Repair_Senses_Revitalising_Conditioner_325ml_2__32801.jpg" alt="Conditioner Alternative View" class="carousel-image" loading="lazy">
-                    </div>
-                    <div class="luxury-carousel-dots">
-                        <span class="luxury-dot active" data-index="0"></span>
-                        <span class="luxury-dot" data-index="1"></span>
-                    </div>
-                </div>
-                <div class="luxury-product-info">
-                    <h3 class="luxury-product-name">Moisture Senses Hydrating Conditioner</h3>
-                    <div class="luxury-product-stars">★★★★★</div>
-                    <div class="luxury-product-pricing">
-                        <span class="luxury-product-price-old">£34.95</span>
-                        <span class="luxury-product-price">£29.95</span>
-                    </div>
-                </div>
-            </a>
-
-            <!-- Product 2 -->
-            <a href="/product/protein-rebuilder" class="luxury-product-card" data-product="2">
-                <div class="luxury-product-image">
-                    <div class="luxury-product-carousel">
-                        <img src="/Davroe_Protein_Hair_Rebuilder_200ml__77435.jpg" alt="Protein Hair Rebuilder" class="carousel-image active" loading="lazy">
-                        <img src="/__Davroe_Replenish_Jojoba_Crme_Treatment_200ml__26186.jpg" alt="Rebuilder Alternative View" class="carousel-image" loading="lazy">
-                    </div>
-                    <div class="luxury-carousel-dots">
-                        <span class="luxury-dot active" data-index="0"></span>
-                        <span class="luxury-dot" data-index="1"></span>
-                    </div>
-                </div>
-                <div class="luxury-product-info">
-                    <h3 class="luxury-product-name">Protein Hair Rebuilder</h3>
-                    <div class="luxury-product-stars">★★★★★</div>
-                    <div class="luxury-product-pricing">
-                        <span class="luxury-product-price-old">£44.95</span>
-                        <span class="luxury-product-price">£39.95</span>
-                    </div>
-                </div>
-            </a>
-
-            <!-- Product 3 -->
-            <a href="/product/shine-duo" class="luxury-product-card" data-product="3">
-                <div class="luxury-product-image">
-                    <div class="luxury-product-carousel">
-                        <img src="/Davroe_Thermaprotect_200ml__47285.jpg" alt="Thermaprotect Heat Protection" class="carousel-image active" loading="lazy">
-                        <img src="/Davroe_Shine_Fluid_75ml_2__31573.jpg" alt="Shine Fluid" class="carousel-image" loading="lazy">
-                    </div>
-                    <div class="luxury-carousel-dots">
-                        <span class="luxury-dot active" data-index="0"></span>
-                        <span class="luxury-dot" data-index="1"></span>
-                    </div>
-                </div>
-                <div class="luxury-product-info">
-                    <h3 class="luxury-product-name">Shine Fluid & Thermaprotect Duo</h3>
-                    <div class="luxury-product-stars">★★★★★</div>
-                    <div class="luxury-product-pricing">
-                        <span class="luxury-product-price-old">£39.90</span>
-                        <span class="luxury-product-price">£34.95</span>
-                    </div>
-                </div>
-            </a>
+        <!-- Products Grid - Dynamically loaded -->
+        <div class="luxury-products-grid" id="productsGrid">
+            <!-- Products will be loaded dynamically from productManager -->
         </div>
 
         <!-- Product Detail Modal (Hidden by default) -->

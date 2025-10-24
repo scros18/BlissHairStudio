@@ -21,7 +21,7 @@ export class ProductsDisplay {
     
     if (products.length === 0) {
       this.container.innerHTML = `
-        <div class="products-empty">
+        <div class="products-empty" style="grid-column: 1 / -1; text-align: center; padding: 80px 20px;">
           <svg width="100" height="100" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1">
             <circle cx="12" cy="12" r="10"/>
             <path d="M12 6v6M12 16h.01"/>
@@ -33,43 +33,39 @@ export class ProductsDisplay {
       return;
     }
     
+    // Render products in luxury card style
     this.container.innerHTML = products.map(product => `
-      <article class="product-card" data-product-id="${product.id}">
-        ${product.badge ? `<div class="product-badge">${product.badge}</div>` : ''}
-        <div class="product-image">
-          ${product.image 
-            ? `<img src="${product.image}" alt="${product.title}" loading="lazy">` 
-            : `<div class="product-placeholder">
-                <svg width="80" height="80" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
-                  <path d="M12 2L2 7L12 12L22 7L12 2Z"/>
-                  <path d="M2 17L12 22L22 17"/>
-                  <path d="M2 12L12 17L22 12"/>
-                </svg>
-              </div>`
-          }
-        </div>
-        <div class="product-info">
-          <h3 class="product-title">${product.title}</h3>
-          <p class="product-description">${product.description}</p>
-          <div class="product-details">
-            <span class="product-price">£${product.price.toFixed(2)}</span>
-            <button class="btn-add-to-cart" data-product-id="${product.id}">
-              Add to Cart
-            </button>
+      <a href="/product/${this.generateSlug(product.title)}" class="luxury-product-card" data-product-id="${product.id}">
+        <div class="luxury-product-image">
+          <div class="luxury-product-carousel">
+            ${product.image 
+              ? `<img src="${product.image}" alt="${product.title}" class="carousel-image active" loading="lazy">` 
+              : `<div class="product-placeholder" style="width:100%;height:350px;background:#F3F4F6;display:flex;align-items:center;justify-content:center;">
+                  <svg width="80" height="80" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                    <path d="M12 2L2 7L12 12L22 7L12 2Z"/>
+                    <path d="M2 17L12 22L22 17"/>
+                    <path d="M2 12L12 17L22 12"/>
+                  </svg>
+                </div>`
+            }
           </div>
         </div>
-      </article>
+        <div class="luxury-product-info">
+          <h3 class="luxury-product-name">${product.title}</h3>
+          <div class="luxury-product-stars">★★★★★</div>
+          <div class="luxury-product-pricing">
+            <span class="luxury-product-price">£${product.price.toFixed(2)}</span>
+          </div>
+        </div>
+      </a>
     `).join('');
-    
-    // Add event listeners to all add-to-cart buttons
-    this.container.querySelectorAll('.btn-add-to-cart').forEach(btn => {
-      btn.addEventListener('click', (e) => {
-        const productId = (e.target as HTMLElement).dataset.productId;
-        if (productId) {
-          this.addToCart(productId, e.target as HTMLElement);
-        }
-      });
-    });
+  }
+
+  private generateSlug(title: string): string {
+    return title
+      .toLowerCase()
+      .replace(/[^a-z0-9]+/g, '-')
+      .replace(/^-|-$/g, '');
   }
 
   private addToCart(productId: string, button: HTMLElement): void {

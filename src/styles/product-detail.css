@@ -325,9 +325,9 @@
 .btn-add-to-bag {
   flex: 1;
   padding: 16px 32px;
-  background: #0D3D2E;
+  background: #16A34A;
   color: white;
-  border: 1px solid #0D3D2E;
+  border: 1px solid #16A34A;
   font-size: 0.95rem;
   font-weight: 500;
   text-transform: uppercase;
@@ -338,7 +338,7 @@
 
 .btn-add-to-bag:hover {
   background: #FFFFFF;
-  color: #0D3D2E;
+  color: #16A34A;
 }
 
 .btn-wishlist {
@@ -380,7 +380,7 @@
 
 .feature-item svg {
   flex-shrink: 0;
-  color: #0D3D2E;
+  color: #16A34A;
 }
 
 /* Collapsible Sections */
