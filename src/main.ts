@@ -962,13 +962,19 @@ class App {
     });
 
     document.getElementById('closeProductModal')?.addEventListener('click', () => {
-      productModal?.classList.remove('active');
-      document.body.classList.remove('modal-open');
+      productModal?.classList.add('closing');
+      setTimeout(() => {
+        productModal?.classList.remove('active', 'closing');
+        document.body.classList.remove('modal-open');
+      }, 300);
     });
 
     document.getElementById('cancelProductBtn')?.addEventListener('click', () => {
-      productModal?.classList.remove('active');
-      document.body.classList.remove('modal-open');
+      productModal?.classList.add('closing');
+      setTimeout(() => {
+        productModal?.classList.remove('active', 'closing');
+        document.body.classList.remove('modal-open');
+      }, 300);
     });
 
     productForm?.addEventListener('submit', (e) => {
@@ -993,10 +999,13 @@ class App {
         UI.showNotification('✨ Product added successfully!', { type: 'success' });
       }
 
-      productModal?.classList.remove('active');
-      document.body.classList.remove('modal-open');
-      this.loadProductsTable();
-      productsDisplay.init(); // Refresh products page
+      productModal?.classList.add('closing');
+      setTimeout(() => {
+        productModal?.classList.remove('active', 'closing');
+        document.body.classList.remove('modal-open');
+        this.loadProductsTable();
+        productsDisplay.init(); // Refresh products page
+      }, 300);
     });
 
     // Categories functionality
@@ -1017,13 +1026,19 @@ class App {
     });
 
     document.getElementById('closeCategoryModal')?.addEventListener('click', () => {
-      categoryModal?.classList.remove('active');
-      document.body.classList.remove('modal-open');
+      categoryModal?.classList.add('closing');
+      setTimeout(() => {
+        categoryModal?.classList.remove('active', 'closing');
+        document.body.classList.remove('modal-open');
+      }, 300);
     });
 
     document.getElementById('cancelCategoryBtn')?.addEventListener('click', () => {
-      categoryModal?.classList.remove('active');
-      document.body.classList.remove('modal-open');
+      categoryModal?.classList.add('closing');
+      setTimeout(() => {
+        categoryModal?.classList.remove('active', 'closing');
+        document.body.classList.remove('modal-open');
+      }, 300);
     });
 
     categoryForm?.addEventListener('submit', (e) => {
@@ -1040,9 +1055,12 @@ class App {
       categoryManager.addCategory(name);
 
       UI.showNotification('✨ Category added successfully!', { type: 'success' });
-      categoryModal?.classList.remove('active');
-      document.body.classList.remove('modal-open');
-      this.loadCategoriesGrid();
+      categoryModal?.classList.add('closing');
+      setTimeout(() => {
+        categoryModal?.classList.remove('active', 'closing');
+        document.body.classList.remove('modal-open');
+        this.loadCategoriesGrid();
+      }, 300);
     });
   }
 
