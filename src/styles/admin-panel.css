@@ -116,7 +116,7 @@
   background: transparent;
   border: 1.5px solid transparent;
   border-radius: 10px;
-  color: #334155;
+  color: #0F172A;
   font-size: 0.95rem;
   font-weight: 600;
   cursor: pointer;
@@ -127,7 +127,8 @@
 
 .admin-tab svg {
   flex-shrink: 0;
-  stroke: currentColor;
+  stroke: #0F172A;
+  stroke-width: 2;
   width: 20px;
   height: 20px;
 }
@@ -138,11 +139,19 @@
   border-color: #BBF7D0;
 }
 
+.admin-tab:hover svg {
+  stroke: #0D3D2E;
+}
+
 .admin-tab.active {
   color: #0D3D2E;
   background: #ECFDF5;
   border-color: #0D3D2E;
   font-weight: 700;
+}
+
+.admin-tab.active svg {
+  stroke: #0D3D2E;
 }
 
 .admin-tab:focus-visible {
@@ -191,7 +200,7 @@
 }
 
 .admin-section-title {
-  font-size: 2.5rem;
+  font-size: 2.2rem;
   font-weight: 300;
   color: #1A1A2E;
   margin: 0;
@@ -201,13 +210,15 @@
   font-family: 'Cormorant Garamond', 'Playfair Display', Georgia, serif;
   position: relative;
   padding-bottom: 12px;
+  text-align: center;
 }
 
 .admin-section-title::after {
   content: '';
   position: absolute;
   bottom: 0;
-  left: 0;
+  left: 50%;
+  transform: translateX(-50%);
   width: 80px;
   height: 2px;
   background: linear-gradient(90deg, #0D3D2E 0%, transparent 100%);
@@ -230,17 +241,18 @@
   align-items: center;
   justify-content: center;
   gap: 10px;
-  padding: 16px 32px;
+  padding: 14px 28px;
   background: linear-gradient(135deg, #0D3D2E 0%, #165441 100%);
   border: none;
   border-radius: 12px;
   color: #FFFFFF;
-  font-size: 1.05rem;
+  font-size: 0.95rem;
   font-weight: 600;
   cursor: pointer;
   transition: all 0.3s ease;
   box-shadow: 0 4px 12px rgba(13, 61, 46, 0.25);
-  margin-right: 20px;
+  margin-right: 0;
+  width: auto;
 }
 
 .btn-add-large:hover {
@@ -885,17 +897,19 @@
 
   .admin-section-title {
     font-size: 1.75rem;
-    text-align: left;
+    text-align: center;
     letter-spacing: 1px;
   }
 
   .admin-section-title::after {
+    left: 50%;
+    transform: translateX(-50%);
     width: 60px;
   }
 
   .btn-add-large {
     width: 100%;
-    padding: 13px 20px;
+    padding: 13px 24px;
     font-size: 0.9rem;
     margin-right: 0;
   }
