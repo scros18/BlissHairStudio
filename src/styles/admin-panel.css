@@ -8,6 +8,7 @@
   min-height: 100vh;
   background: #FAFAFA;
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Helvetica Neue', sans-serif;
+  overflow-x: hidden;
 }
 
 .admin-sidebar {
@@ -86,9 +87,9 @@
 
 .admin-main {
   margin-left: 260px;
-  padding: 32px;
+  padding: 24px 32px;
   min-height: 100vh;
-  max-width: 1400px;
+  width: calc(100% - 260px);
 }
 
 /* Topbar */
@@ -99,10 +100,10 @@
   gap: 16px;
   background: white;
   border: 1px solid #E8E8E8;
-  border-radius: 16px;
-  padding: 12px 16px;
-  margin-bottom: 20px;
-  box-shadow: 0 4px 12px rgba(0,0,0,0.04);
+  border-radius: 12px;
+  padding: 10px 14px;
+  margin-bottom: 16px;
+  box-shadow: 0 1px 2px rgba(0,0,0,0.04);
 }
 
 .search-bar {
@@ -196,11 +197,11 @@
 }
 
 .stat-card-glossy {
-  background: linear-gradient(180deg, rgba(255,255,255,0.9), rgba(255,255,255,0.8));
+  background: #FFFFFF;
   border: 1px solid #E5E7EB;
-  border-radius: 16px;
-  padding: 16px;
-  box-shadow: 0 6px 18px rgba(0,0,0,0.06);
+  border-radius: 12px;
+  padding: 14px;
+  box-shadow: 0 1px 2px rgba(0,0,0,0.04);
 }
 
 .stat-top {
@@ -254,7 +255,7 @@
   display: flex;
   justify-content: space-between;
   align-items: flex-start;
-  margin-bottom: 32px;
+  margin-bottom: 16px;
   flex-wrap: wrap;
   gap: 20px;
 }
@@ -277,10 +278,10 @@
 
 .admin-card {
   background: white;
-  border-radius: 0;
+  border-radius: 12px;
   border: 1px solid #E8E8E8;
   overflow: hidden;
-  box-shadow: none;
+  box-shadow: 0 1px 2px rgba(0,0,0,0.04);
 }
 
 /* Products Table */
@@ -294,7 +295,7 @@
 }
 
 .products-table thead {
-  background: #FAFAFA;
+  background: #FBFBFB;
   border-bottom: 1px solid #E8E8E8;
 }
 
@@ -310,7 +311,7 @@
 }
 
 .products-table td {
-  padding: 20px 24px;
+  padding: 16px 20px;
   border-bottom: 1px solid #F3F4F6;
   vertical-align: middle;
 }
@@ -512,6 +513,29 @@
   padding: 28px;
 }
 
+.form-label {
+  display: block;
+  font-size: 0.85rem;
+  color: #475569;
+  margin-bottom: 6px;
+}
+
+.form-input {
+  width: 100%;
+  border: 1px solid #E5E7EB;
+  background: #FFFFFF;
+  border-radius: 8px;
+  padding: 10px 12px;
+  font-size: 0.95rem;
+  color: #0F172A;
+}
+
+.form-input:focus {
+  outline: none;
+  border-color: #0D3D2E;
+  box-shadow: 0 0 0 3px rgba(13, 61, 46, 0.12);
+}
+
 .modal-actions {
   display: flex;
   gap: 12px;
@@ -547,6 +571,7 @@
   .admin-main {
     margin-left: 0;
     padding: 24px 16px;
+  width: 100%;
   }
 
   .admin-topbar { border-radius: 12px; }
