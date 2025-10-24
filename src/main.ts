@@ -723,6 +723,14 @@ class App {
       productModal?.classList.add('active');
     });
 
+    // Topbar Add Product mirrors the main button
+    document.getElementById('addProductBtnTop')?.addEventListener('click', () => {
+      productForm?.reset();
+      document.getElementById('productId')!.setAttribute('value', '');
+      document.getElementById('productModalTitle')!.textContent = 'Add Product';
+      productModal?.classList.add('active');
+    });
+
     document.getElementById('closeProductModal')?.addEventListener('click', () => {
       productModal?.classList.remove('active');
     });
@@ -760,6 +768,19 @@ class App {
 
     // Categories functionality would go here
     // For simplicity, not implementing full category CRUD in this iteration
+
+    // Simple client-side product search
+    const searchInput = document.getElementById('adminSearch') as HTMLInputElement | null;
+    if (searchInput) {
+      searchInput.addEventListener('input', () => {
+        const q = searchInput.value.trim().toLowerCase();
+        const rows = document.querySelectorAll<HTMLTableRowElement>('#productsTableBody tr');
+        rows.forEach(row => {
+          const text = row.textContent?.toLowerCase() || '';
+          row.style.display = text.includes(q) ? '' : 'none';
+        });
+      });
+    }
   }
 
   private loadProductsTable(): void {
