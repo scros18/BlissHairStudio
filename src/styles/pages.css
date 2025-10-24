@@ -2185,6 +2185,7 @@ body > .overlay, html > .overlay, .site-overlay {
   border-radius: 20px;
   border: 2px solid #E0E0E0;
   transition: all 0.3s ease;
+  text-align: center;
 }
 
 .contact-info-card:hover {
@@ -2200,11 +2201,44 @@ body > .overlay, html > .overlay, .site-overlay {
   display: flex;
   align-items: center;
   justify-content: center;
-  margin-bottom: 20px;
+  margin: 0 auto 20px;
 }
 
 .contact-card-icon svg {
   color: #2D6854;
+}
+
+/* Colorful Icons */
+.contact-card-icon.icon-location {
+  background: linear-gradient(135deg, rgba(59, 130, 246, 0.15), rgba(37, 99, 235, 0.1));
+}
+
+.contact-card-icon.icon-location svg {
+  color: #3B82F6;
+}
+
+.contact-card-icon.icon-phone {
+  background: linear-gradient(135deg, rgba(34, 197, 94, 0.15), rgba(22, 163, 74, 0.1));
+}
+
+.contact-card-icon.icon-phone svg {
+  color: #22C55E;
+}
+
+.contact-card-icon.icon-email {
+  background: linear-gradient(135deg, rgba(236, 72, 153, 0.15), rgba(219, 39, 119, 0.1));
+}
+
+.contact-card-icon.icon-email svg {
+  color: #EC4899;
+}
+
+.contact-card-icon.icon-hours {
+  background: linear-gradient(135deg, rgba(249, 115, 22, 0.15), rgba(234, 88, 12, 0.1));
+}
+
+.contact-card-icon.icon-hours svg {
+  color: #F97316;
 }
 
 .contact-info-card h3 {

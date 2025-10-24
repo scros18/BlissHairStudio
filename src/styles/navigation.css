@@ -692,6 +692,16 @@
     display: none;
   }
   
+  /* Force white background on all mobile menu elements */
+  .nav-menu,
+  .nav-menu *,
+  .nav-menu ul,
+  .nav-menu li,
+  .nav-menu li a,
+  .nav-menu::before {
+    background-color: #FFFFFF !important;
+  }
+  
   .logo img {
     height: 40px;
   }
