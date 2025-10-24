@@ -1,150 +1,85 @@
 // Admin Panel Page Template
+// Redesigned for maximum simplicity and user-friendliness
 
 export function adminPanelTemplate(): string {
   return `
     <div class="admin-panel">
-      <div class="admin-sidebar">
-        <div class="admin-logo">
-          <img src="/logo-transparent.svg" alt="Bliss Hair Studio" />
-          <h2>Admin Panel</h2>
+      <!-- Simple Top Bar -->
+      <div class="admin-header">
+        <div class="admin-brand">
+          <img src="/logo-transparent.svg" alt="Bliss Hair Studio" class="admin-brand-logo" />
+          <div>
+            <h1 class="admin-brand-title">Admin Dashboard</h1>
+            <p class="admin-brand-subtitle">Manage your store</p>
+          </div>
         </div>
-        <nav class="admin-nav">
-          <button class="admin-nav-item active" data-section="products">
-            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-              <path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/>
-              <line x1="3" y1="6" x2="21" y2="6"/>
-              <path d="M16 10a4 4 0 0 1-8 0"/>
-            </svg>
-            <span>Products</span>
-          </button>
-          <button class="admin-nav-item" data-section="categories">
-            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-              <path d="M3 3h7v7H3z"/>
-              <path d="M14 3h7v7h-7z"/>
-              <path d="M14 14h7v7h-7z"/>
-              <path d="M3 14h7v7H3z"/>
-            </svg>
-            <span>Categories</span>
-          </button>
-          <a href="/" class="admin-nav-item">
+        <div class="admin-header-actions">
+          <a href="/" class="btn-back-site">
             <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
               <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/>
               <polyline points="9 22 9 12 15 12 15 22"/>
             </svg>
-            <span>Back to Site</span>
+            <span>View Website</span>
           </a>
-        </nav>
+        </div>
       </div>
 
-      <div class="admin-main">
+      <!-- Simple Tab Navigation -->
+      <div class="admin-tabs">
+        <button class="admin-tab active" data-section="products">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/>
+            <line x1="3" y1="6" x2="21" y2="6"/>
+            <path d="M16 10a4 4 0 0 1-8 0"/>
+          </svg>
+          <span>Products</span>
+        </button>
+        <button class="admin-tab" data-section="categories">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M3 3h7v7H3z"/>
+            <path d="M14 3h7v7h-7z"/>
+            <path d="M14 14h7v7h-7z"/>
+            <path d="M3 14h7v7H3z"/>
+          </svg>
+          <span>Categories</span>
+        </button>
+      </div>
+
+        
         <!-- Products Section -->
         <div class="admin-section active" data-section-content="products">
-          <div class="admin-header">
-            <div>
-                <!-- Topbar: search + quick actions + user chip -->
-                <div class="admin-topbar">
-                  <div class="topbar-left">
-                    <div class="search-bar">
-                      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                        <circle cx="11" cy="11" r="8"></circle>
-                        <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
-                      </svg>
-                      <input id="adminSearch" class="search-input" type="search" placeholder="Search products, categories..." aria-label="Search" />
-                    </div>
-                  </div>
-                  <div class="topbar-right">
-                    <button class="btn btn-secondary-outline btn-sm" id="addProductBtnTop">
-                      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                        <line x1="12" y1="5" x2="12" y2="19"/>
-                        <line x1="5" y1="12" x2="19" y2="12"/>
-                      </svg>
-                      <span>New Product</span>
-                    </button>
-                    <div class="user-chip" title="Admin">
-                      <div class="avatar">MC</div>
-                      <div class="user-info">
-                        <span class="user-name">Maxine</span>
-                        <span class="user-role">Administrator</span>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-
-                <!-- Quick stats -->
-                <div class="stats-grid">
-                  <div class="stat-card-glossy">
-                    <div class="stat-top">
-                      <span class="stat-label">Products</span>
-                      <span class="stat-pill">Live</span>
-                    </div>
-                    <div class="stat-value">—</div>
-                    <div class="stat-foot">Total items in catalog</div>
-                  </div>
-                  <div class="stat-card-glossy">
-                    <div class="stat-top">
-                      <span class="stat-label">Orders</span>
-                      <span class="stat-pill neutral">Today</span>
-                    </div>
-                    <div class="stat-value">—</div>
-                    <div class="stat-foot">Recent orders</div>
-                  </div>
-                  <div class="stat-card-glossy">
-                    <div class="stat-top">
-                      <span class="stat-label">Revenue</span>
-                      <span class="stat-pill success">This week</span>
-                    </div>
-                    <div class="stat-value">£—</div>
-                    <div class="stat-foot">Gross sales</div>
-                  </div>
-                </div>
-              <h1>Products</h1>
-              <p class="admin-subtitle">Manage your product catalog</p>
-            </div>
-            <button class="btn btn-primary" id="addProductBtn">
-              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <div class="admin-section-header">
+            <h2 class="admin-section-title">Your Products</h2>
+            <button class="btn btn-add-large" id="addProductBtn" title="Click to add a new product">
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
                 <line x1="12" y1="5" x2="12" y2="19"/>
                 <line x1="5" y1="12" x2="19" y2="12"/>
               </svg>
-              Add Product
+              <span>Add New Product</span>
             </button>
           </div>
 
-          <div class="admin-card">
-            <div class="products-table">
-              <table>
-                <thead>
-                  <tr>
-                    <th>Product</th>
-                    <th>Price</th>
-                    <th>Badge</th>
-                    <th>Actions</th>
-                  </tr>
-                </thead>
-                <tbody id="productsTableBody">
-                  <!-- Products will be loaded here -->
-                </tbody>
-              </table>
+          <div class="admin-content">
+            <div class="products-list" id="productsTableBody">
+              <!-- Products will be loaded here -->
             </div>
           </div>
         </div>
 
         <!-- Categories Section -->
         <div class="admin-section" data-section-content="categories">
-          <div class="admin-header">
-            <div>
-              <h1>Categories</h1>
-              <p class="admin-subtitle">Organize your products</p>
-            </div>
-            <button class="btn btn-primary" id="addCategoryBtn">
-              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <div class="admin-section-header">
+            <h2 class="admin-section-title">Product Categories</h2>
+            <button class="btn btn-add-large" id="addCategoryBtn" title="Click to add a new category">
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
                 <line x1="12" y1="5" x2="12" y2="19"/>
                 <line x1="5" y1="12" x2="19" y2="12"/>
               </svg>
-              Add Category
+              <span>Add New Category</span>
             </button>
           </div>
 
-          <div class="admin-card">
+          <div class="admin-content">
             <div class="categories-grid" id="categoriesGrid">
               <!-- Categories will be loaded here -->
             </div>
@@ -153,13 +88,13 @@ export function adminPanelTemplate(): string {
       </div>
     </div>
 
-    <!-- Add Product Modal -->
+    <!-- Add/Edit Product Modal -->
     <div class="modal" id="productModal">
       <div class="modal-content">
         <div class="modal-header">
-          <h2 id="productModalTitle">Add Product</h2>
-          <button class="modal-close" id="closeProductModal">
-            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <h2 id="productModalTitle">Add New Product</h2>
+          <button class="modal-close" id="closeProductModal" title="Close">
+            <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
               <line x1="18" y1="6" x2="6" y2="18"/>
               <line x1="6" y1="6" x2="18" y2="18"/>
             </svg>
@@ -167,25 +102,85 @@ export function adminPanelTemplate(): string {
         </div>
         <form id="productForm">
           <input type="hidden" id="productId" name="id" />
+          
           <div class="form-group">
-            <label class="form-label">Product Name</label>
-            <input type="text" class="form-input" id="productTitle" name="title" required />
+            <label class="form-label">
+              <span>Product Name</span>
+              <span class="form-required">*</span>
+            </label>
+            <input 
+              type="text" 
+              class="form-input" 
+              id="productTitle" 
+              name="title" 
+              placeholder="e.g., Davroe Moisture Shampoo"
+              required 
+            />
+            <span class="form-hint">Give your product a clear, descriptive name</span>
           </div>
+
           <div class="form-group">
-            <label class="form-label">Description</label>
-            <textarea class="form-input" id="productDescription" name="description" rows="4" required></textarea>
+            <label class="form-label">
+              <span>Description</span>
+              <span class="form-required">*</span>
+            </label>
+            <textarea 
+              class="form-input form-textarea" 
+              id="productDescription" 
+              name="description" 
+              rows="4" 
+              placeholder="Tell customers about this product..."
+              required
+            ></textarea>
+            <span class="form-hint">Describe what makes this product special</span>
           </div>
+
           <div class="form-group">
-            <label class="form-label">Price (£)</label>
-            <input type="number" class="form-input" id="productPrice" name="price" step="0.01" min="0" required />
+            <label class="form-label">
+              <span>Price</span>
+              <span class="form-required">*</span>
+            </label>
+            <div class="input-with-prefix">
+              <span class="input-prefix">£</span>
+              <input 
+                type="number" 
+                class="form-input" 
+                id="productPrice" 
+                name="price" 
+                step="0.01" 
+                min="0" 
+                placeholder="0.00"
+                required 
+              />
+            </div>
+            <span class="form-hint">Enter the product price in pounds</span>
           </div>
+
           <div class="form-group">
-            <label class="form-label">Badge (Optional)</label>
-            <input type="text" class="form-input" id="productBadge" name="badge" placeholder="e.g. New, Sale, Popular" />
+            <label class="form-label">
+              <span>Badge</span>
+              <span class="form-optional">(Optional)</span>
+            </label>
+            <input 
+              type="text" 
+              class="form-input" 
+              id="productBadge" 
+              name="badge" 
+              placeholder="e.g., New, Sale, Popular" 
+            />
+            <span class="form-hint">Add a special label like "New" or "Sale"</span>
           </div>
+
           <div class="modal-actions">
-            <button type="button" class="btn btn-secondary" id="cancelProductBtn">Cancel</button>
-            <button type="submit" class="btn btn-primary">Save Product</button>
+            <button type="button" class="btn btn-cancel" id="cancelProductBtn">
+              Cancel
+            </button>
+            <button type="submit" class="btn btn-save">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+                <polyline points="20 6 9 17 4 12"/>
+              </svg>
+              <span>Save Product</span>
+            </button>
           </div>
         </form>
       </div>
@@ -195,9 +190,9 @@ export function adminPanelTemplate(): string {
     <div class="modal" id="categoryModal">
       <div class="modal-content">
         <div class="modal-header">
-          <h2>Add Category</h2>
-          <button class="modal-close" id="closeCategoryModal">
-            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <h2>Add New Category</h2>
+          <button class="modal-close" id="closeCategoryModal" title="Close">
+            <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
               <line x1="18" y1="6" x2="6" y2="18"/>
               <line x1="6" y1="6" x2="18" y2="18"/>
             </svg>
@@ -205,12 +200,30 @@ export function adminPanelTemplate(): string {
         </div>
         <form id="categoryForm">
           <div class="form-group">
-            <label class="form-label">Category Name</label>
-            <input type="text" class="form-input" id="categoryName" name="name" required />
+            <label class="form-label">
+              <span>Category Name</span>
+              <span class="form-required">*</span>
+            </label>
+            <input 
+              type="text" 
+              class="form-input" 
+              id="categoryName" 
+              name="name" 
+              placeholder="e.g., Shampoos, Conditioners..."
+              required 
+            />
+            <span class="form-hint">Choose a name for this product category</span>
           </div>
           <div class="modal-actions">
-            <button type="button" class="btn btn-secondary" id="cancelCategoryBtn">Cancel</button>
-            <button type="submit" class="btn btn-primary">Add Category</button>
+            <button type="button" class="btn btn-cancel" id="cancelCategoryBtn">
+              Cancel
+            </button>
+            <button type="submit" class="btn btn-save">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+                <polyline points="20 6 9 17 4 12"/>
+              </svg>
+              <span>Add Category</span>
+            </button>
           </div>
         </form>
       </div>

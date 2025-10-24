@@ -695,16 +695,16 @@ class App {
   }
 
   private setupAdminPanel(): void {
-    // Section navigation
-    document.querySelectorAll('.admin-nav-item[data-section]').forEach(item => {
-      item.addEventListener('click', (e) => {
+    // Tab navigation (simpler than before)
+    document.querySelectorAll('.admin-tab[data-section]').forEach(tab => {
+      tab.addEventListener('click', (e) => {
         e.preventDefault();
-        const section = (item as HTMLElement).dataset.section;
+        const section = (tab as HTMLElement).dataset.section;
         
-        document.querySelectorAll('.admin-nav-item').forEach(el => el.classList.remove('active'));
+        document.querySelectorAll('.admin-tab').forEach(el => el.classList.remove('active'));
         document.querySelectorAll('.admin-section').forEach(el => el.classList.remove('active'));
         
-        item.classList.add('active');
+        tab.classList.add('active');
         document.querySelector(`.admin-section[data-section-content="${section}"]`)?.classList.add('active');
       });
     });
@@ -719,15 +719,7 @@ class App {
     document.getElementById('addProductBtn')?.addEventListener('click', () => {
       productForm?.reset();
       document.getElementById('productId')!.setAttribute('value', '');
-      document.getElementById('productModalTitle')!.textContent = 'Add Product';
-      productModal?.classList.add('active');
-    });
-
-    // Topbar Add Product mirrors the main button
-    document.getElementById('addProductBtnTop')?.addEventListener('click', () => {
-      productForm?.reset();
-      document.getElementById('productId')!.setAttribute('value', '');
-      document.getElementById('productModalTitle')!.textContent = 'Add Product';
+      document.getElementById('productModalTitle')!.textContent = 'Add New Product';
       productModal?.classList.add('active');
     });
 
@@ -766,67 +758,125 @@ class App {
       productsDisplay.init(); // Refresh products page
     });
 
-    // Categories functionality would go here
-    // For simplicity, not implementing full category CRUD in this iteration
+    // Categories functionality
+    this.loadCategoriesGrid();
+    const categoryModal = document.getElementById('categoryModal');
+    const categoryForm = document.getElementById('categoryForm') as HTMLFormElement;
 
-    // Simple client-side product search
-    const searchInput = document.getElementById('adminSearch') as HTMLInputElement | null;
-    if (searchInput) {
-      searchInput.addEventListener('input', () => {
-        const q = searchInput.value.trim().toLowerCase();
-        const rows = document.querySelectorAll<HTMLTableRowElement>('#productsTableBody tr');
-        rows.forEach(row => {
-          const text = row.textContent?.toLowerCase() || '';
-          row.style.display = text.includes(q) ? '' : 'none';
-        });
-      });
-    }
+    document.getElementById('addCategoryBtn')?.addEventListener('click', () => {
+      categoryForm?.reset();
+      categoryModal?.classList.add('active');
+    });
+
+    document.getElementById('closeCategoryModal')?.addEventListener('click', () => {
+      categoryModal?.classList.remove('active');
+    });
+
+    document.getElementById('cancelCategoryBtn')?.addEventListener('click', () => {
+      categoryModal?.classList.remove('active');
+    });
+
+    categoryForm?.addEventListener('submit', (e) => {
+      e.preventDefault();
+      const formData = new FormData(categoryForm);
+      const name = formData.get('name') as string;
+      
+      // Add category to storage (simple implementation)
+      const categories = JSON.parse(localStorage.getItem('categories') || '[]');
+      categories.push({ id: Date.now().toString(), name });
+      localStorage.setItem('categories', JSON.stringify(categories));
+
+      UI.showNotification('✨ Category added successfully!', { type: 'success' });
+      categoryModal?.classList.remove('active');
+      this.loadCategoriesGrid();
+    });
   }
 
-  private loadProductsTable(): void {
-    const tbody = document.getElementById('productsTableBody');
-    if (!tbody) return;
+  private loadCategoriesGrid(): void {
+    const grid = document.getElementById('categoriesGrid');
+    if (!grid) return;
 
-    const products = productManager.getAllProducts();
-    
-    if (products.length === 0) {
-      tbody.innerHTML = `
-        <tr>
-          <td colspan="4" style="text-align: center; padding: 40px; color: #94A3B8;">
-            No products yet. Click "Add Product" to get started!
-          </td>
-        </tr>
+    const categories = JSON.parse(localStorage.getItem('categories') || '[]');
+
+    if (categories.length === 0) {
+      grid.innerHTML = `
+        <div class="categories-empty">
+          <div class="categories-empty-icon">📦</div>
+          <p>No categories yet. Click "Add New Category" to create one!</p>
+        </div>
       `;
       return;
     }
 
-    tbody.innerHTML = products.map(product => `
-      <tr>
-        <td>
-          <div class="product-info">
-            <div class="product-name">${product.title}</div>
-            <div class="product-description">${product.description}</div>
+    grid.innerHTML = categories.map((cat: any) => `
+      <div class="category-card">
+        <div class="category-header">
+          <h3 class="category-name">${cat.name}</h3>
+          <button class="category-delete" onclick="window.deleteCategory('${cat.id}')" title="Delete category">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <polyline points="3 6 5 6 21 6"/>
+              <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/>
+            </svg>
+          </button>
+        </div>
+      </div>
+    `).join('');
+
+    // Global delete function
+    (window as any).deleteCategory = (id: string) => {
+      if (confirm('Are you sure you want to delete this category?')) {
+        const categories = JSON.parse(localStorage.getItem('categories') || '[]');
+        const filtered = categories.filter((c: any) => c.id !== id);
+        localStorage.setItem('categories', JSON.stringify(filtered));
+        UI.showNotification('Category deleted', { type: 'info' });
+        this.loadCategoriesGrid();
+      }
+    };
+  }
+
+  private loadProductsTable(): void {
+    const container = document.getElementById('productsTableBody');
+    if (!container) return;
+
+    const products = productManager.getAllProducts();
+    
+    if (products.length === 0) {
+      container.innerHTML = `
+        <div class="products-empty">
+          <div class="products-empty-icon">🛍️</div>
+          <p>No products yet. Click "Add New Product" to get started!</p>
+        </div>
+      `;
+      return;
+    }
+
+    container.innerHTML = products.map(product => `
+      <div class="product-card">
+        <div class="product-card-main">
+          <h3 class="product-card-title">${product.title}</h3>
+          <p class="product-card-description">${product.description}</p>
+          <div class="product-card-meta">
+            <div class="product-card-price">£${product.price.toFixed(2)}</div>
+            ${product.badge ? `<span class="product-badge">${product.badge}</span>` : ''}
           </div>
-        </td>
-        <td><div class="product-price">£${product.price.toFixed(2)}</div></td>
-        <td>${product.badge ? `<span class="product-badge">${product.badge}</span>` : '—'}</td>
-        <td>
-          <div class="product-actions">
-            <button class="btn-icon" onclick="window.editProduct('${product.id}')">
-              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/>
-                <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/>
-              </svg>
-            </button>
-            <button class="btn-icon danger" onclick="window.deleteProduct('${product.id}')">
-              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                <polyline points="3 6 5 6 21 6"/>
-                <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/>
-              </svg>
-            </button>
-          </div>
-        </td>
-      </tr>
+        </div>
+        <div class="product-card-actions">
+          <button class="btn-action" onclick="window.editProduct('${product.id}')" title="Edit this product">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/>
+              <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/>
+            </svg>
+            <span>Edit</span>
+          </button>
+          <button class="btn-action danger" onclick="window.deleteProduct('${product.id}')" title="Delete this product">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <polyline points="3 6 5 6 21 6"/>
+              <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/>
+            </svg>
+            <span>Delete</span>
+          </button>
+        </div>
+      </div>
     `).join('');
 
     // Add global functions for edit/delete
@@ -845,7 +895,7 @@ class App {
     };
 
     (window as any).deleteProduct = (id: string) => {
-      if (confirm('Are you sure you want to delete this product?')) {
+      if (confirm('Are you sure you want to delete this product? This cannot be undone.')) {
         productManager.deleteProduct(id);
         UI.showNotification('Product deleted successfully', { type: 'info' });
         this.loadProductsTable();
