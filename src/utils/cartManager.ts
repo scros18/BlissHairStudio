@@ -56,6 +56,17 @@ class CartManager {
     return this.cart.items.reduce((sum, item) => sum + item.quantity, 0);
   }
 
+  getItems(): Product[] {
+    // Return array of products for checkout display
+    return this.cart.items.flatMap(item => 
+      Array(item.quantity).fill(item.product)
+    );
+  }
+
+  getTotal(): number {
+    return this.cart.total;
+  }
+
   addItem(product: Product, quantity: number = 1): void {
     const existingItem = this.cart.items.find(item => item.product.id === product.id);
     

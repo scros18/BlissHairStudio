@@ -504,6 +504,173 @@
   color: #2D6854;
 }
 
+/* Enhanced Payment UI */
+.payment-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 56px;
+  height: 56px;
+  background: white;
+  border-radius: 12px;
+  flex-shrink: 0;
+}
+
+.payment-details {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  flex: 1;
+}
+
+.payment-title {
+  font-weight: 600;
+  color: #1A1A2E;
+  font-size: 1.05rem;
+}
+
+.payment-subtitle {
+  font-size: 0.85rem;
+  color: #666;
+  font-weight: 400;
+}
+
+.card-logos {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+}
+
+.input-with-icon {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.input-with-icon .form-input {
+  padding-right: 48px;
+}
+
+.card-brand-icon {
+  position: absolute;
+  right: 12px;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 32px;
+  height: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.input-with-icon svg {
+  position: absolute;
+  right: 12px;
+  top: 50%;
+  transform: translateY(-50%);
+}
+
+.paypal-details {
+  text-align: center;
+  padding: 48px 24px;
+  background: #F7F9FC;
+  border-radius: 16px;
+  border: 2px dashed #E0E0E0;
+}
+
+.paypal-info {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 20px;
+}
+
+.paypal-info p {
+  color: #666;
+  font-size: 1rem;
+  max-width: 400px;
+  margin: 0;
+}
+
+.form-input.error {
+  border-color: #EF4444;
+  background: #FEF2F2;
+}
+
+/* Review Section Styles */
+.review-section {
+  margin-bottom: 32px;
+  padding: 24px;
+  background: #FAFAFA;
+  border-radius: 16px;
+  border: 2px solid #E0E0E0;
+}
+
+.review-section h3 {
+  font-size: 1.2rem;
+  font-weight: 700;
+  color: #1A1A2E;
+  margin-bottom: 16px;
+}
+
+.review-section p {
+  color: #666;
+  margin: 4px 0;
+  font-size: 0.95rem;
+}
+
+.review-items {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.review-item {
+  display: flex;
+  gap: 16px;
+  align-items: center;
+  padding: 16px;
+  background: white;
+  border-radius: 12px;
+  border: 1px solid #E0E0E0;
+}
+
+.review-totals {
+  margin-top: 24px;
+  padding-top: 24px;
+  border-top: 2px solid #E0E0E0;
+}
+
+.review-total-row {
+  display: flex;
+  justify-content: space-between;
+  padding: 12px 0;
+  font-size: 1rem;
+  color: #666;
+}
+
+.review-total-row.total {
+  font-size: 1.4rem;
+  color: #1A1A2E;
+  font-weight: 700;
+  padding-top: 16px;
+  margin-top: 8px;
+  border-top: 2px solid #2D6854;
+}
+
+.spinner {
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
 @media (max-width: 1024px) {
   .checkout-content {
     grid-template-columns: 1fr;

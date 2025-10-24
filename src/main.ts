@@ -36,6 +36,7 @@ import { storesPage } from './pages/stores';
 import { productMoistureTemplate } from './pages/product-moisture';
 import { productProteinTemplate } from './pages/product-protein';
 import { productDuoTemplate } from './pages/product-duo';
+import { dynamicProductTemplate } from './pages/product-dynamic';
 import { cartManager } from './utils/cartManager';
 
 class App {
@@ -212,6 +213,45 @@ class App {
         });
         pageManager.loadPageFromTemplate(storesPage);
       })
+      .route('/product/:slug', () => {
+        // Dynamic product route - extract slug from URL
+        const pathParts = window.location.pathname.split('/');
+        const slug = pathParts[pathParts.length - 1];
+        
+        // Find product by slug
+        const products = productManager.getAllProducts();
+        const product = products.find(p => {
+          const productSlug = p.title
+            .toLowerCase()
+            .replace(/[^a-z0-9]+/g, '-')
+            .replace(/^-|-$/g, '');
+          return productSlug === slug;
+        });
+        
+        if (!product) {
+          // Product not found, redirect to products page
+          router.navigate('/products');
+          return;
+        }
+        
+        seoManager.updateMeta({
+          title: `${product.title} | BlissHairStudio`,
+          description: product.description || `${product.title} - Premium hair care product available at BlissHairStudio.`,
+          keywords: `${product.title}, hair product, salon product, hair care`
+        });
+        
+        pageManager.loadPageFromTemplate(() => dynamicProductTemplate(product));
+        requestAnimationFrame(() => setTimeout(() => {
+          initProductDetailGallery();
+          initProductDetailInteractions({
+            id: product.id,
+            title: product.title,
+            price: product.price,
+            image: product.image,
+            defaultSize: '325ml'
+          });
+        }, 0));
+      })
   .route('/product/moisture-senses', () => {
         seoManager.updateMeta({
           title: 'Moisture Senses Hydrating Conditioner | BlissHairStudio',
@@ -361,8 +401,94 @@ class App {
       window.scrollTo({ top: 0, behavior: 'smooth' });
     };
     
-    document.getElementById('continueToPayment')?.addEventListener('click', () => updateStep(2));
-    document.getElementById('continueToReview')?.addEventListener('click', () => updateStep(3));
+    // Payment method toggle
+    const cardDetails = document.getElementById('cardDetails');
+    const paypalDetails = document.getElementById('paypalDetails');
+    const paymentRadios = document.querySelectorAll<HTMLInputElement>('input[name="paymentMethod"]');
+    
+    paymentRadios.forEach(radio => {
+      radio.addEventListener('change', (e) => {
+        const target = e.target as HTMLInputElement;
+        if (target.value === 'card') {
+          cardDetails?.classList.remove('hidden');
+          paypalDetails?.classList.add('hidden');
+        } else if (target.value === 'paypal') {
+          cardDetails?.classList.add('hidden');
+          paypalDetails?.classList.remove('hidden');
+        }
+      });
+    });
+    
+    // Card number formatting
+    const cardNumberInput = document.getElementById('cardNumberInput') as HTMLInputElement;
+    cardNumberInput?.addEventListener('input', (e) => {
+      const target = e.target as HTMLInputElement;
+      let value = target.value.replace(/\s/g, '');
+      let formattedValue = value.match(/.{1,4}/g)?.join(' ') || value;
+      target.value = formattedValue;
+    });
+    
+    // Expiry date formatting
+    const cardExpiryInput = document.getElementById('cardExpiryInput') as HTMLInputElement;
+    cardExpiryInput?.addEventListener('input', (e) => {
+      const target = e.target as HTMLInputElement;
+      let value = target.value.replace(/\s/g, '').replace(/\//g, '');
+      if (value.length >= 2) {
+        value = value.slice(0, 2) + ' / ' + value.slice(2, 4);
+      }
+      target.value = value;
+    });
+    
+    // CVV input restriction
+    const cardCvvInput = document.getElementById('cardCvvInput') as HTMLInputElement;
+    cardCvvInput?.addEventListener('input', (e) => {
+      const target = e.target as HTMLInputElement;
+      target.value = target.value.replace(/\D/g, '');
+    });
+    
+    document.getElementById('continueToPayment')?.addEventListener('click', () => {
+      // Validate shipping form
+      const form = document.getElementById('checkoutForm') as HTMLFormElement;
+      const section1Inputs = form.querySelectorAll('[data-section="1"] input[required]');
+      let isValid = true;
+      
+      section1Inputs.forEach(input => {
+        const inputEl = input as HTMLInputElement;
+        if (!inputEl.value.trim()) {
+          isValid = false;
+          inputEl.classList.add('error');
+        } else {
+          inputEl.classList.remove('error');
+        }
+      });
+      
+      if (isValid) {
+        updateStep(2);
+      } else {
+        UI.showNotification('Please fill in all required fields', { type: 'error' });
+      }
+    });
+    
+    document.getElementById('continueToReview')?.addEventListener('click', () => {
+      const selectedPayment = document.querySelector<HTMLInputElement>('input[name="paymentMethod"]:checked')?.value;
+      
+      if (selectedPayment === 'card') {
+        // Validate card details
+        const cardNumber = (document.querySelector('[name="cardNumber"]') as HTMLInputElement)?.value;
+        const cardExpiry = (document.querySelector('[name="cardExpiry"]') as HTMLInputElement)?.value;
+        const cardCvv = (document.querySelector('[name="cardCvv"]') as HTMLInputElement)?.value;
+        const cardName = (document.querySelector('[name="cardName"]') as HTMLInputElement)?.value;
+        
+        if (!cardNumber || !cardExpiry || !cardCvv || !cardName) {
+          UI.showNotification('Please fill in all card details', { type: 'error' });
+          return;
+        }
+      }
+      
+      updateStep(3);
+      this.displayOrderReview();
+    });
+    
     document.getElementById('backToShipping')?.addEventListener('click', () => updateStep(1));
     document.getElementById('backToPayment')?.addEventListener('click', () => updateStep(2));
     
@@ -370,12 +496,101 @@ class App {
     const form = document.getElementById('checkoutForm');
     form?.addEventListener('submit', (e) => {
       e.preventDefault();
-      UI.showNotification('Order placed successfully! 🎉', { type: 'success' });
-      setTimeout(() => router.navigate('/account'), 1500);
+      
+      const placeOrderBtn = document.getElementById('placeOrderBtn') as HTMLButtonElement;
+      if (placeOrderBtn) {
+        placeOrderBtn.disabled = true;
+        placeOrderBtn.innerHTML = `
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="spinner">
+            <circle cx="12" cy="12" r="10" stroke-opacity="0.25"/>
+            <path d="M12 2a10 10 0 0 1 10 10" stroke-linecap="round"/>
+          </svg>
+          Processing...
+        `;
+      }
+      
+      // Simulate payment processing
+      setTimeout(() => {
+        // Clear cart
+        cartManager.clearCart();
+        
+        UI.showNotification('Order placed successfully! 🎉 Check your email for confirmation.', { type: 'success' });
+        setTimeout(() => router.navigate('/account'), 2000);
+      }, 2000);
     });
     
     // Load cart items into checkout
     this.loadCheckoutItems();
+  }
+  
+  private displayOrderReview(): void {
+    const reviewContainer = document.getElementById('orderReview');
+    if (!reviewContainer) return;
+    
+    const items = cartManager.getItems();
+    const subtotal = cartManager.getTotal();
+    const shipping = subtotal >= 50 ? 0 : 5.00;
+    const total = subtotal + shipping;
+    
+    const shippingInfo = {
+      firstName: (document.querySelector('[name="firstName"]') as HTMLInputElement)?.value || '',
+      lastName: (document.querySelector('[name="lastName"]') as HTMLInputElement)?.value || '',
+      email: (document.querySelector('[name="email"]') as HTMLInputElement)?.value || '',
+      phone: (document.querySelector('[name="phone"]') as HTMLInputElement)?.value || '',
+      address: (document.querySelector('[name="address"]') as HTMLInputElement)?.value || '',
+      city: (document.querySelector('[name="city"]') as HTMLInputElement)?.value || '',
+      postcode: (document.querySelector('[name="postcode"]') as HTMLInputElement)?.value || '',
+    };
+    
+    const paymentMethod = document.querySelector<HTMLInputElement>('input[name="paymentMethod"]:checked')?.value || 'card';
+    const paymentDisplay = paymentMethod === 'card' ? 'Credit/Debit Card' : 'PayPal';
+    
+    reviewContainer.innerHTML = `
+      <div class="review-section">
+        <h3>Shipping Address</h3>
+        <p>${shippingInfo.firstName} ${shippingInfo.lastName}</p>
+        <p>${shippingInfo.address}</p>
+        <p>${shippingInfo.city}, ${shippingInfo.postcode}</p>
+        <p>${shippingInfo.email}</p>
+        <p>${shippingInfo.phone}</p>
+      </div>
+      
+      <div class="review-section">
+        <h3>Payment Method</h3>
+        <p>${paymentDisplay}</p>
+      </div>
+      
+      <div class="review-section">
+        <h3>Order Items</h3>
+        <div class="review-items">
+          ${items.map(item => `
+            <div class="review-item">
+              <img src="${item.image}" alt="${item.title}" style="width: 60px; height: 60px; object-fit: cover; border-radius: 8px;">
+              <div style="flex: 1;">
+                <p style="font-weight: 600; margin: 0;">${item.title}</p>
+                <p style="color: #6B7280; margin: 4px 0 0 0; font-size: 0.875rem;">Quantity: 1</p>
+              </div>
+              <p style="font-weight: 600;">£${item.price.toFixed(2)}</p>
+            </div>
+          `).join('')}
+        </div>
+      </div>
+      
+      <div class="review-totals">
+        <div class="review-total-row">
+          <span>Subtotal</span>
+          <span>£${subtotal.toFixed(2)}</span>
+        </div>
+        <div class="review-total-row">
+          <span>Shipping</span>
+          <span>£${shipping.toFixed(2)}</span>
+        </div>
+        <div class="review-total-row total">
+          <strong>Total</strong>
+          <strong>£${total.toFixed(2)}</strong>
+        </div>
+      </div>
+    `;
   }
   
   private setupLogin(): void {
