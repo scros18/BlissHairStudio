@@ -589,7 +589,7 @@
     text-transform: uppercase;
     letter-spacing: 1.5px;
     border-bottom: 2px solid #F0F0F0;
-    background: linear-gradient(180deg, #FAFAFA 0%, #FFFFFF 100%);
+    background: #FFFFFF;
     position: sticky;
     top: 0;
     z-index: 10;
@@ -601,6 +601,7 @@
     opacity: 0;
     transform: translateX(20px);
     transition: all 0.3s cubic-bezier(0.34, 1.26, 0.64, 1);
+    background: #FFFFFF;
   }
   
   .nav-menu.active li {
@@ -665,7 +666,7 @@
 
   .nav-menu li a:hover,
   .nav-menu li a.active {
-    background: linear-gradient(90deg, rgba(0, 137, 123, 0.06) 0%, transparent 100%);
+    background: #FFFFFF;
     color: #00897B;
     padding-left: 28px;
   }
@@ -683,7 +684,7 @@
   
   .nav-menu li a:active {
     transform: scale(0.98);
-    background: rgba(0, 137, 123, 0.1);
+    background: #FFFFFF;
   }
   
   /* Remove old close button */
