@@ -169,8 +169,8 @@
 }
 
 .admin-tab:focus-visible {
-  outline: 2px solid #16A34A;
-  outline-offset: 4px;
+  outline: 1px solid #D1D5DB;
+  outline-offset: 2px;
   border-radius: 8px;
 }
 
@@ -304,9 +304,11 @@
 
 .product-card {
   background: #FFFFFF;
-  border: 1px solid #E5E7EB;
+  border: 1px solid #E5E7EB; /* subtle grey */
   border-radius: 12px;
   padding: 20px;
+  outline: none;
+  box-shadow: none;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -314,6 +316,15 @@
   transition: all 0.2s ease;
   position: relative;
 }
+
+.product-card:focus,
+.product-card:focus-visible,
+.product-card:active {
+  outline: none !important;
+  box-shadow: none !important;
+  border-color: #E5E7EB !important;
+}
+
 
 .product-card:hover {
   border-color: #D1D5DB;
@@ -390,6 +401,13 @@
   margin-top: auto;
   padding-top: 12px;
   border-top: 1px solid #F3F4F6;
+  position: relative;
+  z-index: 1; /* above card */
+}
+
+.product-card .btn-action {
+  position: relative;
+  z-index: 2;
 }
 
 .btn-action {
@@ -1048,13 +1066,16 @@
   }
 
   .modal {
-    padding: 0;
-    align-items: flex-end;
+    padding: 20px;
+    align-items: center; /* center instead of bottom */
+    justify-content: center;
   }
 
   .modal-content {
-    border-radius: 20px 20px 0 0;
+    border-radius: 16px; /* uniform rounded corners */
     max-height: 85vh;
+    width: 90vw;
+    max-width: 500px;
   }
 
   .modal-header {
@@ -1172,8 +1193,8 @@
 
 /* Focus Visible for Keyboard Navigation */
 *:focus-visible {
-  outline: 3px solid #16A34A;
-  outline-offset: 3px;
+  outline: 1px solid #D1D5DB;
+  outline-offset: 1px;
 }
 
 /* ================================================

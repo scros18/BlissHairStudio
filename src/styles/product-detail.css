@@ -403,8 +403,9 @@
   letter-spacing: 1px;
   color: #1A1A1A !important;
   cursor: pointer;
-  transition: opacity 0.3s;
+  transition: opacity 0.2s ease;
   text-align: left !important;
+  -webkit-tap-highlight-color: transparent; /* nicer tap on iOS */
 }
 
 /* Force left alignment in case a global button style centers text */
@@ -426,7 +427,7 @@
 
 .section-header svg {
   order: -1; /* icon first, left of text */
-  transition: transform 200ms ease, opacity 200ms ease;
+  transition: transform 320ms cubic-bezier(0.22, 1, 0.36, 1), opacity 200ms ease; /* iOS-like */
   flex-shrink: 0;
   transform: rotate(180deg);
   opacity: 0.8;
@@ -436,10 +437,11 @@
   transform: rotate(0deg);
 }
 
+
 .section-content {
   max-height: 1000px;
   overflow: hidden;
-  transition: max-height 240ms ease;
+  transition: max-height 360ms cubic-bezier(0.22, 1, 0.36, 1), padding 160ms ease; /* smoother */
   padding-bottom: 20px;
 }
 

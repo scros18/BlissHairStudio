@@ -407,66 +407,61 @@ export function initProductDetailInteractions(details: {
         });
     });
 
-    // Collapsible sections (default collapsed). Direct listeners on each header.
+    // Collapsible sections (accordion) with direct listeners
     const sections = Array.from(document.querySelectorAll<HTMLElement>('.detail-section'));
     console.log('🔍 Found sections:', sections.length);
-    
-    // Ensure initial state collapsed unless explicitly marked active and wire ARIA
+
     sections.forEach((sec, idx) => {
+        // Initialize collapsed state
         if (!sec.classList.contains('collapsed') && !sec.classList.contains('active')) {
             sec.classList.add('collapsed');
         }
+        
         const header = sec.querySelector<HTMLButtonElement>('.section-header');
         const content = sec.querySelector<HTMLElement>('.section-content');
-        console.log(`📦 Section ${idx}: header=${!!header}, content=${!!content}, collapsed=${sec.classList.contains('collapsed')}`);
         
-        if (header && content) {
-            const cid = content.id || `section-content-${idx}`;
-            content.id = cid;
-            header.setAttribute('aria-controls', cid);
-            const expanded = !sec.classList.contains('collapsed');
-            header.setAttribute('aria-expanded', expanded ? 'true' : 'false');
-            content.setAttribute('aria-hidden', expanded ? 'false' : 'true');
+        if (!header || !content) return;
+        
+        // Set ARIA
+        const cid = content.id || `section-content-${idx}`;
+        content.id = cid;
+        header.setAttribute('aria-controls', cid);
+        header.setAttribute('aria-expanded', (!sec.classList.contains('collapsed')).toString());
+        content.setAttribute('aria-hidden', sec.classList.contains('collapsed') ? 'true' : 'false');
+        
+        // Direct click listener on each header
+        header.addEventListener('click', (e) => {
+            e.preventDefault();
+            e.stopPropagation();
             
-            // Attach click listener directly to this header
-            header.addEventListener('click', (e) => {
-                e.preventDefault();
-                e.stopPropagation();
-                
-                const clickedWasCollapsed = sec.classList.contains('collapsed');
-                console.log('🔧 Section clicked:', idx, 'was collapsed:', clickedWasCollapsed);
-
-                // Accordion behavior: close all others
-                sections.forEach((other) => {
-                    if (other !== sec) {
-                        other.classList.add('collapsed');
-                        other.classList.remove('active');
-                        const otherHeader = other.querySelector<HTMLButtonElement>('.section-header');
-                        const otherContent = other.querySelector<HTMLElement>('.section-content');
-                        otherHeader?.setAttribute('aria-expanded', 'false');
-                        otherContent?.setAttribute('aria-hidden', 'true');
-                    }
-                });
-
-                // Toggle clicked section
-                if (clickedWasCollapsed) {
-                    sec.classList.remove('collapsed');
-                    sec.classList.add('active');
-                    header.setAttribute('aria-expanded', 'true');
-                    content.setAttribute('aria-hidden', 'false');
-                    console.log('✅ Section opened:', idx);
-                } else {
-                    sec.classList.add('collapsed');
-                    sec.classList.remove('active');
-                    header.setAttribute('aria-expanded', 'false');
-                    content.setAttribute('aria-hidden', 'true');
-                    console.log('✅ Section closed:', idx);
+            const isOpening = sec.classList.contains('collapsed');
+            console.log('🖱️ Section clicked:', idx, 'isOpening:', isOpening);
+            
+            // Close all other sections (accordion behavior)
+            sections.forEach((other, otherIdx) => {
+                if (otherIdx !== idx) {
+                    other.classList.add('collapsed');
+                    other.classList.remove('active');
+                    const oh = other.querySelector<HTMLButtonElement>('.section-header');
+                    const oc = other.querySelector<HTMLElement>('.section-content');
+                    oh?.setAttribute('aria-expanded', 'false');
+                    oc?.setAttribute('aria-hidden', 'true');
                 }
             });
-            console.log(`✅ Click listener attached to section ${idx}`);
-        } else {
-            console.warn(`❌ Section ${idx}: Missing header or content`);
-        }
+            
+            // Toggle clicked section
+            if (isOpening) {
+                sec.classList.remove('collapsed');
+                sec.classList.add('active');
+                header.setAttribute('aria-expanded', 'true');
+                content.setAttribute('aria-hidden', 'false');
+            } else {
+                sec.classList.add('collapsed');
+                sec.classList.remove('active');
+                header.setAttribute('aria-expanded', 'false');
+                content.setAttribute('aria-hidden', 'true');
+            }
+        });
     });
 
     // Add to Bag

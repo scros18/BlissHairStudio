@@ -166,8 +166,8 @@ input, textarea, select {
 
 /* Focus Styles */
 *:focus-visible {
-  outline: 2px solid var(--primary-color);
-  outline-offset: 2px;
+  outline: 1px solid #D1D5DB;
+  outline-offset: 1px;
 }
 
 /* ================================================
