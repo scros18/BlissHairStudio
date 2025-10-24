@@ -15,7 +15,7 @@ import { UI } from './components/ui';
 import { router } from './utils/router';
 import { pageManager } from './utils/pageManager';
 import { seoManager } from './utils/seo';
-import { homePageTemplate, initProductCarousel } from './pages/home';
+import { homePageTemplate, initProductCarousel, initProductDetailGallery, initProductDetailInteractions } from './pages/home';
 import { productsPageTemplate } from './pages/products';
 import { aboutPageTemplate } from './pages/about';
 import { servicesPageTemplate } from './pages/services';
@@ -98,9 +98,8 @@ class App {
       .route('/', () => {
         seoManager.updateMeta(seoManager.getHomeSEO());
         pageManager.loadPageFromTemplate(homePageTemplate);
-        setTimeout(() => {
-          initProductCarousel();
-        }, 100);
+        // Defer init until content is in DOM
+        requestAnimationFrame(() => setTimeout(() => initProductCarousel(), 0));
       })
       .route('/products', () => {
         seoManager.updateMeta(seoManager.getProductsSEO());
@@ -212,13 +211,23 @@ class App {
         });
         pageManager.loadPageFromTemplate(storesPage);
       })
-      .route('/product/moisture-senses', () => {
+  .route('/product/moisture-senses', () => {
         seoManager.updateMeta({
           title: 'Moisture Senses Hydrating Conditioner | BlissHairStudio',
           description: 'Davroe Moisture Senses Hydrating Conditioner - Deeply nourish and hydrate dry, damaged hair with this luxurious salon treatment.',
           keywords: 'hydrating conditioner, moisture conditioner, hair conditioner, Davroe products'
         });
         pageManager.loadPageFromTemplate(productMoistureTemplate);
+        requestAnimationFrame(() => setTimeout(() => {
+          initProductDetailGallery();
+          initProductDetailInteractions({
+            id: 'product-moisture-senses',
+            title: 'Moisture Senses Hydrating Conditioner',
+            price: 29.95,
+            image: '/Davroe_Moisture_Senses_Hydrating_Conditioner_325ml__99636.jpg',
+            defaultSize: '325ml'
+          });
+        }, 0));
       })
       .route('/product/protein-rebuilder', () => {
         seoManager.updateMeta({
@@ -227,6 +236,16 @@ class App {
           keywords: 'protein treatment, hair rebuilder, damaged hair treatment, Davroe protein'
         });
         pageManager.loadPageFromTemplate(productProteinTemplate);
+        requestAnimationFrame(() => setTimeout(() => {
+          initProductDetailGallery();
+          initProductDetailInteractions({
+            id: 'product-protein-rebuilder',
+            title: 'Protein Hair Rebuilder',
+            price: 39.95,
+            image: '/Davroe_Protein_Hair_Rebuilder_200ml__77435.jpg',
+            defaultSize: '200ml'
+          });
+        }, 0));
       })
       .route('/product/shine-duo', () => {
         seoManager.updateMeta({
@@ -235,6 +254,15 @@ class App {
           keywords: 'shine fluid, heat protection, styling products, Davroe duo, thermaprotect'
         });
         pageManager.loadPageFromTemplate(productDuoTemplate);
+        requestAnimationFrame(() => setTimeout(() => {
+          initProductDetailGallery();
+          initProductDetailInteractions({
+            id: 'product-shine-duo',
+            title: 'Shine Fluid & Thermaprotect Duo',
+            price: 34.95,
+            image: '/Davroe_Thermaprotect_200ml__47285.jpg'
+          });
+        }, 0));
       })
       .notFound(() => {
         router.navigate('/');
@@ -244,6 +272,16 @@ class App {
   private onPageLoad(): void {
     this.setupScrollAnimations();
     this.setupForms();
+    
+    // Initialize home product card carousel if present
+    if (document.querySelector('.product-image-dots')) {
+      initProductCarousel();
+    }
+    
+    // Initialize product detail gallery if present
+    if (document.querySelector('.product-detail-images')) {
+      initProductDetailGallery();
+    }
     
     // Initialize reviews display if on home page
     const reviewsGrid = document.getElementById('reviewsGrid');

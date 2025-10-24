@@ -277,42 +277,152 @@ export const homePageTemplate = (): string => {
 
 // Initialize product carousel
 export function initProductCarousel(): void {
-  console.log('🎠 Initializing product carousel...');
-  
-  const productCards = document.querySelectorAll('.product-card');
-  console.log('Found product cards:', productCards.length);
-  
-  productCards.forEach((card, cardIndex) => {
-    const images = card.querySelectorAll('.product-image');
-    const dots = card.querySelectorAll('.dot');
-    
-    console.log(`Card ${cardIndex}: ${images.length} images, ${dots.length} dots`);
-    
-    dots.forEach(dot => {
-      dot.addEventListener('click', (e) => {
-        e.preventDefault();
-        e.stopPropagation();
-        
-        const index = parseInt(dot.getAttribute('data-index') || '0');
-        console.log(`Dot clicked: index ${index}`);
-        
-        // Update active image
-        images.forEach(img => {
-          img.classList.remove('active');
-        });
-        
-        if (images[index]) {
-          images[index].classList.add('active');
-          console.log(`Activated image ${index}`);
+    console.log('🎠 Initializing product carousel...');
+
+    const productCards = document.querySelectorAll('.product-card');
+    console.log('Found product cards:', productCards.length);
+
+    productCards.forEach((card, cardIndex) => {
+        // Avoid duplicate bindings when navigating SPA routes
+        const cardEl = card as HTMLElement;
+        if (cardEl.dataset.carouselInit === '1') {
+            return;
         }
-        
-        // Update active dot
-        dots.forEach(d => d.classList.remove('active'));
-        dot.classList.add('active');
-        console.log(`Activated dot for image ${index}`);
-      });
+        cardEl.dataset.carouselInit = '1';
+
+        const images = card.querySelectorAll('.product-image');
+        const dots = card.querySelectorAll('.dot');
+
+        console.log(`Card ${cardIndex}: ${images.length} images, ${dots.length} dots`);
+
+        dots.forEach(dot => {
+            dot.addEventListener('click', (e) => {
+                e.preventDefault();
+                e.stopPropagation();
+
+                const index = parseInt(dot.getAttribute('data-index') || '0');
+                console.log(`Dot clicked: index ${index}`);
+
+                // Update active image
+                images.forEach(img => {
+                    img.classList.remove('active');
+                });
+
+                if (images[index]) {
+                    images[index].classList.add('active');
+                    console.log(`Activated image ${index}`);
+                }
+
+                // Update active dot
+                dots.forEach(d => d.classList.remove('active'));
+                dot.classList.add('active');
+                console.log(`Activated dot for image ${index}`);
+            });
+        });
     });
-  });
-  
-  console.log('✅ Carousel initialization complete');
+
+    console.log('✅ Carousel initialization complete');
+}
+
+// Initialize product detail page thumbnail -> main image switcher
+export function initProductDetailGallery(): void {
+    console.log('🖼️ Initializing product detail gallery...');
+
+    const container = document.querySelector('.product-detail-images');
+    if (!container) {
+        console.log('No product detail gallery on this page.');
+        return;
+    }
+
+    const mainImages = container.querySelectorAll<HTMLImageElement>('.main-image');
+    const thumbnails = container.querySelectorAll<HTMLButtonElement>('.thumbnail');
+
+    // Guard against duplicate binding
+    const galleryRoot = container as HTMLElement;
+    if (galleryRoot.dataset.galleryInit === '1') return;
+    galleryRoot.dataset.galleryInit = '1';
+
+    console.log('Gallery images:', mainImages.length, 'thumbnails:', thumbnails.length);
+
+    thumbnails.forEach((thumb) => {
+        thumb.addEventListener('click', (e) => {
+            e.preventDefault();
+            e.stopPropagation();
+
+            const index = parseInt(thumb.getAttribute('data-index') || '0');
+
+            // Switch active image
+            mainImages.forEach(img => img.classList.remove('active'));
+            if (mainImages[index]) mainImages[index].classList.add('active');
+
+            // Switch active thumbnail
+            thumbnails.forEach(t => t.classList.remove('active'));
+            thumb.classList.add('active');
+        });
+    });
+
+    console.log('✅ Product detail gallery initialized');
+}
+
+// Wire up quantity, size, collapsible sections and Add to Bag for product detail pages
+export function initProductDetailInteractions(details: {
+    id: string;
+    title: string;
+    price: number;
+    image: string;
+    defaultSize?: string;
+}): void {
+    const root = document.querySelector('.luxury-product-detail-page') as HTMLElement | null;
+    if (!root) return;
+    if (root.dataset.interactionsInit === '1') return;
+    root.dataset.interactionsInit = '1';
+
+    // Quantity
+    const qtyInput = document.getElementById('qtyInput') as HTMLInputElement | null;
+    const increaseBtn = document.getElementById('increaseQty');
+    const decreaseBtn = document.getElementById('decreaseQty');
+    increaseBtn?.addEventListener('click', () => {
+        if (!qtyInput) return;
+        const current = parseInt(qtyInput.value || '1');
+        if (current < 10) qtyInput.value = String(current + 1);
+    });
+    decreaseBtn?.addEventListener('click', () => {
+        if (!qtyInput) return;
+        const current = parseInt(qtyInput.value || '1');
+        if (current > 1) qtyInput.value = String(current - 1);
+    });
+
+    // Size selector
+    document.querySelectorAll<HTMLButtonElement>('.size-option').forEach(btn => {
+        btn.addEventListener('click', () => {
+            document.querySelectorAll('.size-option').forEach(b => b.classList.remove('active'));
+            btn.classList.add('active');
+        });
+    });
+
+    // Collapsible sections
+    document.querySelectorAll<HTMLElement>('.section-header').forEach(header => {
+        header.addEventListener('click', () => {
+            const section = header.parentElement as HTMLElement | null;
+            section?.classList.toggle('collapsed');
+        });
+    });
+
+    // Add to Bag
+    const addToBagBtn = document.querySelector('.btn-add-to-bag');
+    addToBagBtn?.addEventListener('click', () => {
+        const quantity = parseInt((document.getElementById('qtyInput') as HTMLInputElement)?.value || '1');
+        const selectedSize = document.querySelector('.size-option.active')?.textContent?.trim() || details.defaultSize || '';
+        window.dispatchEvent(new CustomEvent('addToCart', {
+            detail: {
+                id: details.id,
+                title: details.title,
+                price: details.price,
+                image: details.image,
+                size: selectedSize,
+                description: '',
+                quantity
+            }
+        }));
+    });
 }
