@@ -62,8 +62,18 @@ export class CartUI {
       checkoutBtn.addEventListener('click', () => this.checkout());
     }
     
+    // Append overlay to body
     document.body.appendChild(this.overlay);
-    document.body.appendChild(this.sidebar);
+    
+    // Append dropdown to cart icon's parent (nav-actions) to position it properly
+    const cartIconParent = document.querySelector('.cart-icon')?.parentElement;
+    if (cartIconParent) {
+      cartIconParent.style.position = 'relative';
+      cartIconParent.appendChild(this.sidebar);
+    } else {
+      // Fallback to body if cart icon not found yet
+      document.body.appendChild(this.sidebar);
+    }
   }
 
   private toggleCart(): void {
@@ -93,9 +103,8 @@ export class CartUI {
   private openCart(): void {
     this.sidebar?.classList.add('active');
     if (this.overlay) {
-      this.overlay.style.display = 'flex';
+      this.overlay.style.display = 'block';
     }
-    document.body.classList.add('no-scroll');
   }
 
   private closeCart(): void {
@@ -103,7 +112,6 @@ export class CartUI {
     if (this.overlay) {
       this.overlay.style.display = 'none';
     }
-    document.body.classList.remove('no-scroll');
   }
 
   private updateCartUI(cart: Cart): void {
