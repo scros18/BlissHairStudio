@@ -120,9 +120,10 @@ server {
     root ${APP_DIR}/current;
     index index.html;
 
-    location / {
-        try_files \$uri \$uri/ =404;
-    }
+  # SPA history fallback: serve index.html for client-side routes
+  location / {
+    try_files \$uri \$uri/ /index.html;
+  }
 
     location ~* \.(?:manifest|appcache|html?|xml|json)
     {
@@ -167,9 +168,10 @@ server {
         try_files \$uri =404;
     }
 
-    location / {
-        try_files \$uri \$uri/ =404;
-    }
+  # SPA history fallback: serve index.html for client-side routes
+  location / {
+    try_files \$uri \$uri/ /index.html;
+  }
 }
 
 server {

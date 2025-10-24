@@ -49,11 +49,14 @@ class App {
       // Setup cart event listener for product pages
       this.setupCartEvents();
       
-      // Setup routing
+  // Setup routing
       this.setupRoutes();
       
-      // Start router
-      router.start();
+  // Ensure products are loaded before first route handling (prevents 404/redirect on refresh)
+  await productManager.waitForInit();
+      
+  // Start router
+  router.start();
       
       // Listen for page changes
       window.addEventListener('page-loaded', () => {
@@ -213,13 +216,16 @@ class App {
         });
         pageManager.loadPageFromTemplate(storesPage);
       })
-      .route('/product/:slug', () => {
+      .route('/product/:slug', async () => {
         // Dynamic product route - extract slug from URL
         const pathParts = window.location.pathname.split('/');
         const slug = pathParts[pathParts.length - 1];
         
+        // Ensure products are ready
+        await productManager.waitForInit();
+        
         // Find product by slug
-        const products = productManager.getAllProducts();
+  const products = productManager.getAllProducts();
         const product = products.find(p => {
           const productSlug = p.title
             .toLowerCase()
