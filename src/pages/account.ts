@@ -121,33 +121,7 @@ export function accountPageTemplate(userName: string = '', isAdmin: boolean = fa
               <div class="account-card">
                 <h2>Order History</h2>
                 <div class="orders-list" id="ordersList">
-                  <div class="order-card">
-                    <div class="order-card-header">
-                      <div>
-                        <h3>Order #12345</h3>
-                        <p class="order-date">Placed on March 15, 2024</p>
-                      </div>
-                      <span class="order-status-badge delivered">Delivered</span>
-                    </div>
-                    <div class="order-items-preview">
-                      <div class="order-item-mini">
-                        <div class="order-item-image"></div>
-                        <div class="order-item-info">
-                          <p class="order-item-name">Luxury Hair Care Kit</p>
-                          <p class="order-item-qty">Qty: 1</p>
-                        </div>
-                        <p class="order-item-price">£49.99</p>
-                      </div>
-                    </div>
-                    <div class="order-card-footer">
-                      <div class="order-total">Total: <strong>£54.99</strong></div>
-                      <div class="order-actions">
-                        <button class="btn btn-secondary btn-sm">View Details</button>
-                        <button class="btn btn-primary btn-sm">Reorder</button>
-                      </div>
-                    </div>
-                  </div>
-                  <div class="empty-state" style="display: none;">
+                  <div class="empty-state">
                     <svg width="64" height="64" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
                       <circle cx="9" cy="21" r="1"/>
                       <circle cx="20" cy="21" r="1"/>

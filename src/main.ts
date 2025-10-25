@@ -1141,6 +1141,11 @@ class App {
         
         tab.classList.add('active');
         document.querySelector(`.admin-section[data-section-content="${section}"]`)?.classList.add('active');
+        
+        // Load data when switching to orders tab
+        if (section === 'orders') {
+          this.loadAdminOrders();
+        }
       });
     });
 
@@ -1314,6 +1319,263 @@ class App {
         this.loadCategoriesGrid();
       }
     };
+  }
+
+  private loadAdminOrders(): void {
+    const container = document.getElementById('adminOrdersList');
+    if (!container) return;
+
+    // Get all orders from order manager
+    const orders = orderManager.getAllOrders();
+    
+    // Update stats
+    const totalOrdersEl = document.getElementById('totalOrders');
+    const pendingOrdersEl = document.getElementById('pendingOrders');
+    const completedOrdersEl = document.getElementById('completedOrders');
+    
+    if (totalOrdersEl) totalOrdersEl.textContent = orders.length.toString();
+    if (pendingOrdersEl) {
+      const pending = orders.filter(o => o.status === 'pending' || o.status === 'processing').length;
+      pendingOrdersEl.textContent = pending.toString();
+    }
+    if (completedOrdersEl) {
+      const completed = orders.filter(o => o.status === 'delivered').length;
+      completedOrdersEl.textContent = completed.toString();
+    }
+    
+    if (orders.length === 0) {
+      container.innerHTML = `
+        <div class="products-empty">
+          <div class="products-empty-icon">📦</div>
+          <p>No orders yet. Orders will appear here when customers make purchases.</p>
+        </div>
+      `;
+      return;
+    }
+
+    // Sort orders by date (newest first)
+    const sortedOrders = [...orders].sort((a, b) => b.createdAt - a.createdAt);
+
+    container.innerHTML = sortedOrders.map(order => `
+      <div class="admin-order-card">
+        <div class="admin-order-header">
+          <div class="admin-order-info">
+            <h3>Order #${order.orderNumber}</h3>
+            <p class="admin-order-date">${orderManager.formatOrderDate(order.createdAt)}</p>
+            <p class="admin-order-customer">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/>
+                <circle cx="12" cy="7" r="4"/>
+              </svg>
+              ${order.shippingAddress.firstName} ${order.shippingAddress.lastName}
+            </p>
+          </div>
+          <div class="admin-order-status">
+            <span class="order-status-badge ${orderManager.getStatusBadgeClass(order.status)}">
+              ${orderManager.getStatusDisplayText(order.status)}
+            </span>
+            <div class="admin-order-total">£${order.total.toFixed(2)}</div>
+          </div>
+        </div>
+        <div class="admin-order-summary">
+          <div class="admin-order-items">
+            ${order.items.slice(0, 3).map(item => `
+              <span class="admin-order-item-badge">
+                ${item.quantity}x ${item.product.title}${item.selectedSize ? ` (${item.selectedSize})` : ''}
+              </span>
+            `).join('')}
+            ${order.items.length > 3 ? `<span class="admin-order-item-badge">+${order.items.length - 3} more</span>` : ''}
+          </div>
+        </div>
+        <div class="admin-order-actions">
+          <button class="btn-action" onclick="window.viewOrderDetails('${order.id}')" title="View full order details">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/>
+              <circle cx="12" cy="12" r="3"/>
+            </svg>
+            <span>View Details</span>
+          </button>
+          ${order.status !== 'delivered' ? `
+            <button class="btn-action success" onclick="window.markOrderDelivered('${order.id}')" title="Mark as delivered">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <polyline points="20 6 9 17 4 12"/>
+              </svg>
+              <span>Mark Delivered</span>
+            </button>
+          ` : ''}
+          ${order.status !== 'cancelled' ? `
+            <button class="btn-action danger" onclick="window.cancelOrder('${order.id}')" title="Cancel order">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <line x1="18" y1="6" x2="6" y2="18"/>
+                <line x1="6" y1="6" x2="18" y2="18"/>
+              </svg>
+              <span>Cancel</span>
+            </button>
+          ` : ''}
+        </div>
+      </div>
+    `).join('');
+
+    // Setup global functions for order actions
+    (window as any).viewOrderDetails = (orderId: string) => {
+      this.showOrderDetails(orderId);
+    };
+
+    (window as any).markOrderDelivered = (orderId: string) => {
+      if (confirm('Mark this order as delivered?')) {
+        orderManager.updateOrderStatus(orderId, 'delivered');
+        UI.showNotification('✅ Order marked as delivered', { type: 'success' });
+        this.loadAdminOrders();
+      }
+    };
+
+    (window as any).cancelOrder = (orderId: string) => {
+      if (confirm('Are you sure you want to cancel this order?')) {
+        orderManager.updateOrderStatus(orderId, 'cancelled');
+        UI.showNotification('Order cancelled', { type: 'info' });
+        this.loadAdminOrders();
+      }
+    };
+  }
+
+  private showOrderDetails(orderId: string): void {
+    const order = orderManager.getOrderById(orderId);
+    if (!order) return;
+
+    const modal = document.getElementById('orderModal');
+    const modalBody = document.getElementById('orderModalBody');
+    if (!modal || !modalBody) return;
+
+    modalBody.innerHTML = `
+      <div class="order-detail-section">
+        <h3>Order Information</h3>
+        <div class="order-detail-grid">
+          <div class="order-detail-item">
+            <span class="detail-label">Order Number</span>
+            <span class="detail-value">${order.orderNumber}</span>
+          </div>
+          <div class="order-detail-item">
+            <span class="detail-label">Status</span>
+            <span class="order-status-badge ${orderManager.getStatusBadgeClass(order.status)}">
+              ${orderManager.getStatusDisplayText(order.status)}
+            </span>
+          </div>
+          <div class="order-detail-item">
+            <span class="detail-label">Order Date</span>
+            <span class="detail-value">${orderManager.formatOrderDate(order.createdAt)}</span>
+          </div>
+          <div class="order-detail-item">
+            <span class="detail-label">Payment Method</span>
+            <span class="detail-value">${order.paymentDetails.method === 'card' ? 'Credit/Debit Card' : 'PayPal'}</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="order-detail-section">
+        <h3>Customer Information</h3>
+        <div class="order-detail-grid">
+          <div class="order-detail-item">
+            <span class="detail-label">Name</span>
+            <span class="detail-value">${order.shippingAddress.firstName} ${order.shippingAddress.lastName}</span>
+          </div>
+          <div class="order-detail-item">
+            <span class="detail-label">Email</span>
+            <span class="detail-value">${order.shippingAddress.email}</span>
+          </div>
+          <div class="order-detail-item">
+            <span class="detail-label">Phone</span>
+            <span class="detail-value">${order.shippingAddress.phone}</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="order-detail-section">
+        <h3>Shipping Address</h3>
+        <div class="order-detail-address">
+          ${order.shippingAddress.address}<br>
+          ${order.shippingAddress.city}, ${order.shippingAddress.postcode}<br>
+          United Kingdom
+        </div>
+        ${order.shippingAddress.notes ? `
+          <div class="order-detail-notes">
+            <strong>Delivery Notes:</strong> ${order.shippingAddress.notes}
+          </div>
+        ` : ''}
+      </div>
+
+      <div class="order-detail-section">
+        <h3>Order Items</h3>
+        <div class="order-detail-items">
+          ${order.items.map(item => `
+            <div class="order-detail-item-row">
+              <div class="order-detail-item-info">
+                <div class="order-detail-item-image" style="background-image: url('${item.product.image || '/logo.webp'}')"></div>
+                <div>
+                  <div class="order-detail-item-title">${item.product.title}</div>
+                  ${item.selectedSize ? `<div class="order-detail-item-size">Size: ${item.selectedSize}</div>` : ''}
+                  <div class="order-detail-item-qty">Quantity: ${item.quantity}</div>
+                </div>
+              </div>
+              <div class="order-detail-item-price">£${(item.product.price * item.quantity).toFixed(2)}</div>
+            </div>
+          `).join('')}
+        </div>
+      </div>
+
+      <div class="order-detail-section">
+        <h3>Order Summary</h3>
+        <div class="order-detail-totals">
+          <div class="order-detail-total-row">
+            <span>Subtotal</span>
+            <span>£${order.subtotal.toFixed(2)}</span>
+          </div>
+          <div class="order-detail-total-row">
+            <span>Shipping</span>
+            <span>${order.shipping === 0 ? 'FREE' : `£${order.shipping.toFixed(2)}`}</span>
+          </div>
+          <div class="order-detail-total-row total">
+            <strong>Total</strong>
+            <strong>£${order.total.toFixed(2)}</strong>
+          </div>
+        </div>
+      </div>
+
+      <div class="order-detail-actions">
+        ${order.status !== 'delivered' ? `
+          <button class="btn btn-primary" onclick="window.markOrderDelivered('${order.id}'); document.getElementById('orderModal').classList.remove('active'); document.body.classList.remove('modal-open');">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <polyline points="20 6 9 17 4 12"/>
+            </svg>
+            Mark as Delivered
+          </button>
+        ` : ''}
+        <button class="btn btn-secondary" onclick="window.print()">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <polyline points="6 9 6 2 18 2 18 9"/>
+            <path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"/>
+            <rect x="6" y="14" width="12" height="8"/>
+          </svg>
+          Print Order
+        </button>
+      </div>
+    `;
+
+    // Move modal to body if needed
+    if (modal.parentElement !== document.body) {
+      document.body.appendChild(modal);
+    }
+
+    modal.classList.add('active');
+    document.body.classList.add('modal-open');
+
+    // Setup close button
+    document.getElementById('closeOrderModal')?.addEventListener('click', () => {
+      modal.classList.add('closing');
+      setTimeout(() => {
+        modal.classList.remove('active', 'closing');
+        document.body.classList.remove('modal-open');
+      }, 300);
+    });
   }
 
   private loadProductsTable(): void {

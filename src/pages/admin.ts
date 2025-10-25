@@ -33,6 +33,12 @@ export function adminPanelTemplate(): string {
           </svg>
           <span>Products</span>
         </button>
+        <button class="admin-tab" data-section="orders">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M9 2L6 6H3L6 20H18L21 6H18L15 2M9 2H15M9 2V6M15 2V6"/>
+          </svg>
+          <span>Orders</span>
+        </button>
         <button class="admin-tab" data-section="categories">
           <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
             <path d="M3 3h7v7H3z"/>
@@ -72,6 +78,33 @@ export function adminPanelTemplate(): string {
           <div class="admin-content">
             <div class="products-list" id="productsTableBody">
               <!-- Products will be loaded here -->
+            </div>
+          </div>
+        </div>
+
+        <!-- Orders Section -->
+        <div class="admin-section" data-section-content="orders">
+          <h2 class="admin-section-title">Customer Orders</h2>
+          <div class="admin-section-header">
+            <div class="admin-stats">
+              <div class="admin-stat-card">
+                <div class="stat-label">Total Orders</div>
+                <div class="stat-value" id="totalOrders">0</div>
+              </div>
+              <div class="admin-stat-card">
+                <div class="stat-label">Pending</div>
+                <div class="stat-value" id="pendingOrders">0</div>
+              </div>
+              <div class="admin-stat-card">
+                <div class="stat-label">Completed</div>
+                <div class="stat-value" id="completedOrders">0</div>
+              </div>
+            </div>
+          </div>
+
+          <div class="admin-content">
+            <div class="orders-list" id="adminOrdersList">
+              <!-- Orders will be loaded here -->
             </div>
           </div>
         </div>
@@ -253,5 +286,24 @@ export function adminPanelTemplate(): string {
         </form>
       </div>
     </div>
+
+    <!-- Order Details Modal -->
+    <div class="modal" id="orderModal">
+      <div class="modal-content modal-large">
+        <div class="modal-header">
+          <h2 id="orderModalTitle">Order Details</h2>
+          <button class="modal-close" id="closeOrderModal" title="Close">
+            <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <line x1="18" y1="6" x2="6" y2="18"/>
+              <line x1="6" y1="6" x2="18" y2="18"/>
+            </svg>
+          </button>
+        </div>
+        <div class="modal-body" id="orderModalBody">
+          <!-- Order details will be loaded here -->
+        </div>
+      </div>
+    </div>
   `;
 }
+
