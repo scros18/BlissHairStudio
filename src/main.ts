@@ -27,7 +27,8 @@ import { loginPageTemplate } from './pages/login';
 import { registerPageTemplate } from './pages/register';
 import { adminPanelTemplate } from './pages/admin';
 import { authManager } from './utils/authManager';
-import { productManager } from './utils/productManager';
+// Using API-backed managers for persistent JSON storage
+import { productManagerAPI as productManager } from './utils/productManagerAPI';
 import { categoryManager } from './utils/categoryManager';
 import { renderPrivacyPage } from './pages/privacy';
 import { renderTermsPage } from './pages/terms';
@@ -39,7 +40,8 @@ import { productProteinTemplate } from './pages/product-protein';
 import { productDuoTemplate } from './pages/product-duo';
 import { dynamicProductTemplate } from './pages/product-dynamic';
 import { cartManager } from './utils/cartManager';
-import { orderManager } from './utils/orderManager';
+// Using API-backed managers for persistent JSON storage
+import { orderManagerAPI as orderManager } from './utils/orderManagerAPI';
 import { userProfileManager } from './utils/userProfileManager';
 
 class App {
@@ -662,38 +664,43 @@ class App {
       };
       
       // Simulate payment processing
-      setTimeout(() => {
-        // Get current user
-        const user = authManager.getCurrentUser();
-        const userEmail = user?.email || shippingAddress.email;
-        
-        // Create order using order manager
-        const order = orderManager.createOrder(
-          cart.items,
-          shippingAddress,
-          paymentDetails,
-          userEmail
-        );
-        
-        // Add order to user profile
-        if (user) {
-          userProfileManager.addOrderToProfile(userEmail, order.id);
-        }
-        
-        // Clear cart
-        cartManager.clearCart();
-        
-        // Show success message
-        UI.showNotification(`✨ Order #${order.orderNumber} placed successfully! Check your email for confirmation.`, { type: 'success', duration: 5000 });
-        
-        // Redirect to account or home
-        setTimeout(() => {
+      setTimeout(async () => {
+        try {
+          // Get current user
+          const user = authManager.getCurrentUser();
+          const userEmail = user?.email || shippingAddress.email;
+          
+          // Create order using API manager (saves to data/orders.json)
+          const order = await orderManager.createOrder(
+            cart.items,
+            shippingAddress,
+            paymentDetails,
+            userEmail
+          );
+          
+          // Add order to user profile
           if (user) {
-            router.navigate('/account');
-          } else {
-            router.navigate('/');
+            userProfileManager.addOrderToProfile(userEmail, order.id);
           }
-        }, 2000);
+          
+          // Clear cart
+          cartManager.clearCart();
+          
+          // Show success message
+          UI.showNotification(`✨ Order #${order.orderNumber} placed successfully! Check your email for confirmation.`, { type: 'success', duration: 5000 });
+          
+          // Redirect to account or home
+          setTimeout(() => {
+            if (user) {
+              router.navigate('/account');
+            } else {
+              router.navigate('/');
+            }
+          }, 2000);
+        } catch (error) {
+          console.error('Order creation failed:', error);
+          UI.showNotification('❌ Failed to create order. Please try again.', { type: 'error', duration: 5000 });
+        }
       }, 2000);
     });
   }
@@ -1006,8 +1013,8 @@ class App {
     const ordersList = document.getElementById('ordersList');
     if (!ordersList || !user) return;
 
-    // Get orders using order manager
-    const orders = orderManager.getOrdersForUser(user.email);
+    // Get orders using API manager (from data/orders.json)
+    const orders = orderManager.getUserOrders(user.email);
 
     if (orders.length === 0) {
       ordersList.innerHTML = `
@@ -1024,7 +1031,7 @@ class App {
     }
 
     // Render orders using the new design
-    ordersList.innerHTML = orders.map(order => `
+    ordersList.innerHTML = orders.map((order: any) => `
       <div class="order-card">
         <div class="order-header">
           <div class="order-info">
@@ -1458,28 +1465,25 @@ class App {
           </div>
         </div>
         <div class="admin-order-actions">
-          <button class="btn-action" onclick="window.viewOrderDetails('${order.id}')" title="View full order details">
-            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <button class="btn-icon" onclick="window.viewOrderDetails('${order.id}')" title="View Details">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
               <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/>
               <circle cx="12" cy="12" r="3"/>
             </svg>
-            <span>View Details</span>
           </button>
           ${order.status !== 'delivered' ? `
-            <button class="btn-action success" onclick="window.markOrderDelivered('${order.id}')" title="Mark as delivered">
-              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <button class="btn-icon success" onclick="window.markOrderDelivered('${order.id}')" title="Mark Delivered">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                 <polyline points="20 6 9 17 4 12"/>
               </svg>
-              <span>Mark Delivered</span>
             </button>
           ` : ''}
           ${order.status !== 'cancelled' ? `
-            <button class="btn-action danger" onclick="window.cancelOrder('${order.id}')" title="Cancel order">
-              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <button class="btn-icon danger" onclick="window.cancelOrder('${order.id}')" title="Cancel">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                 <line x1="18" y1="6" x2="6" y2="18"/>
                 <line x1="6" y1="6" x2="18" y2="18"/>
               </svg>
-              <span>Cancel</span>
             </button>
           ` : ''}
         </div>
@@ -1491,19 +1495,27 @@ class App {
       this.showOrderDetails(orderId);
     };
 
-    (window as any).markOrderDelivered = (orderId: string) => {
+    (window as any).markOrderDelivered = async (orderId: string) => {
       if (confirm('Mark this order as delivered?')) {
-        orderManager.updateOrderStatus(orderId, 'delivered');
-        UI.showNotification('✅ Order marked as delivered', { type: 'success' });
-        this.loadAdminOrders();
+        const success = await orderManager.updateOrderStatus(orderId, 'delivered');
+        if (success) {
+          UI.showNotification('✅ Order marked as delivered and saved to data/orders.json', { type: 'success' });
+          this.loadAdminOrders();
+        } else {
+          UI.showNotification('❌ Failed to update order', { type: 'error' });
+        }
       }
     };
 
-    (window as any).cancelOrder = (orderId: string) => {
+    (window as any).cancelOrder = async (orderId: string) => {
       if (confirm('Are you sure you want to cancel this order?')) {
-        orderManager.updateOrderStatus(orderId, 'cancelled');
-        UI.showNotification('Order cancelled', { type: 'info' });
-        this.loadAdminOrders();
+        const success = await orderManager.updateOrderStatus(orderId, 'cancelled');
+        if (success) {
+          UI.showNotification('Order cancelled and saved to data/orders.json', { type: 'info' });
+          this.loadAdminOrders();
+        } else {
+          UI.showNotification('❌ Failed to cancel order', { type: 'error' });
+        }
       }
     };
   }

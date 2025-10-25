@@ -1,1 +1,80 @@
-[]
+[
+  {
+    "orderNumber": "BHS-MH6LO89Y-7JC",
+    "userId": "maxine.croston@email.com",
+    "items": [
+      {
+        "product": {
+          "id": "prod_default_2",
+          "title": "Protein Hair Rebuilder",
+          "price": 39.95,
+          "image": "/Davroe_Protein_Hair_Rebuilder_200ml__77435.jpg",
+          "description": "Protein Hair Rebuilder",
+          "createdAt": 1761416090032,
+          "updatedAt": 1761416090032
+        },
+        "quantity": 1,
+        "selectedSize": "325ml",
+        "price": 39.95
+      }
+    ],
+    "shippingAddress": {
+      "firstName": "Maxine",
+      "lastName": "Croston",
+      "email": "maxine.croston@email.com",
+      "phone": "+44 7XXX XXX XXX",
+      "address": "12 Browns Drove",
+      "city": "Lincs",
+      "postcode": "PE20 3PX"
+    },
+    "paymentDetails": {
+      "method": "paypal"
+    },
+    "subtotal": 39.95,
+    "shipping": 5,
+    "total": 44.95,
+    "status": "delivered",
+    "createdAt": 1761416109286,
+    "updatedAt": 1761416127422,
+    "id": "ord_1761416109291_1hacnp"
+  },
+  {
+    "orderNumber": "BHS-MH6LRWWG-0WG",
+    "userId": "scroston1@outlook.com",
+    "items": [
+      {
+        "product": {
+          "id": "prod_default_3",
+          "title": "Shine Fluid & Thermaprotect Duo",
+          "price": 34.95,
+          "image": "/Davroe_Thermaprotect_200ml__47285.jpg",
+          "description": "Shine Fluid & Thermaprotect Duo",
+          "createdAt": 1761416262304,
+          "updatedAt": 1761416262304
+        },
+        "quantity": 1,
+        "selectedSize": "325ml",
+        "price": 34.95
+      }
+    ],
+    "shippingAddress": {
+      "firstName": "Sam",
+      "lastName": "Croston",
+      "email": "scroston1@outlook.com",
+      "phone": "01205820520",
+      "address": "12 Browns Drove",
+      "city": "Lincs",
+      "postcode": "PE20 3PX"
+    },
+    "paymentDetails": {
+      "method": "paypal"
+    },
+    "subtotal": 34.95,
+    "shipping": 5,
+    "total": 39.95,
+    "status": "pending",
+    "createdAt": 1761416281168,
+    "updatedAt": 1761416281172,
+    "id": "ord_1761416281172_tkdusn"
+  }
+]

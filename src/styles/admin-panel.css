@@ -1558,38 +1558,56 @@ body.modal-open {
 
 .admin-order-actions {
   display: flex;
-  gap: 12px;
-  flex-wrap: wrap;
-  padding-top: 24px;
-  margin-top: 24px;
-  border-top: 2px solid #F3F4F6;
+  gap: 8px;
+  padding-top: 20px;
+  margin-top: 20px;
+  border-top: 1px solid #E5E7EB;
 }
 
-.admin-order-actions .btn-action {
-  padding: 12px 32px;
-  font-weight: 600;
-  font-size: 0.95rem;
-  min-width: 180px;
-  max-width: none !important;
-  justify-content: center;
-  white-space: nowrap;
+/* Icon-only buttons - minimal and clean */
+.btn-icon {
   display: inline-flex;
   align-items: center;
-  gap: 8px;
-  flex: 0 0 auto;
+  justify-content: center;
+  width: 42px;
+  height: 42px;
+  padding: 0;
+  border-radius: 8px;
+  border: 1px solid #D1D5DB;
+  background: white;
+  color: #6B7280;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  flex-shrink: 0;
 }
 
-.btn-action.success {
-  background: linear-gradient(135deg, #DCFCE7 0%, #BBF7D0 100%);
-  color: #166534;
-  border: 2px solid #86EFAC;
+.btn-icon:hover {
+  background: #F9FAFB;
+  border-color: #9CA3AF;
+  color: #374151;
+  transform: translateY(-1px);
 }
 
-.btn-action.success:hover {
-  background: linear-gradient(135deg, #3D8B6C 0%, #2D6854 100%);
-  color: white;
-  border-color: #3D8B6C;
-  box-shadow: 0 4px 12px rgba(61, 139, 108, 0.3);
+.btn-icon.success {
+  border-color: #86EFAC;
+  color: #059669;
+}
+
+.btn-icon.success:hover {
+  background: #ECFDF5;
+  border-color: #059669;
+  color: #047857;
+}
+
+.btn-icon.danger {
+  border-color: #FECACA;
+  color: #DC2626;
+}
+
+.btn-icon.danger:hover {
+  background: #FEF2F2;
+  border-color: #DC2626;
+  color: #B91C1C;
 }
 
 /* Order Details Modal - Enhanced Design */
@@ -1863,14 +1881,15 @@ body.modal-open {
   }
   
   .admin-order-actions {
-    flex-direction: column;
-    padding-top: 20px;
-    margin-top: 20px;
+    gap: 12px;
+    padding-top: 16px;
+    margin-top: 16px;
+    justify-content: center;
   }
   
-  .admin-order-actions .btn-action {
-    width: 100%;
-    justify-content: center;
+  .btn-icon {
+    width: 48px;
+    height: 48px;
   }
 
   /* Order Detail Modal Mobile */
