@@ -750,8 +750,9 @@ textarea.form-input {
   cursor: not-allowed;
 }
 
-#placeOrderBtn svg.spinner {
-  animation: spin 1s linear infinite;
+#placeOrderBtn .spinner-path {
+  animation: spin 0.8s linear infinite;
+  transform-origin: center;
 }
 
 @keyframes spin {

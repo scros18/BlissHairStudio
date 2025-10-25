@@ -635,9 +635,8 @@ class App {
       if (placeOrderBtn) {
         placeOrderBtn.disabled = true;
         placeOrderBtn.innerHTML = `
-          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="spinner">
-            <circle cx="12" cy="12" r="10" stroke-opacity="0.25"/>
-            <path d="M12 2a10 10 0 0 1 10 10" stroke-linecap="round"/>
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+            <path d="M12 2a10 10 0 0 1 10 10" stroke-linecap="round" class="spinner-path"/>
           </svg>
           Processing...
         `;

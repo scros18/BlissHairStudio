@@ -33,9 +33,9 @@
     "subtotal": 39.95,
     "shipping": 5,
     "total": 44.95,
-    "status": "delivered",
+    "status": "cancelled",
     "createdAt": 1761416109286,
-    "updatedAt": 1761416127422,
+    "updatedAt": 1761417276175,
     "id": "ord_1761416109291_1hacnp"
   },
   {

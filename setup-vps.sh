@@ -1,4 +1,4 @@
-#!/bin/bash
+you can #!/bin/bash
 # Quick setup script for BlissHairStudio on VPS
 
 set -e
