@@ -4,7 +4,7 @@ import { storage } from './storage';
 import type { Product } from './types';
 
 const PRODUCTS_KEY = 'products';
-const API_BASE = '/api/products';
+const API_BASE = (window as any).__BLISS_API_BASE__ || '/api/products';
 
 class ProductManager {
   private products: Product[] = [];
@@ -100,6 +100,10 @@ class ProductManager {
     return `prod_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
   }
 
+  private makeSlug(title: string): string {
+    return title.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '');
+  }
+
   getAllProducts(): Product[] {
     return [...this.products];
   }
@@ -109,15 +113,16 @@ class ProductManager {
   }
 
   async addProduct(productData: Omit<Product, 'id' | 'createdAt' | 'updatedAt'>): Promise<Product> {
+    const withSlug = { ...productData, slug: this.makeSlug(productData.title) };
     try {
       const created = await this.fetchJson(API_BASE, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(productData)
+        body: JSON.stringify(withSlug)
       });
       this.products.push(created as Product);
     } catch {
-      const product: Product = { ...productData, id: this.generateId(), createdAt: Date.now(), updatedAt: Date.now() };
+      const product: Product = { ...withSlug, id: this.generateId(), createdAt: Date.now(), updatedAt: Date.now() };
       this.products.push(product);
     }
     this.saveLocal();
@@ -127,15 +132,20 @@ class ProductManager {
   async updateProduct(id: string, updates: Partial<Omit<Product, 'id' | 'createdAt'>>): Promise<Product | null> {
     const index = this.products.findIndex(p => p.id === id);
     if (index === -1) return null;
+    const current = this.products[index];
+    const next = { ...updates } as any;
+    if (updates.title) {
+      next.slug = this.makeSlug(updates.title);
+    }
     try {
       const updated = await this.fetchJson(`${API_BASE}/${id}`, {
         method: 'PUT',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(updates)
+        body: JSON.stringify(next)
       });
       this.products[index] = updated as Product;
     } catch {
-      this.products[index] = { ...this.products[index], ...updates, updatedAt: Date.now() } as Product;
+      this.products[index] = { ...current, ...next, updatedAt: Date.now() } as Product;
     }
     this.saveLocal();
     return this.products[index];

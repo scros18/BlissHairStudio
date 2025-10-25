@@ -6,7 +6,9 @@ const fs = require('fs');
 const path = require('path');
 
 const PORT = process.env.PORT || 8787;
-const DATA_DIR = path.join(__dirname, 'data');
+const DATA_DIR = process.env.BLISS_DATA_DIR
+  ? path.resolve(process.env.BLISS_DATA_DIR)
+  : path.join(__dirname, 'data');
 const PRODUCTS_FILE = path.join(DATA_DIR, 'products.json');
 const PUBLIC_PRODUCTS = path.join(process.cwd(), 'public', 'products.json');
 
@@ -105,7 +107,7 @@ const server = http.createServer((req, res) => {
   send(res, 404, { error: 'Not found' });
 });
 
-server.listen(PORT, () => {
+server.listen(PORT, '0.0.0.0', () => {
   ensureDataFile();
   console.log(`API running on http://localhost:${PORT}`);
 });

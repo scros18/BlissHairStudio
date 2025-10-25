@@ -33,7 +33,7 @@ export class ProductsDisplay {
     
     // Render products in luxury card style
     this.container.innerHTML = products.map(product => `
-      <a href="/product/${this.generateSlug(product.title)}" class="luxury-product-card" data-product-id="${product.id}">
+      <a href="/product/${product.slug ?? this.generateSlug(product.title)}" class="luxury-product-card" data-product-id="${product.id}">
         <div class="luxury-product-image">
           <div class="luxury-product-carousel">
             ${product.image 

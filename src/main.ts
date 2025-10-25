@@ -226,11 +226,11 @@ class App {
         
         // Find product by slug
   const products = productManager.getAllProducts();
-        const product = products.find(p => {
-          const productSlug = p.title
+        const product = products.find((p) => {
+          const productSlug = (p.slug ?? p.title
             .toLowerCase()
             .replace(/[^a-z0-9]+/g, '-')
-            .replace(/^-|-$/g, '');
+            .replace(/^-|-$/g, ''));
           return productSlug === slug;
         });
         

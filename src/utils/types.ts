@@ -7,6 +7,7 @@ export interface Product {
   price: number;
   image?: string;
   badge?: string;
+  slug?: string; // stable slug derived from title
   createdAt: number;
   updatedAt: number;
 }
