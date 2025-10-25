@@ -2,12 +2,7 @@
 
 import type { Order, CartItem, ShippingAddress, PaymentDetails } from './types';
 
-const getApiBase = () => {
-  if (typeof window !== 'undefined') {
-    return (window as any).__API_BASE__ || 'http://localhost:8787';
-  }
-  return 'http://localhost:8787';
-};
+const API_BASE = import.meta.env.VITE_API_BASE || 'http://localhost:8787';
 
 class OrderManagerAPI {
   private orders: Order[] = [];
@@ -34,7 +29,7 @@ class OrderManagerAPI {
 
   private async loadOrders(): Promise<void> {
     try {
-      const apiOrders = await this.fetchJson(`${getApiBase()}/api/orders`);
+      const apiOrders = await this.fetchJson(`${API_BASE}/api/orders`);
       this.orders = (apiOrders as Order[]) || [];
       console.log('✅ Loaded', this.orders.length, 'orders from API (data/orders.json)');
     } catch (error) {
@@ -79,7 +74,7 @@ class OrderManagerAPI {
     };
 
     try {
-      const created = await this.fetchJson(`${getApiBase()}/api/orders`, {
+      const created = await this.fetchJson(`${API_BASE}/api/orders`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(orderData)
@@ -108,7 +103,7 @@ class OrderManagerAPI {
 
   async updateOrderStatus(orderId: string, status: Order['status']): Promise<boolean> {
     try {
-      const updated = await this.fetchJson(`${getApiBase()}/api/orders/${orderId}`, {
+      const updated = await this.fetchJson(`${API_BASE}/api/orders/${orderId}`, {
         method: 'PUT',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ status, updatedAt: Date.now() })
@@ -128,7 +123,7 @@ class OrderManagerAPI {
 
   async deleteOrder(orderId: string): Promise<boolean> {
     try {
-      await this.fetchJson(`${getApiBase()}/api/orders/${orderId}`, {
+      await this.fetchJson(`${API_BASE}/api/orders/${orderId}`, {
         method: 'DELETE'
       });
       
