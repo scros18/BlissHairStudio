@@ -106,15 +106,17 @@ export default defineConfig({
         orientation: 'portrait',
         start_url: '/',
         scope: '/',
+        // Use existing logo asset to avoid 404s if /public/icons isn't present on the server.
+        // You can swap these to real PWA icons later (place them under public/icons/...).
         icons: [
           {
-            src: '/icons/icon-192x192.png',
+            src: '/logo.png',
             sizes: '192x192',
             type: 'image/png',
             purpose: 'any maskable'
           },
           {
-            src: '/icons/icon-512x512.png',
+            src: '/logo.png',
             sizes: '512x512',
             type: 'image/png',
             purpose: 'any maskable'

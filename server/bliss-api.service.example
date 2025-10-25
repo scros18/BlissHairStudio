@@ -1,0 +1,19 @@
+[Unit]
+Description=Bliss Hair Studio JSON API
+After=network.target
+
+[Service]
+Type=simple
+Environment=NODE_ENV=production
+# Optional: set custom data dir (ensure path exists and writable by the user below)
+# Environment=BLISS_DATA_DIR=/var/www/blisshairstudio/data
+WorkingDirectory=/var/www/blisshairstudio
+ExecStart=/usr/bin/node ./server/index.js
+Restart=always
+RestartSec=3
+# Change to a non-root user that owns the project directory
+User=www-data
+Group=www-data
+
+[Install]
+WantedBy=multi-user.target
