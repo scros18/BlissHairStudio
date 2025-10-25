@@ -1,9 +1,13 @@
 // Minimal JSON API for products persistence
 // Run: node server/index.js
 
-const http = require('http');
-const fs = require('fs');
-const path = require('path');
+import http from 'http';
+import fs from 'fs';
+import path from 'path';
+import { fileURLToPath } from 'url';
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 
 const PORT = process.env.PORT || 8787;
 const DATA_DIR = process.env.BLISS_DATA_DIR

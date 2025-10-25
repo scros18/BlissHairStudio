@@ -8,6 +8,8 @@
     "dev": "vite",
     "build": "tsc && vite build",
     "preview": "vite preview",
+  "api": "node ./server/index.js",
+  "start:api": "node ./server/index.js",
     "type-check": "tsc --noEmit",
     "lint": "eslint src --ext .ts",
     "serve": "vite preview --host"
