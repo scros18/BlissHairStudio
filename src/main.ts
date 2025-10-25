@@ -28,6 +28,7 @@ import { registerPageTemplate } from './pages/register';
 import { adminPanelTemplate } from './pages/admin';
 import { authManager } from './utils/authManager';
 // Using API-backed managers for persistent JSON storage
+import { authManagerAPI } from './utils/authManagerAPI';
 import { productManagerAPI as productManager } from './utils/productManagerAPI';
 import { categoryManager } from './utils/categoryManager';
 import { renderPrivacyPage } from './pages/privacy';
@@ -42,7 +43,6 @@ import { dynamicProductTemplate } from './pages/product-dynamic';
 import { cartManager } from './utils/cartManager';
 // Using API-backed managers for persistent JSON storage
 import { orderManagerAPI as orderManager } from './utils/orderManagerAPI';
-import { userProfileManager } from './utils/userProfileManager';
 
 class App {
   async init(): Promise<void> {
@@ -141,11 +141,11 @@ class App {
       })
       .route('/account', () => {
         // Check if user is logged in
-        if (!authManager.isLoggedIn()) {
+        if (!authManagerAPI.isLoggedIn()) {
           router.navigate('/login');
           return;
         }
-        const user = authManager.getCurrentUser();
+        const user = authManagerAPI.getCurrentUser();
         const userName = user?.name || 'User';
         const isAdmin = user?.isAdmin || false;
         
@@ -155,7 +155,7 @@ class App {
       })
       .route('/login', () => {
         // Redirect if already logged in
-        if (authManager.isLoggedIn()) {
+        if (authManagerAPI.isLoggedIn()) {
           router.navigate('/account');
           return;
         }
@@ -165,7 +165,7 @@ class App {
       })
       .route('/register', () => {
         // Redirect if already logged in
-        if (authManager.isLoggedIn()) {
+        if (authManagerAPI.isLoggedIn()) {
           router.navigate('/account');
           return;
         }
@@ -175,7 +175,7 @@ class App {
       })
       .route('/admin', () => {
         // Check if user is admin
-        const user = authManager.getCurrentUser();
+        const user = authManagerAPI.getCurrentUser();
         if (!user?.isAdmin) {
           router.navigate('/');
           return;
@@ -666,8 +666,25 @@ class App {
       setTimeout(async () => {
         try {
           // Get current user
-          const user = authManager.getCurrentUser();
+          await authManagerAPI.waitForInit();
+          const user = authManagerAPI.getCurrentUser();
           const userEmail = user?.email || shippingAddress.email;
+          
+          // Save address if checkbox is checked and user is logged in
+          if (user && (formData.get('saveAddress') as string) === 'on') {
+            const addressName = 'Home'; // Default name, could be customized
+            const addressData = {
+              name: addressName,
+              street: shippingAddress.address,
+              city: shippingAddress.city,
+              postalCode: shippingAddress.postcode,
+              country: 'United Kingdom', // Default, could be added to form
+              isDefault: user.addresses.length === 0 // First address becomes default
+            };
+            
+            await authManagerAPI.saveAddress(addressData);
+            console.log('✅ Address saved for future orders');
+          }
           
           // Create order using API manager (saves to data/orders.json)
           const order = await orderManager.createOrder(
@@ -677,9 +694,10 @@ class App {
             userEmail
           );
           
-          // Add order to user profile
+          // Link order to user profile if logged in
           if (user) {
-            userProfileManager.addOrderToProfile(userEmail, order.id);
+            await authManagerAPI.addOrderToUser(order.id);
+            console.log('✅ Order linked to user profile');
           }
           
           // Clear cart
@@ -699,8 +717,49 @@ class App {
         } catch (error) {
           console.error('Order creation failed:', error);
           UI.showNotification('❌ Failed to create order. Please try again.', { type: 'error', duration: 5000 });
+          
+          // Re-enable button
+          if (placeOrderBtn) {
+            placeOrderBtn.disabled = false;
+            placeOrderBtn.innerHTML = `
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M9 11l3 3L22 4"/>
+                <path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/>
+              </svg>
+              Place Order £${cart.total.toFixed(2)}
+            `;
+          }
         }
       }, 2000);
+    });
+    
+    // Handle saved address selection
+    const savedAddressRadios = document.querySelectorAll<HTMLInputElement>('input[name="savedAddress"]');
+    savedAddressRadios?.forEach(radio => {
+      radio.addEventListener('change', async (e) => {
+        const target = e.target as HTMLInputElement;
+        const addressId = target.value;
+        
+        if (addressId === 'new') {
+          // Clear form fields
+          (document.querySelector('[name="address"]') as HTMLInputElement).value = '';
+          (document.querySelector('[name="city"]') as HTMLInputElement).value = '';
+          (document.querySelector('[name="postcode"]') as HTMLInputElement).value = '';
+          return;
+        }
+        
+        // Find and populate selected address
+        const user = authManagerAPI.getCurrentUser();
+        const address = user?.addresses.find(a => a.id === addressId);
+        
+        if (address) {
+          (document.querySelector('[name="address"]') as HTMLInputElement).value = address.street;
+          (document.querySelector('[name="city"]') as HTMLInputElement).value = address.city;
+          (document.querySelector('[name="postcode"]') as HTMLInputElement).value = address.postalCode;
+          
+          UI.showNotification(`✨ Using address: ${address.name}`, { type: 'info' });
+        }
+      });
     });
   }
   
@@ -784,7 +843,9 @@ class App {
       const email = formData.get('email') as string;
       const password = formData.get('password') as string;
 
-      const result = authManager.login(email, password);
+      // Wait for authManagerAPI to initialize
+      await authManagerAPI.waitForInit();
+      const result = await authManagerAPI.login(email, password);
       
       if (result.success) {
         this.showAuthMessage('success', result.message);
@@ -836,10 +897,12 @@ class App {
         return;
       }
 
-      const result = authManager.register(email, password, name, phone);
+      // Wait for authManagerAPI to initialize
+      await authManagerAPI.waitForInit();
+      const result = await authManagerAPI.register(email, password, name, phone);
       
       if (result.success) {
-        this.showAuthMessage('success', result.message + ' Redirecting to login...');
+        this.showAuthMessage('success', result.message + ' You can now log in!');
         setTimeout(() => {
           router.navigate('/login');
         }, 1500);
@@ -868,8 +931,9 @@ class App {
     }, 5000);
   }
 
-  private setupAccount(): void {
-    const user = authManager.getCurrentUser();
+  private async setupAccount(): Promise<void> {
+    await authManagerAPI.waitForInit();
+    const user = authManagerAPI.getCurrentUser();
     if (!user) {
       router.navigate('/login');
       return;
@@ -886,6 +950,10 @@ class App {
 
     // Display user orders
     this.loadUserOrders();
+    
+    // Display user addresses
+    const { renderAddresses } = await import('./pages/account');
+    renderAddresses(user.addresses || []);
     
     // Tab switching
     document.querySelectorAll('.account-nav-item').forEach(item => {
@@ -911,7 +979,7 @@ class App {
     
     // Logout button
     document.getElementById('logoutBtn')?.addEventListener('click', () => {
-      authManager.logout();
+      authManagerAPI.logout();
       UI.showNotification('Logged out successfully! See you soon! 👋', { type: 'info' });
       setTimeout(() => {
         router.navigate('/');
@@ -919,7 +987,7 @@ class App {
     });
     
     // Profile form submission
-    document.getElementById('profileForm')?.addEventListener('submit', (e) => {
+    document.getElementById('profileForm')?.addEventListener('submit', async (e) => {
       e.preventDefault();
       const formData = new FormData(e.target as HTMLFormElement);
       const updates = {
@@ -927,11 +995,11 @@ class App {
         phone: formData.get('phone') as string
       };
       
-      const result = authManager.updateProfile(updates);
+      const result = await authManagerAPI.updateProfile(updates);
       if (result.success) {
         UI.showNotification('✨ Profile updated successfully!', { type: 'success' });
         // Refresh the page content with updated name
-        const updatedUser = authManager.getCurrentUser();
+        const updatedUser = authManagerAPI.getCurrentUser();
         if (updatedUser) {
           const welcomeText = document.querySelector('.account-header-content h1');
           if (welcomeText) {
@@ -941,6 +1009,62 @@ class App {
         }
       } else {
         UI.showNotification(result.message, { type: 'error' });
+      }
+    });
+    
+    // Address form submission (from modal)
+    (window as any).populateAddressForm = (addressId: string) => {
+      const address = user.addresses.find(a => a.id === addressId);
+      if (!address) return;
+      
+      const form = document.getElementById('addressForm') as HTMLFormElement;
+      if (!form) return;
+      
+      (form.querySelector('[name="name"]') as HTMLInputElement).value = address.name;
+      (form.querySelector('[name="street"]') as HTMLInputElement).value = address.street;
+      (form.querySelector('[name="city"]') as HTMLInputElement).value = address.city;
+      (form.querySelector('[name="postalCode"]') as HTMLInputElement).value = address.postalCode;
+      (form.querySelector('[name="country"]') as HTMLSelectElement).value = address.country;
+      (form.querySelector('[name="isDefault"]') as HTMLInputElement).checked = address.isDefault;
+    };
+    
+    // Handle address form submissions
+    document.addEventListener('submit', async (e) => {
+      const form = e.target as HTMLFormElement;
+      if (form.id === 'addressForm') {
+        e.preventDefault();
+        
+        const formData = new FormData(form);
+        const addressId = form.dataset.addressId;
+        const addressData = {
+          name: formData.get('name') as string,
+          street: formData.get('street') as string,
+          city: formData.get('city') as string,
+          postalCode: formData.get('postalCode') as string,
+          country: formData.get('country') as string,
+          isDefault: (formData.get('isDefault') as string) === 'on'
+        };
+        
+        let result;
+        if (addressId) {
+          // Update existing address
+          result = await authManagerAPI.updateAddress(addressId, addressData);
+        } else {
+          // Add new address
+          result = await authManagerAPI.saveAddress(addressData);
+        }
+        
+        if (result.success) {
+          UI.showNotification(addressId ? '✨ Address updated!' : '✨ Address saved!', { type: 'success' });
+          const updatedUser = authManagerAPI.getCurrentUser();
+          if (updatedUser) {
+            const { renderAddresses } = await import('./pages/account');
+            renderAddresses(updatedUser.addresses);
+          }
+          document.getElementById('addressModal')?.remove();
+        } else {
+          UI.showNotification(result.message, { type: 'error' });
+        }
       }
     });
     
@@ -975,10 +1099,23 @@ class App {
     // Load and apply user settings
     this.loadUserSettings();
     
-    // Settings toggles
+    // Settings toggles - Save to API
     const settingsToggles = document.querySelectorAll('.settings-list .toggle-switch input');
+    
+    // Load current preferences
+    const preferences = user.preferences || {
+      emailNotifications: true,
+      smsNotifications: false,
+      marketingEmails: true
+    };
+    
+    // Apply current settings to toggles
+    (settingsToggles[0] as HTMLInputElement).checked = preferences.emailNotifications;
+    (settingsToggles[1] as HTMLInputElement).checked = preferences.smsNotifications;
+    (settingsToggles[2] as HTMLInputElement).checked = preferences.marketingEmails;
+    
     settingsToggles.forEach((toggle, index) => {
-      toggle.addEventListener('change', (e) => {
+      toggle.addEventListener('change', async (e) => {
         const isChecked = (e.target as HTMLInputElement).checked;
         const settingItem = (e.target as HTMLInputElement).closest('.setting-item');
         const settingName = settingItem?.querySelector('h3')?.textContent || '';
@@ -988,12 +1125,19 @@ class App {
                           index === 1 ? 'smsNotifications' : 
                           'marketingEmails';
         
-        // Save setting
-        userProfileManager.updateSettings(user.email, {
+        // Save setting to API
+        const result = await authManagerAPI.updatePreferences({
+          ...preferences,
           [settingKey]: isChecked
         });
         
-        UI.showNotification(`${settingName} ${isChecked ? 'enabled' : 'disabled'}`, { type: 'info' });
+        if (result.success) {
+          UI.showNotification(`${settingName} ${isChecked ? 'enabled' : 'disabled'}`, { type: 'info' });
+        } else {
+          UI.showNotification('Failed to update settings', { type: 'error' });
+          // Revert toggle
+          (e.target as HTMLInputElement).checked = !isChecked;
+        }
       });
     });
     
@@ -1143,51 +1287,24 @@ class App {
     });
   }
 
-  private loadUserAddresses(): void {
-    const user = authManager.getCurrentUser();
-    const addressesGrid = document.querySelector('.addresses-grid');
-    if (!addressesGrid || !user) return;
+  private async loadUserAddresses(): Promise<void> {
+    const user = authManagerAPI.getCurrentUser();
+    if (!user) return;
 
-    const existingAddresses = user.addresses && user.addresses.length > 0 ? user.addresses.map(address => `
-      <div class="address-card">
-        <div class="address-card-header">
-          <h3>${address.name}</h3>
-          ${address.isDefault ? '<span class="address-default-badge">Default</span>' : ''}
-        </div>
-        <p class="address-details">
-          ${address.street}<br>
-          ${address.city}, ${address.postalCode}<br>
-          ${address.country}
-        </p>
-        <div class="address-actions">
-          <button class="btn btn-secondary btn-sm" onclick="editAddress('${address.id}')">Edit</button>
-          <button class="btn btn-danger btn-sm" onclick="deleteAddress('${address.id}')">Delete</button>
-        </div>
-      </div>
-    `).join('') : '';
-
-    addressesGrid.innerHTML = existingAddresses + `
-      <button class="address-card add-address" id="addAddressBtn">
-        <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-          <line x1="12" y1="5" x2="12" y2="19"/>
-          <line x1="5" y1="12" x2="19" y2="12"/>
-        </svg>
-        <span>Add New Address</span>
-      </button>
-    `;
-
-    // Add address button handler
-    document.getElementById('addAddressBtn')?.addEventListener('click', () => {
-      UI.showNotification('Address management coming soon!', { type: 'info' });
-    });
+    const { renderAddresses } = await import('./pages/account');
+    renderAddresses(user.addresses || []);
   }
 
   private loadUserSettings(): void {
-    const user = authManager.getCurrentUser();
+    const user = authManagerAPI.getCurrentUser();
     if (!user) return;
 
-    // Get settings from profile manager
-    const settings = userProfileManager.getSettings(user.email);
+    // Get settings from user preferences
+    const settings = user.preferences || {
+      emailNotifications: true,
+      smsNotifications: false,
+      marketingEmails: true
+    };
 
     // Apply settings to toggles
     const settingsToggles = document.querySelectorAll('.settings-list .toggle-switch input') as NodeListOf<HTMLInputElement>;

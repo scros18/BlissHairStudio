@@ -1,12 +1,12 @@
 // Checkout Page Template
 
 import { cartManager } from '../utils/cartManager';
-import { authManager } from '../utils/authManager';
+import { authManagerAPI } from '../utils/authManagerAPI';
 
 export function checkoutPageTemplate(): string {
   const cart = cartManager.getCart();
-  const user = authManager.getCurrentUser();
-  const isLoggedIn = authManager.isLoggedIn();
+  const user = authManagerAPI.getCurrentUser();
+  const isLoggedIn = authManagerAPI.isLoggedIn();
   
   // Calculate shipping
   const subtotal = cart.total;
