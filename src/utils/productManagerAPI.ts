@@ -29,7 +29,7 @@ class ProductManagerAPI {
 
   private async loadProducts(): Promise<void> {
     try {
-      const apiProducts = await this.fetchJson(`${API_BASE}/api/products`);
+      const apiProducts = await this.fetchJson(`${API_BASE}/products`);
       this.products = (apiProducts as Product[]) || [];
       console.log('✅ Loaded', this.products.length, 'products from API (data/products.json)');
     } catch (error) {
@@ -99,7 +99,7 @@ class ProductManagerAPI {
     };
     
     try {
-      const created = await this.fetchJson(`${API_BASE}/api/products`, {
+      const created = await this.fetchJson(`${API_BASE}/products`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(withSlug)
@@ -124,7 +124,7 @@ class ProductManagerAPI {
     }
 
     try {
-      const updated = await this.fetchJson(`${API_BASE}/api/products/${id}`, {
+      const updated = await this.fetchJson(`${API_BASE}/products/${id}`, {
         method: 'PUT',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(updateData)
@@ -140,7 +140,7 @@ class ProductManagerAPI {
 
   async deleteProduct(id: string): Promise<boolean> {
     try {
-      await this.fetchJson(`${API_BASE}/api/products/${id}`, { 
+      await this.fetchJson(`${API_BASE}/products/${id}`, { 
         method: 'DELETE' 
       });
       

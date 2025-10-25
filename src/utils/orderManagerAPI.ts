@@ -29,7 +29,7 @@ class OrderManagerAPI {
 
   private async loadOrders(): Promise<void> {
     try {
-      const apiOrders = await this.fetchJson(`${API_BASE}/api/orders`);
+      const apiOrders = await this.fetchJson(`${API_BASE}/orders`);
       this.orders = (apiOrders as Order[]) || [];
       console.log('✅ Loaded', this.orders.length, 'orders from API (data/orders.json)');
     } catch (error) {
@@ -74,7 +74,7 @@ class OrderManagerAPI {
     };
 
     try {
-      const created = await this.fetchJson(`${API_BASE}/api/orders`, {
+      const created = await this.fetchJson(`${API_BASE}/orders`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(orderData)
@@ -103,7 +103,7 @@ class OrderManagerAPI {
 
   async updateOrderStatus(orderId: string, status: Order['status']): Promise<boolean> {
     try {
-      const updated = await this.fetchJson(`${API_BASE}/api/orders/${orderId}`, {
+      const updated = await this.fetchJson(`${API_BASE}/orders/${orderId}`, {
         method: 'PUT',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ status, updatedAt: Date.now() })
@@ -123,7 +123,7 @@ class OrderManagerAPI {
 
   async deleteOrder(orderId: string): Promise<boolean> {
     try {
-      await this.fetchJson(`${API_BASE}/api/orders/${orderId}`, {
+      await this.fetchJson(`${API_BASE}/orders/${orderId}`, {
         method: 'DELETE'
       });
       
