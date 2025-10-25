@@ -33,29 +33,31 @@ export class ProductsDisplay {
     
     // Render products in luxury card style
     this.container.innerHTML = products.map(product => `
-      <a href="/product/${product.slug ?? this.generateSlug(product.title)}" class="luxury-product-card" data-product-id="${product.id}">
-        <div class="luxury-product-image">
-          <div class="luxury-product-carousel">
-            ${product.image 
-              ? `<img src="${product.image}" alt="${product.title}" class="carousel-image active" loading="lazy">` 
-              : `<div class="product-placeholder" style="width:100%;height:350px;background:#F3F4F6;display:flex;align-items:center;justify-content:center;">
-                  <svg width="80" height="80" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
-                    <path d="M12 2L2 7L12 12L22 7L12 2Z"/>
-                    <path d="M2 17L12 22L22 17"/>
-                    <path d="M2 12L12 17L22 12"/>
-                  </svg>
-                </div>`
-            }
+      <div class="luxury-product-card" data-product-id="${product.id}">
+        <a href="/product/${product.slug ?? this.generateSlug(product.title)}" class="luxury-product-link">
+          <div class="luxury-product-image">
+            <div class="luxury-product-carousel">
+              ${product.image 
+                ? `<img src="${product.image}" alt="${product.title}" class="carousel-image active" loading="lazy">` 
+                : `<div class="product-placeholder" style="width:100%;height:350px;background:#F3F4F6;display:flex;align-items:center;justify-content:center;">
+                    <svg width="80" height="80" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                      <path d="M12 2L2 7L12 12L22 7L12 2Z"/>
+                      <path d="M2 17L12 22L22 17"/>
+                      <path d="M2 12L12 17L22 12"/>
+                    </svg>
+                  </div>`
+              }
+            </div>
           </div>
-        </div>
-        <div class="luxury-product-info">
-          <h3 class="luxury-product-name">${product.title}</h3>
-          <div class="luxury-product-stars">★★★★★</div>
-          <div class="luxury-product-pricing">
-            <span class="luxury-product-price">£${product.price.toFixed(2)}</span>
+          <div class="luxury-product-info">
+            <h3 class="luxury-product-name">${product.title}</h3>
+            <div class="luxury-product-stars">★★★★★</div>
+            <div class="luxury-product-pricing">
+              <span class="luxury-product-price">£${product.price.toFixed(2)}</span>
+            </div>
           </div>
-        </div>
-      </a>
+        </a>
+      </div>
     `).join('');
   }
 

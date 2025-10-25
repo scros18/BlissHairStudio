@@ -4,6 +4,13 @@ import { cartManager } from '../utils/cartManager';
 import { UI } from './ui';
 import type { Cart } from '../utils/types';
 
+// Router will be set from outside
+let routerInstance: any = null;
+
+export function setCartRouter(router: any): void {
+  routerInstance = router;
+}
+
 export class CartUI {
   private sidebar: HTMLElement | null = null;
   private overlay: HTMLElement | null = null;
@@ -136,7 +143,7 @@ export class CartUI {
     } else {
       cartBody.innerHTML = cart.items.map(item => `
         <div class="cart-item" data-product-id="${item.product.id}">
-          <div class="cart-item-image" style="background-image: url('${item.product.image || ''}')"></div>
+          <div class="cart-item-image" style="background-image: url('${item.product.image || '/logo.webp'}')"></div>
           <div class="cart-item-info">
             <div class="cart-item-title">${item.product.title}</div>
             <div class="cart-item-price">£${item.product.price.toFixed(2)}</div>
@@ -193,54 +200,16 @@ export class CartUI {
       return;
     }
     
-    // Create checkout form
-    const form = document.createElement('form');
-    form.innerHTML = `
-      <div class="form-group">
-        <label class="form-label required">Name</label>
-        <input type="text" class="form-input" name="name" required>
-      </div>
-      <div class="form-group">
-        <label class="form-label required">Email</label>
-        <input type="email" class="form-input" name="email" required>
-      </div>
-      <div class="form-group">
-        <label class="form-label">Phone (Optional)</label>
-        <input type="tel" class="form-input" name="phone">
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" id="cancelCheckout">Cancel</button>
-        <button type="submit" class="btn btn-primary">Place Order</button>
-      </div>
-    `;
+    // Close cart and navigate to checkout
+    this.closeCart();
     
-    const modal = UI.showModal(form, 'Complete Your Order');
-    
-    const cancelBtn = form.querySelector('#cancelCheckout');
-    if (cancelBtn) {
-      cancelBtn.addEventListener('click', () => modal.remove());
+    // Use the router instance
+    if (routerInstance) {
+      routerInstance.navigate('/checkout');
+    } else {
+      // Fallback to window navigation
+      window.location.href = '/checkout';
     }
-    
-    form.addEventListener('submit', (e) => {
-      e.preventDefault();
-      const formData = new FormData(form);
-      
-      // In production, this would send to a server
-      console.log('Order placed:', {
-        customer: {
-          name: formData.get('name'),
-          email: formData.get('email'),
-          phone: formData.get('phone')
-        },
-        items: cart.items,
-        total: cart.total
-      });
-      
-      cartManager.clearCart();
-      modal.remove();
-      this.closeCart();
-      UI.showNotification('Order placed successfully! We\'ll contact you soon. 💝', { type: 'success', duration: 5000 });
-    });
   }
 }
 

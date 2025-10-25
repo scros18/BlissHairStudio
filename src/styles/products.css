@@ -434,8 +434,10 @@
   width: 60px;
   height: 60px;
   border-radius: 8px;
-  object-fit: cover;
   background: #F5F5F5;
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
   flex-shrink: 0;
 }
 

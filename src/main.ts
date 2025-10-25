@@ -7,9 +7,10 @@ import './styles/admin-panel.css';
 import './styles/performance.css';
 import './styles/auth.css';
 import './styles/luxury-products.css';
+import './styles/checkout.css';
 import { navigation } from './components/navigation';
 import { productsDisplay } from './components/products';
-import { cartUI } from './components/cart';
+import { cartUI, setCartRouter } from './components/cart';
 import { reviewsDisplay } from './components/reviews';
 import { UI } from './components/ui';
 import { router } from './utils/router';
@@ -45,6 +46,9 @@ class App {
       // Initialize components
       navigation.init();
       cartUI.init();
+      
+      // Set router for cart component
+      setCartRouter(router);
       
       // Setup cart event listener for product pages
       this.setupCartEvents();
@@ -247,16 +251,26 @@ class App {
         });
         
         pageManager.loadPageFromTemplate(() => dynamicProductTemplate(product));
-        requestAnimationFrame(() => setTimeout(() => {
-          initProductDetailGallery();
-          initProductDetailInteractions({
-            id: product.id,
-            title: product.title,
-            price: product.price,
-            image: product.image || '/logo.webp',
-            defaultSize: '325ml'
-          });
-        }, 0));
+        
+        // Wait for DOM to be ready before initializing interactions
+        setTimeout(() => {
+          const checkAndInit = () => {
+            const root = document.querySelector('.luxury-product-detail-page');
+            if (root) {
+              initProductDetailGallery();
+              initProductDetailInteractions({
+                id: product.id,
+                title: product.title,
+                price: product.price,
+                image: product.image || '/logo.webp',
+                defaultSize: '325ml'
+              });
+            } else {
+              setTimeout(checkAndInit, 50);
+            }
+          };
+          checkAndInit();
+        }, 100);
       })
   .route('/product/moisture-senses', () => {
         seoManager.updateMeta({
@@ -265,16 +279,25 @@ class App {
           keywords: 'hydrating conditioner, moisture conditioner, hair conditioner, Davroe products'
         });
         pageManager.loadPageFromTemplate(productMoistureTemplate);
-        requestAnimationFrame(() => setTimeout(() => {
-          initProductDetailGallery();
-          initProductDetailInteractions({
-            id: 'product-moisture-senses',
-            title: 'Moisture Senses Hydrating Conditioner',
-            price: 29.95,
-            image: '/Davroe_Moisture_Senses_Hydrating_Conditioner_325ml__99636.jpg',
-            defaultSize: '325ml'
-          });
-        }, 0));
+        
+        setTimeout(() => {
+          const checkAndInit = () => {
+            const root = document.querySelector('.luxury-product-detail-page');
+            if (root) {
+              initProductDetailGallery();
+              initProductDetailInteractions({
+                id: 'product-moisture-senses',
+                title: 'Moisture Senses Hydrating Conditioner',
+                price: 29.95,
+                image: '/Davroe_Moisture_Senses_Hydrating_Conditioner_325ml__99636.jpg',
+                defaultSize: '325ml'
+              });
+            } else {
+              setTimeout(checkAndInit, 50);
+            }
+          };
+          checkAndInit();
+        }, 100);
       })
       .route('/product/protein-rebuilder', () => {
         seoManager.updateMeta({
@@ -283,16 +306,25 @@ class App {
           keywords: 'protein treatment, hair rebuilder, damaged hair treatment, Davroe protein'
         });
         pageManager.loadPageFromTemplate(productProteinTemplate);
-        requestAnimationFrame(() => setTimeout(() => {
-          initProductDetailGallery();
-          initProductDetailInteractions({
-            id: 'product-protein-rebuilder',
-            title: 'Protein Hair Rebuilder',
-            price: 39.95,
-            image: '/Davroe_Protein_Hair_Rebuilder_200ml__77435.jpg',
-            defaultSize: '200ml'
-          });
-        }, 0));
+        
+        setTimeout(() => {
+          const checkAndInit = () => {
+            const root = document.querySelector('.luxury-product-detail-page');
+            if (root) {
+              initProductDetailGallery();
+              initProductDetailInteractions({
+                id: 'product-protein-rebuilder',
+                title: 'Protein Hair Rebuilder',
+                price: 39.95,
+                image: '/Davroe_Protein_Hair_Rebuilder_200ml__77435.jpg',
+                defaultSize: '200ml'
+              });
+            } else {
+              setTimeout(checkAndInit, 50);
+            }
+          };
+          checkAndInit();
+        }, 100);
       })
       .route('/product/shine-duo', () => {
         seoManager.updateMeta({
@@ -301,15 +333,24 @@ class App {
           keywords: 'shine fluid, heat protection, styling products, Davroe duo, thermaprotect'
         });
         pageManager.loadPageFromTemplate(productDuoTemplate);
-        requestAnimationFrame(() => setTimeout(() => {
-          initProductDetailGallery();
-          initProductDetailInteractions({
-            id: 'product-shine-duo',
-            title: 'Shine Fluid & Thermaprotect Duo',
-            price: 34.95,
-            image: '/Davroe_Thermaprotect_200ml__47285.jpg'
-          });
-        }, 0));
+        
+        setTimeout(() => {
+          const checkAndInit = () => {
+            const root = document.querySelector('.luxury-product-detail-page');
+            if (root) {
+              initProductDetailGallery();
+              initProductDetailInteractions({
+                id: 'product-shine-duo',
+                title: 'Shine Fluid & Thermaprotect Duo',
+                price: 34.95,
+                image: '/Davroe_Thermaprotect_200ml__47285.jpg'
+              });
+            } else {
+              setTimeout(checkAndInit, 50);
+            }
+          };
+          checkAndInit();
+        }, 100);
       })
       .notFound(() => {
         router.navigate('/');
@@ -396,6 +437,14 @@ class App {
   }
 
   private setupCheckout(): void {
+    // Redirect if cart is empty
+    const cart = cartManager.getCart();
+    if (cart.items.length === 0) {
+      UI.showNotification('Your cart is empty!', { type: 'warning' });
+      setTimeout(() => router.navigate('/products'), 1500);
+      return;
+    }
+    
     // Checkout step navigation    
     const updateStep = (step: number) => {
       document.querySelectorAll('.step').forEach(el => el.classList.remove('active'));
@@ -418,27 +467,52 @@ class App {
         if (target.value === 'card') {
           cardDetails?.classList.remove('hidden');
           paypalDetails?.classList.add('hidden');
+          // Set card inputs as required
+          const cardInputs = cardDetails?.querySelectorAll('input');
+          cardInputs?.forEach(input => input.setAttribute('required', 'true'));
+          const paypalInputs = paypalDetails?.querySelectorAll('input');
+          paypalInputs?.forEach(input => input.removeAttribute('required'));
         } else if (target.value === 'paypal') {
           cardDetails?.classList.add('hidden');
           paypalDetails?.classList.remove('hidden');
+          // Remove required from card inputs
+          const cardInputs = cardDetails?.querySelectorAll('input');
+          cardInputs?.forEach(input => input.removeAttribute('required'));
         }
       });
     });
     
-    // Card number formatting
+    // Card number formatting and validation
     const cardNumberInput = document.getElementById('cardNumberInput') as HTMLInputElement;
     cardNumberInput?.addEventListener('input', (e) => {
       const target = e.target as HTMLInputElement;
-      let value = target.value.replace(/\s/g, '');
+      let value = target.value.replace(/\s/g, '').replace(/\D/g, '');
       let formattedValue = value.match(/.{1,4}/g)?.join(' ') || value;
       target.value = formattedValue;
+      
+      // Detect card brand
+      const cardBrandIcon = document.getElementById('cardBrandIcon');
+      if (cardBrandIcon && value.length >= 2) {
+        const firstDigit = value[0];
+        const firstTwo = value.substring(0, 2);
+        
+        if (firstDigit === '4') {
+          cardBrandIcon.innerHTML = '<svg width="40" height="25" viewBox="0 0 48 32"><rect width="48" height="32" rx="4" fill="#1434CB"/><text x="24" y="20" text-anchor="middle" fill="white" font-size="12" font-weight="bold">VISA</text></svg>';
+        } else if (firstTwo >= '51' && firstTwo <= '55') {
+          cardBrandIcon.innerHTML = '<svg width="40" height="25" viewBox="0 0 48 32"><rect width="48" height="32" rx="4" fill="#EB001B"/><circle cx="18" cy="16" r="8" fill="#EB001B" opacity="0.8"/><circle cx="30" cy="16" r="8" fill="#FF5F00" opacity="0.8"/></svg>';
+        } else if (firstTwo === '34' || firstTwo === '37') {
+          cardBrandIcon.innerHTML = '<svg width="40" height="25" viewBox="0 0 48 32"><rect width="48" height="32" rx="4" fill="#006FCF"/><text x="24" y="20" text-anchor="middle" fill="white" font-size="10" font-weight="bold">AMEX</text></svg>';
+        } else {
+          cardBrandIcon.innerHTML = '';
+        }
+      }
     });
     
     // Expiry date formatting
     const cardExpiryInput = document.getElementById('cardExpiryInput') as HTMLInputElement;
     cardExpiryInput?.addEventListener('input', (e) => {
       const target = e.target as HTMLInputElement;
-      let value = target.value.replace(/\s/g, '').replace(/\//g, '');
+      let value = target.value.replace(/\s/g, '').replace(/\//g, '').replace(/\D/g, '');
       if (value.length >= 2) {
         value = value.slice(0, 2) + ' / ' + value.slice(2, 4);
       }
@@ -452,43 +526,93 @@ class App {
       target.value = target.value.replace(/\D/g, '');
     });
     
+    // Step 1 -> Step 2: Validate shipping information
     document.getElementById('continueToPayment')?.addEventListener('click', () => {
-      // Validate shipping form
       const form = document.getElementById('checkoutForm') as HTMLFormElement;
-      const section1Inputs = form.querySelectorAll('[data-section="1"] input[required]');
+      const section1Inputs = form.querySelectorAll('[data-section="1"] input[required]') as NodeListOf<HTMLInputElement>;
       let isValid = true;
+      let firstInvalidInput: HTMLInputElement | null = null;
       
       section1Inputs.forEach(input => {
         const inputEl = input as HTMLInputElement;
         if (!inputEl.value.trim()) {
           isValid = false;
           inputEl.classList.add('error');
+          if (!firstInvalidInput) firstInvalidInput = inputEl;
+          
+          // Remove error class on input
+          inputEl.addEventListener('input', () => {
+            inputEl.classList.remove('error');
+          }, { once: true });
         } else {
           inputEl.classList.remove('error');
         }
       });
       
+      // Email validation
+      const emailInput = form.querySelector('[name="email"]') as HTMLInputElement;
+      const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+      if (emailInput && !emailRegex.test(emailInput.value)) {
+        isValid = false;
+        emailInput.classList.add('error');
+        if (!firstInvalidInput) firstInvalidInput = emailInput;
+        UI.showNotification('Please enter a valid email address', { type: 'error' });
+      }
+      
       if (isValid) {
         updateStep(2);
       } else {
         UI.showNotification('Please fill in all required fields', { type: 'error' });
+        firstInvalidInput?.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        firstInvalidInput?.focus();
       }
     });
     
+    // Step 2 -> Step 3: Validate payment information
     document.getElementById('continueToReview')?.addEventListener('click', () => {
       const selectedPayment = document.querySelector<HTMLInputElement>('input[name="paymentMethod"]:checked')?.value;
       
       if (selectedPayment === 'card') {
         // Validate card details
-        const cardNumber = (document.querySelector('[name="cardNumber"]') as HTMLInputElement)?.value;
-        const cardExpiry = (document.querySelector('[name="cardExpiry"]') as HTMLInputElement)?.value;
+        const cardNumber = (document.querySelector('[name="cardNumber"]') as HTMLInputElement)?.value.replace(/\s/g, '');
+        const cardExpiry = (document.querySelector('[name="cardExpiry"]') as HTMLInputElement)?.value.replace(/\s|\//g, '');
         const cardCvv = (document.querySelector('[name="cardCvv"]') as HTMLInputElement)?.value;
         const cardName = (document.querySelector('[name="cardName"]') as HTMLInputElement)?.value;
         
-        if (!cardNumber || !cardExpiry || !cardCvv || !cardName) {
-          UI.showNotification('Please fill in all card details', { type: 'error' });
-          return;
+        let isValid = true;
+        
+        if (!cardNumber || cardNumber.length < 13 || cardNumber.length > 19) {
+          UI.showNotification('Please enter a valid card number', { type: 'error' });
+          isValid = false;
+        } else if (!cardExpiry || cardExpiry.length !== 4) {
+          UI.showNotification('Please enter a valid expiry date (MM/YY)', { type: 'error' });
+          isValid = false;
+        } else if (!cardCvv || cardCvv.length < 3) {
+          UI.showNotification('Please enter a valid CVV', { type: 'error' });
+          isValid = false;
+        } else if (!cardName || cardName.trim().length < 3) {
+          UI.showNotification('Please enter the cardholder name', { type: 'error' });
+          isValid = false;
         }
+        
+        // Validate expiry date
+        if (isValid && cardExpiry) {
+          const month = parseInt(cardExpiry.substring(0, 2));
+          const year = parseInt('20' + cardExpiry.substring(2, 4));
+          const now = new Date();
+          const currentYear = now.getFullYear();
+          const currentMonth = now.getMonth() + 1;
+          
+          if (month < 1 || month > 12) {
+            UI.showNotification('Invalid expiry month', { type: 'error' });
+            isValid = false;
+          } else if (year < currentYear || (year === currentYear && month < currentMonth)) {
+            UI.showNotification('Card has expired', { type: 'error' });
+            isValid = false;
+          }
+        }
+        
+        if (!isValid) return;
       }
       
       updateStep(3);
@@ -515,18 +639,79 @@ class App {
         `;
       }
       
+      // Get form data
+      const formData = new FormData(form as HTMLFormElement);
+      const shippingAddress = {
+        id: `addr_${Date.now()}`,
+        name: 'Delivery Address',
+        street: formData.get('address') as string,
+        city: formData.get('city') as string,
+        postalCode: formData.get('postcode') as string,
+        country: 'United Kingdom',
+        isDefault: false
+      };
+      
+      const shippingCost = cart.total >= 50 ? 0 : 5.00;
+      const orderData = {
+        customer: {
+          firstName: formData.get('firstName'),
+          lastName: formData.get('lastName'),
+          email: formData.get('email'),
+          phone: formData.get('phone'),
+        },
+        shipping: shippingAddress,
+        payment: {
+          method: formData.get('paymentMethod')
+        },
+        items: cart.items,
+        subtotal: cart.total,
+        shippingCost: shippingCost,
+        total: cart.total + shippingCost,
+        date: new Date().toISOString()
+      };
+      
       // Simulate payment processing
       setTimeout(() => {
+        // Save order to user account if logged in
+        const user = authManager.getCurrentUser();
+        if (user) {
+          const order = {
+            id: `ORD-${Date.now()}`,
+            date: new Date().toISOString(),
+            status: 'processing' as const,
+            items: cart.items.map(item => ({
+              productId: item.product.id,
+              name: item.product.title,
+              quantity: item.quantity,
+              price: item.product.price
+            })),
+            total: orderData.total,
+            shippingAddress: shippingAddress
+          };
+          
+          if (!user.orders) {
+            user.orders = [];
+          }
+          user.orders.unshift(order);
+          authManager.updateProfile({}); // This will save the updated user data
+        }
+        
         // Clear cart
         cartManager.clearCart();
         
-        UI.showNotification('Order placed successfully! 🎉 Check your email for confirmation.', { type: 'success' });
-        setTimeout(() => router.navigate('/account'), 2000);
+        // Show success message
+        UI.showNotification('✨ Order placed successfully! Check your email for confirmation.', { type: 'success', duration: 5000 });
+        
+        // Redirect to account or home
+        setTimeout(() => {
+          if (user) {
+            router.navigate('/account');
+          } else {
+            router.navigate('/');
+          }
+        }, 2000);
       }, 2000);
     });
-    
-    // Load cart items into checkout
-    this.loadCheckoutItems();
   }
   
   private displayOrderReview(): void {
@@ -1171,27 +1356,6 @@ class App {
         productsDisplay.init();
       }
     };
-  }
-  
-  private loadCheckoutItems(): void {
-    // This would load actual cart items - for now showing placeholder
-    const container = document.getElementById('checkoutOrderItems');
-    if (!container) return;
-    
-    container.innerHTML = `
-      <div class="order-item-summary">
-        <div class="order-item-image"></div>
-        <div class="order-item-details">
-          <h4>Sample Product</h4>
-          <p>Qty: 1</p>
-        </div>
-        <div class="order-item-price">£49.99</div>
-      </div>
-    `;
-    
-    // Update totals
-    document.getElementById('orderSubtotal')!.textContent = '£49.99';
-    document.getElementById('orderTotal')!.textContent = '£54.99';
   }
 
   private setupProductFilters(): void {

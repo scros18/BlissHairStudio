@@ -1,12 +1,48 @@
 // Checkout Page Template
 
+import { cartManager } from '../utils/cartManager';
+import { authManager } from '../utils/authManager';
+
 export function checkoutPageTemplate(): string {
+  const cart = cartManager.getCart();
+  const user = authManager.getCurrentUser();
+  const isLoggedIn = authManager.isLoggedIn();
+  
+  // Calculate shipping
+  const subtotal = cart.total;
+  const shipping = subtotal >= 50 ? 0 : 5.00;
+  const total = subtotal + shipping;
+  
+  // Populate user data if logged in
+  const userEmail = user?.email || '';
+  const userName = user?.name || '';
+  const userPhone = user?.phone || '';
+  const [firstName, ...lastNameParts] = userName.split(' ');
+  const lastName = lastNameParts.join(' ');
+  
   return `
     <div class="checkout-page">
       <div class="container checkout-container">
         <div class="checkout-header">
           <h1>Secure Checkout</h1>
           <p>Complete your order with confidence</p>
+          ${!isLoggedIn ? `
+            <div class="checkout-login-prompt">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/>
+                <circle cx="12" cy="7" r="4"/>
+              </svg>
+              <span>Already have an account? <a href="/login" class="checkout-login-link">Sign in</a> for faster checkout</span>
+            </div>
+          ` : `
+            <div class="checkout-user-info">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/>
+                <circle cx="12" cy="7" r="4"/>
+              </svg>
+              <span>Logged in as <strong>${userName}</strong></span>
+            </div>
+          `}
         </div>
         
         <div class="checkout-content">
@@ -29,27 +65,28 @@ export function checkoutPageTemplate(): string {
               </div>
             </div>
 
-            <!-- Shipping Form -->
+            <!-- Checkout Form -->
             <form class="checkout-form" id="checkoutForm">
+              <!-- Step 1: Shipping Information -->
               <div class="form-section" data-section="1">
                 <h2>Shipping Information</h2>
                 <div class="form-row">
                   <div class="form-group">
                     <label class="form-label required">First Name</label>
-                    <input type="text" class="form-input" name="firstName" required>
+                    <input type="text" class="form-input" name="firstName" value="${firstName}" required>
                   </div>
                   <div class="form-group">
                     <label class="form-label required">Last Name</label>
-                    <input type="text" class="form-input" name="lastName" required>
+                    <input type="text" class="form-input" name="lastName" value="${lastName}" required>
                   </div>
                 </div>
                 <div class="form-group">
                   <label class="form-label required">Email Address</label>
-                  <input type="email" class="form-input" name="email" required>
+                  <input type="email" class="form-input" name="email" value="${userEmail}" required>
                 </div>
                 <div class="form-group">
                   <label class="form-label required">Phone Number</label>
-                  <input type="tel" class="form-input" name="phone" required>
+                  <input type="tel" class="form-input" name="phone" value="${userPhone}" required>
                 </div>
                 <div class="form-group">
                   <label class="form-label required">Street Address</label>
@@ -65,7 +102,17 @@ export function checkoutPageTemplate(): string {
                     <input type="text" class="form-input" name="postcode" required>
                   </div>
                 </div>
+                <div class="form-group">
+                  <label class="form-label">Delivery Notes (Optional)</label>
+                  <textarea class="form-input" name="notes" rows="3" placeholder="Any special delivery instructions..."></textarea>
+                </div>
                 <div class="form-actions">
+                  <button type="button" class="btn btn-secondary" onclick="history.back()">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                      <polyline points="15 18 9 12 15 6"/>
+                    </svg>
+                    Back to Cart
+                  </button>
                   <button type="button" class="btn btn-primary btn-lg" id="continueToPayment">
                     Continue to Payment
                     <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
@@ -75,6 +122,7 @@ export function checkoutPageTemplate(): string {
                 </div>
               </div>
 
+              <!-- Step 2: Payment Method -->
               <div class="form-section hidden" data-section="2">
                 <h2>Payment Method</h2>
                 <div class="payment-methods">
@@ -119,19 +167,19 @@ export function checkoutPageTemplate(): string {
                   <div class="form-group">
                     <label class="form-label required">Card Number</label>
                     <div class="input-with-icon">
-                      <input type="text" class="form-input" name="cardNumber" placeholder="1234 5678 9012 3456" maxlength="19" id="cardNumberInput">
+                      <input type="text" class="form-input" name="cardNumber" placeholder="1234 5678 9012 3456" maxlength="19" id="cardNumberInput" required>
                       <div class="card-brand-icon" id="cardBrandIcon"></div>
                     </div>
                   </div>
                   <div class="form-row">
                     <div class="form-group">
                       <label class="form-label required">Expiry Date</label>
-                      <input type="text" class="form-input" name="cardExpiry" placeholder="MM / YY" maxlength="7" id="cardExpiryInput">
+                      <input type="text" class="form-input" name="cardExpiry" placeholder="MM / YY" maxlength="7" id="cardExpiryInput" required>
                     </div>
                     <div class="form-group">
                       <label class="form-label required">CVV</label>
                       <div class="input-with-icon">
-                        <input type="text" class="form-input" name="cardCvv" placeholder="123" maxlength="4" id="cardCvvInput">
+                        <input type="text" class="form-input" name="cardCvv" placeholder="123" maxlength="4" id="cardCvvInput" required>
                         <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="opacity: 0.4;">
                           <circle cx="12" cy="12" r="10"/>
                           <path d="M12 16v-4M12 8h.01"/>
@@ -141,7 +189,7 @@ export function checkoutPageTemplate(): string {
                   </div>
                   <div class="form-group">
                     <label class="form-label required">Cardholder Name</label>
-                    <input type="text" class="form-input" name="cardName" placeholder="Name on card">
+                    <input type="text" class="form-input" name="cardName" placeholder="Name on card" required>
                   </div>
                 </div>
                 
@@ -171,6 +219,7 @@ export function checkoutPageTemplate(): string {
                 </div>
               </div>
 
+              <!-- Step 3: Review Order -->
               <div class="form-section hidden" data-section="3">
                 <h2>Review Your Order</h2>
                 <div class="order-review" id="orderReview"></div>
@@ -183,10 +232,10 @@ export function checkoutPageTemplate(): string {
                   </button>
                   <button type="submit" class="btn btn-primary btn-lg" id="placeOrderBtn">
                     <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                      <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/>
-                      <polyline points="22 4 12 14.01 9 11.01"/>
+                      <path d="M9 11l3 3L22 4"/>
+                      <path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/>
                     </svg>
-                    Place Order
+                    Place Order £${total.toFixed(2)}
                   </button>
                 </div>
               </div>
@@ -197,19 +246,48 @@ export function checkoutPageTemplate(): string {
           <div class="checkout-sidebar">
             <div class="order-summary">
               <h3>Order Summary</h3>
-              <div class="order-items" id="checkoutOrderItems"></div>
+              <div class="order-items" id="checkoutOrderItems">
+                ${cart.items.length === 0 ? `
+                  <div class="empty-cart-message">
+                    <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                      <circle cx="9" cy="21" r="1"/>
+                      <circle cx="20" cy="21" r="1"/>
+                      <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"/>
+                    </svg>
+                    <p>Your cart is empty</p>
+                    <a href="/products" class="btn btn-secondary btn-sm">Continue Shopping</a>
+                  </div>
+                ` : cart.items.map(item => `
+                  <div class="order-item-summary">
+                    <div class="order-item-image" style="background-image: url('${item.product.image || '/logo.webp'}')"></div>
+                    <div class="order-item-details">
+                      <h4>${item.product.title}</h4>
+                      <p>Qty: ${item.quantity}</p>
+                    </div>
+                    <div class="order-item-price">£${(item.product.price * item.quantity).toFixed(2)}</div>
+                  </div>
+                `).join('')}
+              </div>
               <div class="order-totals">
                 <div class="order-total-row">
                   <span>Subtotal</span>
-                  <span id="orderSubtotal">£0.00</span>
+                  <span id="orderSubtotal">£${subtotal.toFixed(2)}</span>
                 </div>
                 <div class="order-total-row">
                   <span>Shipping</span>
-                  <span id="orderShipping">£5.00</span>
+                  <span id="orderShipping">${shipping === 0 ? 'FREE' : `£${shipping.toFixed(2)}`}</span>
                 </div>
+                ${subtotal < 50 && subtotal > 0 ? `
+                  <div class="free-shipping-notice">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                      <path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/>
+                    </svg>
+                    <span>Add £${(50 - subtotal).toFixed(2)} more for FREE shipping!</span>
+                  </div>
+                ` : ''}
                 <div class="order-total-row total">
                   <strong>Total</strong>
-                  <strong id="orderTotal">£5.00</strong>
+                  <strong id="orderTotal">£${total.toFixed(2)}</strong>
                 </div>
               </div>
               <div class="security-badges">
@@ -233,3 +311,4 @@ export function checkoutPageTemplate(): string {
     </div>
   `;
 }
+

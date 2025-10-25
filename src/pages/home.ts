@@ -1,4 +1,8 @@
 // Home Page Template
+
+import { cartManager } from '../utils/cartManager';
+import { UI } from '../components/ui';
+
 export const homePageTemplate = (): string => {
   return `
     <!-- Hero Section -->
@@ -373,13 +377,12 @@ export function initProductDetailInteractions(details: {
     defaultSize?: string;
 }): void {
     const root = document.querySelector('.luxury-product-detail-page') as HTMLElement | null;
-    console.log('🚀 initProductDetailInteractions called, root found:', !!root);
+    
     if (!root) {
-        console.warn('❌ .luxury-product-detail-page not found!');
+        console.warn('Product detail page element not found');
         return;
     }
     if (root.dataset.interactionsInit === '1') {
-        console.log('⏭️  Already initialized, skipping');
         return;
     }
     root.dataset.interactionsInit = '1';
@@ -465,20 +468,34 @@ export function initProductDetailInteractions(details: {
     });
 
     // Add to Bag
-    const addToBagBtn = document.querySelector('.btn-add-to-bag');
-    addToBagBtn?.addEventListener('click', () => {
-        const quantity = parseInt((document.getElementById('qtyInput') as HTMLInputElement)?.value || '1');
-        const selectedSize = document.querySelector('.size-option.active')?.textContent?.trim() || details.defaultSize || '';
-        window.dispatchEvent(new CustomEvent('addToCart', {
-            detail: {
+    const addToBagBtn = root.querySelector('.btn-add-to-bag') as HTMLButtonElement;
+    
+    if (addToBagBtn) {
+        addToBagBtn.addEventListener('click', (e) => {
+            e.preventDefault();
+            e.stopPropagation();
+            
+            const quantity = parseInt((document.getElementById('qtyInput') as HTMLInputElement)?.value || '1');
+            const selectedSize = root.querySelector('.size-option.active')?.textContent?.trim() || details.defaultSize || '';
+            
+            // Create product object
+            const product = {
                 id: details.id,
                 title: details.title,
                 price: details.price,
                 image: details.image,
-                size: selectedSize,
-                description: '',
-                quantity
+                description: `Size: ${selectedSize}`,
+                createdAt: Date.now(),
+                updatedAt: Date.now()
+            };
+            
+            // Add to cart
+            for (let i = 0; i < quantity; i++) {
+                cartManager.addItem(product, 1);
             }
-        }));
-    });
+            
+            // Show success notification
+            UI.showNotification(`✨ Added ${quantity} x ${details.title} to your bag!`, { type: 'success' });
+        });
+    }
 }

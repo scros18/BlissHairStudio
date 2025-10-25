@@ -697,3 +697,14 @@
 .luxury-product-card img {
   background: #F5F5F5;
 }
+
+/* Product cards should be clickable links */
+.luxury-product-card {
+  transition: all 0.3s ease;
+}
+
+.luxury-product-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+}
+
