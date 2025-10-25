@@ -1566,9 +1566,11 @@ body.modal-open {
 }
 
 .admin-order-actions .btn-action {
-  padding: 12px 24px;
+  padding: 12px 28px;
   font-weight: 600;
   font-size: 0.95rem;
+  min-width: 160px;
+  justify-content: center;
 }
 
 .btn-action.success {

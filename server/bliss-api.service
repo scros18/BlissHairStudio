@@ -1,0 +1,20 @@
+[Unit]
+Description=BlissHairStudio API Server
+After=network.target
+
+[Service]
+Type=simple
+User=www-data
+WorkingDirectory=/var/www/blisshairstudio
+Environment=NODE_ENV=production
+Environment=PORT=8787
+Environment=BLISS_DATA_DIR=/var/www/blisshairstudio/data
+ExecStart=/usr/bin/node /var/www/blisshairstudio/server/index.js
+Restart=always
+RestartSec=10
+StandardOutput=journal
+StandardError=journal
+SyslogIdentifier=bliss-api
+
+[Install]
+WantedBy=multi-user.target

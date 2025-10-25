@@ -1009,62 +1009,132 @@ class App {
     // Get orders using order manager
     const orders = orderManager.getOrdersForUser(user.email);
 
-    if (orders.length > 0) {
-      // Hide empty state
-      const emptyState = ordersList.querySelector('.empty-state') as HTMLElement;
-      if (emptyState) emptyState.style.display = 'none';
+    if (orders.length === 0) {
+      ordersList.innerHTML = `
+        <div class="empty-state">
+          <h3>No Orders</h3>
+          <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+            <circle cx="9" cy="21" r="1"/>
+            <circle cx="20" cy="21" r="1"/>
+            <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"/>
+          </svg>
+        </div>
+      `;
+      return;
+    }
 
-      // Display orders
-      const ordersHTML = orders.map(order => `
-        <div class="order-card">
-          <div class="order-card-header">
-            <div>
-              <h3>Order #${order.orderNumber}</h3>
-              <p class="order-date">Placed on ${orderManager.formatOrderDate(order.createdAt)}</p>
-            </div>
-            <span class="order-status-badge ${orderManager.getStatusBadgeClass(order.status)}">
-              ${orderManager.getStatusDisplayText(order.status)}
-            </span>
+    // Render orders using the new design
+    ordersList.innerHTML = orders.map(order => `
+      <div class="order-card">
+        <div class="order-header">
+          <div class="order-info">
+            <h4>Order #${order.orderNumber}</h4>
+            <p>${orderManager.formatOrderDate(order.createdAt)}</p>
           </div>
-          <div class="order-items-preview">
+          <span class="order-status ${order.status.toLowerCase()}">${orderManager.getStatusDisplayText(order.status)}</span>
+        </div>
+        
+        <div class="order-items-summary">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/>
+            <line x1="3" y1="6" x2="21" y2="6"/>
+            <path d="M16 10a4 4 0 0 1-8 0"/>
+          </svg>
+          <span>${order.items.length} item${order.items.length > 1 ? 's' : ''}</span>
+        </div>
+        
+        <div class="order-footer">
+          <div class="order-total">
+            Total: <strong>£${order.total.toFixed(2)}</strong>
+          </div>
+          <button class="btn-view-order" onclick="window.viewUserOrderDetails('${order.id}')">
+            View Details
+          </button>
+        </div>
+      </div>
+    `).join('');
+
+    // Setup the view details function
+    (window as any).viewUserOrderDetails = (orderId: string) => {
+      this.showUserOrderDetails(orderId);
+    };
+  }
+
+  private showUserOrderDetails(orderId: string): void {
+    const order = orderManager.getOrderById(orderId);
+    if (!order) return;
+
+    const modal = document.createElement('div');
+    modal.className = 'order-detail-modal active';
+    modal.innerHTML = `
+      <div class="order-detail-content">
+        <div class="order-detail-header">
+          <h3>Order #${order.orderNumber}</h3>
+          <button class="modal-close" onclick="this.closest('.order-detail-modal').remove()">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <line x1="18" y1="6" x2="6" y2="18"/>
+              <line x1="6" y1="6" x2="18" y2="18"/>
+            </svg>
+          </button>
+        </div>
+        <div class="order-detail-body">
+          <div class="order-detail-section">
+            <h4>Order Information</h4>
+            <p><strong>Order Date:</strong> ${orderManager.formatOrderDate(order.createdAt)}</p>
+            <p><strong>Status:</strong> <span class="order-status ${order.status.toLowerCase()}">${orderManager.getStatusDisplayText(order.status)}</span></p>
+          </div>
+          
+          <div class="order-detail-section">
+            <h4>Order Items</h4>
             ${order.items.map(item => `
-              <div class="order-item-mini">
-                <div class="order-item-image" style="background-image: url('${item.product.image || '/logo.webp'}')"></div>
-                <div class="order-item-info">
-                  <p class="order-item-name">${item.product.title}</p>
-                  ${item.selectedSize ? `<p class="order-item-size">Size: ${item.selectedSize}</p>` : ''}
-                  <p class="order-item-qty">Qty: ${item.quantity}</p>
+              <div class="order-detail-item">
+                <img src="${item.product.image || '/logo.webp'}" alt="${item.product.title}">
+                <div class="order-detail-item-info">
+                  <h5>${item.product.title}</h5>
+                  <p>Quantity: ${item.quantity}${item.selectedSize ? ` • Size: ${item.selectedSize}` : ''}</p>
                 </div>
-                <p class="order-item-price">£${(item.product.price * item.quantity).toFixed(2)}</p>
+                <div class="order-detail-item-price">£${(item.product.price * item.quantity).toFixed(2)}</div>
               </div>
             `).join('')}
           </div>
-          <div class="order-card-footer">
-            <div class="order-total">
-              <span>Subtotal: £${order.subtotal.toFixed(2)}</span>
-              <span>Shipping: ${order.shipping === 0 ? 'FREE' : `£${order.shipping.toFixed(2)}`}</span>
-              <strong>Total: £${order.total.toFixed(2)}</strong>
+          
+          <div class="order-detail-section">
+            <h4>Shipping Address</h4>
+            <p>
+              ${order.shippingAddress.firstName} ${order.shippingAddress.lastName}<br>
+              ${order.shippingAddress.address}<br>
+              ${order.shippingAddress.city}, ${order.shippingAddress.postcode}<br>
+              ${order.shippingAddress.phone}
+            </p>
+          </div>
+          
+          <div class="order-detail-section">
+            <h4>Order Summary</h4>
+            <div class="order-summary-row">
+              <span>Subtotal:</span>
+              <span>£${order.subtotal.toFixed(2)}</span>
             </div>
-            <div class="order-actions">
-              <button class="btn btn-secondary btn-sm" onclick="window.app.viewOrderDetails('${order.id}')">View Details</button>
-              <button class="btn btn-primary btn-sm" onclick="window.app.reorder('${order.id}')">Reorder</button>
+            <div class="order-summary-row">
+              <span>Shipping:</span>
+              <span>${order.shipping === 0 ? 'FREE' : `£${order.shipping.toFixed(2)}`}</span>
+            </div>
+            <div class="order-summary-row total">
+              <span>Total:</span>
+              <span>£${order.total.toFixed(2)}</span>
             </div>
           </div>
         </div>
-      `).join('');
-
-      // Remove old orders if they exist
-      ordersList.querySelectorAll('.order-card').forEach(card => card.remove());
-      
-      // Insert new orders
-      ordersList.insertAdjacentHTML('afterbegin', ordersHTML);
-    } else {
-      // Show empty state
-      const emptyState = ordersList.querySelector('.empty-state') as HTMLElement;
-      if (emptyState) {
-        emptyState.style.display = 'flex';
+      </div>
+    `;
+    
+    document.body.appendChild(modal);
+    
+    // Close on background click
+    modal.addEventListener('click', (e) => {
+      if (e.target === modal) {
+        modal.remove();
       }
-    }
+    });
   }
 
   private loadUserAddresses(): void {

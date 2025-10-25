@@ -44,3 +44,6 @@ coverage/
 
 # TypeScript
 *.tsbuildinfo
+
+# NOTE: Data files in /data directory ARE tracked in Git
+# This allows syncing between local and VPS
