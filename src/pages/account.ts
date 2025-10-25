@@ -118,19 +118,14 @@ export function accountPageTemplate(userName: string = '', isAdmin: boolean = fa
 
             <!-- Orders Tab -->
             <div class="account-tab" data-tab-content="orders">
-              <div class="account-card">
-                <h2>Order History</h2>
-                <div class="orders-list" id="ordersList">
-                  <div class="empty-state">
-                    <svg width="64" height="64" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
-                      <circle cx="9" cy="21" r="1"/>
-                      <circle cx="20" cy="21" r="1"/>
-                      <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"/>
-                    </svg>
-                    <h3>No orders yet</h3>
-                    <p>Start shopping to see your orders here</p>
-                    <a href="/products" class="btn btn-primary">Shop Now</a>
-                  </div>
+              <div class="orders-list" id="ordersList">
+                <div class="empty-state">
+                  <h3>No Orders</h3>
+                  <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                    <circle cx="9" cy="21" r="1"/>
+                    <circle cx="20" cy="21" r="1"/>
+                    <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"/>
+                  </svg>
                 </div>
               </div>
             </div>
@@ -223,3 +218,106 @@ export function accountPageTemplate(userName: string = '', isAdmin: boolean = fa
     </div>
   `;
 }
+
+// Function to render orders
+export function renderOrders(orders: any[]) {
+  const ordersList = document.getElementById('ordersList');
+  if (!ordersList) return;
+
+  if (orders.length === 0) {
+    ordersList.innerHTML = `
+      <div class="empty-state">
+        <h3>No Orders</h3>
+        <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+          <circle cx="9" cy="21" r="1"/>
+          <circle cx="20" cy="21" r="1"/>
+          <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"/>
+        </svg>
+      </div>
+    `;
+    return;
+  }
+
+  ordersList.innerHTML = orders.map(order => `
+    <div class="order-card">
+      <div class="order-header">
+        <div class="order-info">
+          <h4>Order #${order.id}</h4>
+          <p>${new Date(order.createdAt).toLocaleDateString('en-GB', { day: 'numeric', month: 'long', year: 'numeric' })}</p>
+        </div>
+        <span class="order-status ${order.status.toLowerCase()}">${order.status}</span>
+      </div>
+      
+      <div class="order-items-summary">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/>
+          <line x1="3" y1="6" x2="21" y2="6"/>
+          <path d="M16 10a4 4 0 0 1-8 0"/>
+        </svg>
+        <span>${order.items.length} item${order.items.length > 1 ? 's' : ''}</span>
+      </div>
+      
+      <div class="order-footer">
+        <div class="order-total">
+          Total: <strong>£${order.total.toFixed(2)}</strong>
+        </div>
+        <button class="btn-view-order" onclick="viewOrderDetails('${order.id}')">
+          View Details
+        </button>
+      </div>
+    </div>
+  `).join('');
+}
+
+// Function to show order details modal
+export function viewOrderDetails(orderId: string) {
+  // This function will be called when View Details is clicked
+  const modal = document.createElement('div');
+  modal.className = 'order-detail-modal active';
+  modal.innerHTML = `
+    <div class="order-detail-content">
+      <div class="order-detail-header">
+        <h3>Order #${orderId}</h3>
+        <button class="modal-close" onclick="this.closest('.order-detail-modal').remove()">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <line x1="18" y1="6" x2="6" y2="18"/>
+            <line x1="6" y1="6" x2="18" y2="18"/>
+          </svg>
+        </button>
+      </div>
+      <div class="order-detail-body">
+        <div class="order-detail-section">
+          <h4>Order Items</h4>
+          <!-- Items will be populated here -->
+        </div>
+        <div class="order-detail-section">
+          <h4>Order Summary</h4>
+          <div class="order-summary-row">
+            <span>Subtotal:</span>
+            <span>£0.00</span>
+          </div>
+          <div class="order-summary-row">
+            <span>Shipping:</span>
+            <span>£0.00</span>
+          </div>
+          <div class="order-summary-row total">
+            <span>Total:</span>
+            <span>£0.00</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  `;
+  
+  document.body.appendChild(modal);
+  
+  // Close on background click
+  modal.addEventListener('click', (e) => {
+    if (e.target === modal) {
+      modal.remove();
+    }
+  });
+}
+
+// Make viewOrderDetails globally available
+(window as any).viewOrderDetails = viewOrderDetails;
