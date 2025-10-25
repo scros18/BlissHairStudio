@@ -411,7 +411,7 @@ export function initProductDetailInteractions(details: {
     });
 
     // Collapsible sections (accordion) with direct listeners
-    const sections = Array.from(document.querySelectorAll<HTMLElement>('.detail-section'));
+    const sections = Array.from(root.querySelectorAll<HTMLElement>('.detail-section'));
     console.log('🔍 Found sections:', sections.length);
 
     sections.forEach((sec, idx) => {
@@ -484,18 +484,18 @@ export function initProductDetailInteractions(details: {
                 title: details.title,
                 price: details.price,
                 image: details.image,
-                description: `Size: ${selectedSize}`,
+                description: details.title,
                 createdAt: Date.now(),
                 updatedAt: Date.now()
             };
             
-            // Add to cart
+            // Add to cart with selected size
             for (let i = 0; i < quantity; i++) {
-                cartManager.addItem(product, 1);
+                cartManager.addItem(product, 1, selectedSize);
             }
             
             // Show success notification
-            UI.showNotification(`✨ Added ${quantity} x ${details.title} to your bag!`, { type: 'success' });
+            UI.showNotification(`✨ Added ${quantity} x ${details.title} (${selectedSize}) to your bag!`, { type: 'success' });
         });
     }
 }

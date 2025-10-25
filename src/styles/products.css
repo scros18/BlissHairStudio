@@ -456,6 +456,13 @@
   letter-spacing: 0.3px;
 }
 
+.cart-item-size {
+  font-size: 0.75rem;
+  color: #666;
+  margin: 2px 0 4px 0;
+  font-weight: 400;
+}
+
 .cart-item-price {
   color: #1A1A2E;
   font-weight: 500;
@@ -543,7 +550,7 @@
   letter-spacing: 1px;
   text-transform: uppercase;
   border-radius: 0;
-  background: #16A34A;
+  background: #3D8B6C;
   border: none;
   color: white;
   transition: all 0.3s ease;
@@ -551,7 +558,7 @@
 }
 
 .btn-checkout:hover {
-  background: #1A4034;
+  background: #2D6854;
   transform: none;
 }
 

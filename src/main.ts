@@ -39,6 +39,8 @@ import { productProteinTemplate } from './pages/product-protein';
 import { productDuoTemplate } from './pages/product-duo';
 import { dynamicProductTemplate } from './pages/product-dynamic';
 import { cartManager } from './utils/cartManager';
+import { orderManager } from './utils/orderManager';
+import { userProfileManager } from './utils/userProfileManager';
 
 class App {
   async init(): Promise<void> {
@@ -642,65 +644,47 @@ class App {
       // Get form data
       const formData = new FormData(form as HTMLFormElement);
       const shippingAddress = {
-        id: `addr_${Date.now()}`,
-        name: 'Delivery Address',
-        street: formData.get('address') as string,
+        firstName: formData.get('firstName') as string,
+        lastName: formData.get('lastName') as string,
+        email: formData.get('email') as string,
+        phone: formData.get('phone') as string,
+        address: formData.get('address') as string,
         city: formData.get('city') as string,
-        postalCode: formData.get('postcode') as string,
-        country: 'United Kingdom',
-        isDefault: false
+        postcode: formData.get('postcode') as string,
+        notes: formData.get('notes') as string || undefined
       };
-      
-      const shippingCost = cart.total >= 50 ? 0 : 5.00;
-      const orderData = {
-        customer: {
-          firstName: formData.get('firstName'),
-          lastName: formData.get('lastName'),
-          email: formData.get('email'),
-          phone: formData.get('phone'),
-        },
-        shipping: shippingAddress,
-        payment: {
-          method: formData.get('paymentMethod')
-        },
-        items: cart.items,
-        subtotal: cart.total,
-        shippingCost: shippingCost,
-        total: cart.total + shippingCost,
-        date: new Date().toISOString()
+
+      const paymentMethod = formData.get('paymentMethod') as 'card' | 'paypal';
+      const paymentDetails = {
+        method: paymentMethod,
+        cardLast4: paymentMethod === 'card' ? (formData.get('cardNumber') as string)?.slice(-4) : undefined,
+        cardBrand: paymentMethod === 'card' ? 'Visa' : undefined // Detect from card number in production
       };
       
       // Simulate payment processing
       setTimeout(() => {
-        // Save order to user account if logged in
+        // Get current user
         const user = authManager.getCurrentUser();
+        const userEmail = user?.email || shippingAddress.email;
+        
+        // Create order using order manager
+        const order = orderManager.createOrder(
+          cart.items,
+          shippingAddress,
+          paymentDetails,
+          userEmail
+        );
+        
+        // Add order to user profile
         if (user) {
-          const order = {
-            id: `ORD-${Date.now()}`,
-            date: new Date().toISOString(),
-            status: 'processing' as const,
-            items: cart.items.map(item => ({
-              productId: item.product.id,
-              name: item.product.title,
-              quantity: item.quantity,
-              price: item.product.price
-            })),
-            total: orderData.total,
-            shippingAddress: shippingAddress
-          };
-          
-          if (!user.orders) {
-            user.orders = [];
-          }
-          user.orders.unshift(order);
-          authManager.updateProfile({}); // This will save the updated user data
+          userProfileManager.addOrderToProfile(userEmail, order.id);
         }
         
         // Clear cart
         cartManager.clearCart();
         
         // Show success message
-        UI.showNotification('✨ Order placed successfully! Check your email for confirmation.', { type: 'success', duration: 5000 });
+        UI.showNotification(`✨ Order #${order.orderNumber} placed successfully! Check your email for confirmation.`, { type: 'success', duration: 5000 });
         
         // Redirect to account or home
         setTimeout(() => {
@@ -982,12 +966,28 @@ class App {
       (e.target as HTMLFormElement).reset();
     });
     
+    // Load and apply user settings
+    this.loadUserSettings();
+    
     // Settings toggles
-    document.querySelectorAll('.toggle-switch input').forEach(toggle => {
+    const settingsToggles = document.querySelectorAll('.settings-list .toggle-switch input');
+    settingsToggles.forEach((toggle, index) => {
       toggle.addEventListener('change', (e) => {
         const isChecked = (e.target as HTMLInputElement).checked;
-        const setting = (e.target as HTMLInputElement).closest('.setting-item')?.querySelector('h3')?.textContent;
-        UI.showNotification(`${setting} ${isChecked ? 'enabled' : 'disabled'}`, { type: 'info' });
+        const settingItem = (e.target as HTMLInputElement).closest('.setting-item');
+        const settingName = settingItem?.querySelector('h3')?.textContent || '';
+        
+        // Map setting names to keys
+        const settingKey = index === 0 ? 'emailNotifications' : 
+                          index === 1 ? 'smsNotifications' : 
+                          'marketingEmails';
+        
+        // Save setting
+        userProfileManager.updateSettings(user.email, {
+          [settingKey]: isChecked
+        });
+        
+        UI.showNotification(`${settingName} ${isChecked ? 'enabled' : 'disabled'}`, { type: 'info' });
       });
     });
     
@@ -1006,54 +1006,64 @@ class App {
     const ordersList = document.getElementById('ordersList');
     if (!ordersList || !user) return;
 
-    if (user.orders && user.orders.length > 0) {
-      ordersList.innerHTML = user.orders.map(order => `
+    // Get orders using order manager
+    const orders = orderManager.getOrdersForUser(user.email);
+
+    if (orders.length > 0) {
+      // Hide empty state
+      const emptyState = ordersList.querySelector('.empty-state') as HTMLElement;
+      if (emptyState) emptyState.style.display = 'none';
+
+      // Display orders
+      const ordersHTML = orders.map(order => `
         <div class="order-card">
           <div class="order-card-header">
             <div>
-              <h3>Order #${order.id}</h3>
-              <p class="order-date">Placed on ${new Date(order.date).toLocaleDateString('en-GB', { 
-                day: 'numeric', 
-                month: 'long', 
-                year: 'numeric' 
-              })}</p>
+              <h3>Order #${order.orderNumber}</h3>
+              <p class="order-date">Placed on ${orderManager.formatOrderDate(order.createdAt)}</p>
             </div>
-            <span class="order-status-badge ${order.status}">${order.status}</span>
+            <span class="order-status-badge ${orderManager.getStatusBadgeClass(order.status)}">
+              ${orderManager.getStatusDisplayText(order.status)}
+            </span>
           </div>
           <div class="order-items-preview">
             ${order.items.map(item => `
               <div class="order-item-mini">
-                <div class="order-item-image"></div>
+                <div class="order-item-image" style="background-image: url('${item.product.image || '/logo.webp'}')"></div>
                 <div class="order-item-info">
-                  <p class="order-item-name">${item.name}</p>
+                  <p class="order-item-name">${item.product.title}</p>
+                  ${item.selectedSize ? `<p class="order-item-size">Size: ${item.selectedSize}</p>` : ''}
                   <p class="order-item-qty">Qty: ${item.quantity}</p>
                 </div>
-                <p class="order-item-price">£${item.price.toFixed(2)}</p>
+                <p class="order-item-price">£${(item.product.price * item.quantity).toFixed(2)}</p>
               </div>
             `).join('')}
           </div>
           <div class="order-card-footer">
-            <div class="order-total">Total: <strong>£${order.total.toFixed(2)}</strong></div>
+            <div class="order-total">
+              <span>Subtotal: £${order.subtotal.toFixed(2)}</span>
+              <span>Shipping: ${order.shipping === 0 ? 'FREE' : `£${order.shipping.toFixed(2)}`}</span>
+              <strong>Total: £${order.total.toFixed(2)}</strong>
+            </div>
             <div class="order-actions">
-              <button class="btn btn-secondary btn-sm">View Details</button>
-              <button class="btn btn-primary btn-sm">Reorder</button>
+              <button class="btn btn-secondary btn-sm" onclick="window.app.viewOrderDetails('${order.id}')">View Details</button>
+              <button class="btn btn-primary btn-sm" onclick="window.app.reorder('${order.id}')">Reorder</button>
             </div>
           </div>
         </div>
       `).join('');
+
+      // Remove old orders if they exist
+      ordersList.querySelectorAll('.order-card').forEach(card => card.remove());
+      
+      // Insert new orders
+      ordersList.insertAdjacentHTML('afterbegin', ordersHTML);
     } else {
-      ordersList.innerHTML = `
-        <div class="empty-state">
-          <svg width="64" height="64" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
-            <circle cx="9" cy="21" r="1"/>
-            <circle cx="20" cy="21" r="1"/>
-            <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"/>
-          </svg>
-          <h3>No orders yet</h3>
-          <p>Start shopping to see your orders here</p>
-          <a href="/products" class="btn btn-primary">Shop Now</a>
-        </div>
-      `;
+      // Show empty state
+      const emptyState = ordersList.querySelector('.empty-state') as HTMLElement;
+      if (emptyState) {
+        emptyState.style.display = 'flex';
+      }
     }
   }
 
@@ -1094,6 +1104,20 @@ class App {
     document.getElementById('addAddressBtn')?.addEventListener('click', () => {
       UI.showNotification('Address management coming soon!', { type: 'info' });
     });
+  }
+
+  private loadUserSettings(): void {
+    const user = authManager.getCurrentUser();
+    if (!user) return;
+
+    // Get settings from profile manager
+    const settings = userProfileManager.getSettings(user.email);
+
+    // Apply settings to toggles
+    const settingsToggles = document.querySelectorAll('.settings-list .toggle-switch input') as NodeListOf<HTMLInputElement>;
+    if (settingsToggles[0]) settingsToggles[0].checked = settings.emailNotifications;
+    if (settingsToggles[1]) settingsToggles[1].checked = settings.smsNotifications;
+    if (settingsToggles[2]) settingsToggles[2].checked = settings.marketingEmails;
   }
 
   private loadAdminPanel(): void {
@@ -1165,15 +1189,21 @@ class App {
     productForm?.addEventListener('submit', async (e) => {
       e.preventDefault();
       const formData = new FormData(productForm);
-      const productId = formData.get('id') as string;
+      const productId = (document.getElementById('productId') as HTMLInputElement)?.value;
+      
+      // Parse sizes from comma-separated string
+      const sizesString = formData.get('sizes') as string;
+      const sizes = sizesString ? sizesString.split(',').map(s => s.trim()).filter(s => s.length > 0) : undefined;
+      
       const productData = {
         title: formData.get('title') as string,
         description: formData.get('description') as string,
         price: parseFloat(formData.get('price') as string),
-        badge: (formData.get('badge') as string) || undefined
+        badge: (formData.get('badge') as string) || undefined,
+        sizes: sizes
       };
 
-      if (productId) {
+      if (productId && productId.trim() !== '') {
         await productManager.updateProduct(productId, productData);
         UI.showNotification('✨ Product updated successfully!', { type: 'success' });
       } else {
@@ -1342,6 +1372,7 @@ class App {
       (document.getElementById('productDescription') as HTMLTextAreaElement).value = product.description;
       (document.getElementById('productPrice') as HTMLInputElement).value = product.price.toString();
       (document.getElementById('productBadge') as HTMLInputElement).value = product.badge || '';
+      (document.getElementById('productSizes') as HTMLInputElement).value = product.sizes ? product.sizes.join(', ') : '';
       
       document.getElementById('productModalTitle')!.textContent = 'Edit Product';
       document.getElementById('productModal')?.classList.add('active');

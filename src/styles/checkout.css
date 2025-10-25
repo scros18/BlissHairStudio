@@ -629,6 +629,13 @@ textarea.form-input {
   margin: 0;
 }
 
+.order-item-details .item-size {
+  font-size: var(--text-xs);
+  color: var(--text-muted);
+  font-weight: 400;
+  margin-top: 2px;
+}
+
 @media (max-width: 640px) {
   .order-item-details p {
     font-size: var(--text-xs);

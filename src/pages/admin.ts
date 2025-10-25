@@ -181,6 +181,21 @@ export function adminPanelTemplate(): string {
             <span class="form-hint">Add a special label like "New" or "Sale"</span>
           </div>
 
+          <div class="form-group">
+            <label class="form-label">
+              <span>Available Sizes</span>
+              <span class="form-optional">(Optional)</span>
+            </label>
+            <input 
+              type="text" 
+              class="form-input" 
+              id="productSizes" 
+              name="sizes" 
+              placeholder="e.g., 325ml, 1L" 
+            />
+            <span class="form-hint">Enter sizes separated by commas (e.g., "325ml, 1L, 200ml")</span>
+          </div>
+
           <div class="modal-actions">
             <button type="button" class="btn btn-cancel" id="cancelProductBtn">
               Cancel

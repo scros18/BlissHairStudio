@@ -142,10 +142,11 @@ export class CartUI {
       `;
     } else {
       cartBody.innerHTML = cart.items.map(item => `
-        <div class="cart-item" data-product-id="${item.product.id}">
+        <div class="cart-item" data-product-id="${item.product.id}" data-size="${item.selectedSize || ''}">
           <div class="cart-item-image" style="background-image: url('${item.product.image || '/logo.webp'}')"></div>
           <div class="cart-item-info">
             <div class="cart-item-title">${item.product.title}</div>
+            ${item.selectedSize ? `<div class="cart-item-size">Size: ${item.selectedSize}</div>` : ''}
             <div class="cart-item-price">£${item.product.price.toFixed(2)}</div>
             <div class="cart-item-quantity">
               <button class="quantity-btn" data-action="decrease">−</button>
@@ -162,13 +163,15 @@ export class CartUI {
         btn.addEventListener('click', (e) => {
           const target = e.target as HTMLElement;
           const action = target.dataset.action;
-          const productId = target.closest('.cart-item')?.getAttribute('data-product-id');
+          const cartItem = target.closest('.cart-item');
+          const productId = cartItem?.getAttribute('data-product-id');
+          const selectedSize = cartItem?.getAttribute('data-size') || undefined;
           
           if (productId) {
-            const item = cart.items.find(i => i.product.id === productId);
+            const item = cart.items.find(i => i.product.id === productId && i.selectedSize === selectedSize);
             if (item) {
               const newQuantity = action === 'increase' ? item.quantity + 1 : item.quantity - 1;
-              cartManager.updateQuantity(productId, newQuantity);
+              cartManager.updateQuantity(productId, newQuantity, selectedSize);
             }
           }
         });
@@ -176,9 +179,11 @@ export class CartUI {
       
       cartBody.querySelectorAll('.cart-item-remove').forEach(btn => {
         btn.addEventListener('click', (e) => {
-          const productId = (e.target as HTMLElement).closest('.cart-item')?.getAttribute('data-product-id');
+          const cartItem = (e.target as HTMLElement).closest('.cart-item');
+          const productId = cartItem?.getAttribute('data-product-id');
+          const selectedSize = cartItem?.getAttribute('data-size') || undefined;
           if (productId) {
-            cartManager.removeItem(productId);
+            cartManager.removeItem(productId, selectedSize);
             UI.showNotification('Item removed from cart', { type: 'info' });
           }
         });

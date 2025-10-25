@@ -53,13 +53,16 @@ export function dynamicProductTemplate(product: Product): string {
               <span class="price-current">£${product.price.toFixed(2)}</span>
             </div>
 
+            ${product.sizes && product.sizes.length > 0 ? `
             <div class="product-size-selector">
               <label>Size:</label>
               <div class="size-options">
-                <button class="size-option active">325ml</button>
-                <button class="size-option">1L</button>
+                ${product.sizes.map((size, index) => `
+                  <button class="size-option ${index === 0 ? 'active' : ''}">${size}</button>
+                `).join('')}
               </div>
             </div>
+            ` : ''}
 
             <div class="product-quantity">
               <label>Quantity:</label>

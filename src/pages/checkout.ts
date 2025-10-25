@@ -262,6 +262,7 @@ export function checkoutPageTemplate(): string {
                     <div class="order-item-image" style="background-image: url('${item.product.image || '/logo.webp'}')"></div>
                     <div class="order-item-details">
                       <h4>${item.product.title}</h4>
+                      ${item.selectedSize ? `<p class="item-size">Size: ${item.selectedSize}</p>` : ''}
                       <p>Qty: ${item.quantity}</p>
                     </div>
                     <div class="order-item-price">£${(item.product.price * item.quantity).toFixed(2)}</div>

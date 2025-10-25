@@ -67,25 +67,30 @@ class CartManager {
     return this.cart.total;
   }
 
-  addItem(product: Product, quantity: number = 1): void {
-    const existingItem = this.cart.items.find(item => item.product.id === product.id);
+  addItem(product: Product, quantity: number = 1, selectedSize?: string): void {
+    // Find existing item with same product AND same size
+    const existingItem = this.cart.items.find(item => 
+      item.product.id === product.id && item.selectedSize === selectedSize
+    );
     
     if (existingItem) {
       existingItem.quantity += quantity;
     } else {
-      this.cart.items.push({ product, quantity });
+      this.cart.items.push({ product, quantity, selectedSize });
     }
     
     this.calculateTotal();
     this.saveCart();
   }
 
-  updateQuantity(productId: string, quantity: number): void {
-    const item = this.cart.items.find(item => item.product.id === productId);
+  updateQuantity(productId: string, quantity: number, selectedSize?: string): void {
+    const item = this.cart.items.find(item => 
+      item.product.id === productId && item.selectedSize === selectedSize
+    );
     
     if (item) {
       if (quantity <= 0) {
-        this.removeItem(productId);
+        this.removeItem(productId, selectedSize);
       } else {
         item.quantity = quantity;
         this.calculateTotal();
@@ -94,8 +99,10 @@ class CartManager {
     }
   }
 
-  removeItem(productId: string): void {
-    this.cart.items = this.cart.items.filter(item => item.product.id !== productId);
+  removeItem(productId: string, selectedSize?: string): void {
+    this.cart.items = this.cart.items.filter(item => 
+      !(item.product.id === productId && item.selectedSize === selectedSize)
+    );
     this.calculateTotal();
     this.saveCart();
   }
