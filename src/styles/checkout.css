@@ -844,3 +844,134 @@ textarea.form-input {
   background: inherit;
   border-radius: inherit;
 }
+
+/* ==================== Saved Addresses in Checkout ==================== */
+.saved-addresses-section {
+  background: #F9FAFB;
+  padding: 24px;
+  border-radius: 12px;
+  border: 1px solid #E5E7EB;
+  margin-bottom: 24px;
+}
+
+.saved-addresses-list {
+  display: grid;
+  gap: 12px;
+}
+
+.saved-address-option {
+  display: flex;
+  align-items: flex-start;
+  gap: 16px;
+  padding: 16px;
+  background: white;
+  border: 2px solid #E5E7EB;
+  border-radius: 10px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.saved-address-option:hover {
+  border-color: #D1D5DB;
+  background: #FAFAFA;
+}
+
+.saved-address-option input[type="radio"] {
+  margin-top: 4px;
+  width: 20px;
+  height: 20px;
+  cursor: pointer;
+  flex-shrink: 0;
+}
+
+.saved-address-option input[type="radio"]:checked ~ .saved-address-content {
+  color: #1F2937;
+}
+
+.saved-address-option:has(input[type="radio"]:checked) {
+  border-color: #3D8B6C;
+  background: #F0FDF4;
+}
+
+.saved-address-content {
+  flex: 1;
+}
+
+.saved-address-header {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 6px;
+}
+
+.saved-address-header strong {
+  font-size: 1rem;
+  font-weight: 600;
+  color: #1F2937;
+}
+
+.address-badge {
+  display: inline-block;
+  padding: 2px 8px;
+  background: #3D8B6C;
+  color: white;
+  font-size: 0.7rem;
+  font-weight: 600;
+  border-radius: 4px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.saved-address-details {
+  font-size: 0.9rem;
+  color: #6B7280;
+  line-height: 1.5;
+  margin: 0;
+}
+
+.toggle-checkbox-inline {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  cursor: pointer;
+  padding: 16px;
+  background: #F9FAFB;
+  border-radius: 8px;
+  border: 1px solid #E5E7EB;
+  transition: all 0.2s;
+}
+
+.toggle-checkbox-inline:hover {
+  background: #F3F4F6;
+  border-color: #D1D5DB;
+}
+
+.toggle-checkbox-inline input[type="checkbox"] {
+  width: 20px;
+  height: 20px;
+  cursor: pointer;
+}
+
+.toggle-checkbox-inline span {
+  font-size: 0.95rem;
+  color: #374151;
+  font-weight: 500;
+}
+
+@media (max-width: 768px) {
+  .saved-addresses-section {
+    padding: 16px;
+  }
+  
+  .saved-address-option {
+    padding: 12px;
+  }
+  
+  .saved-address-header strong {
+    font-size: 0.9rem;
+  }
+  
+  .saved-address-details {
+    font-size: 0.85rem;
+  }
+}

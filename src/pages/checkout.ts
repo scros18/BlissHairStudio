@@ -70,6 +70,51 @@ export function checkoutPageTemplate(): string {
               <!-- Step 1: Shipping Information -->
               <div class="form-section" data-section="1">
                 <h2>Shipping Information</h2>
+                
+                ${isLoggedIn && user?.addresses && user.addresses.length > 0 ? `
+                  <div class="saved-addresses-section">
+                    <h3 style="font-size: 1rem; font-weight: 600; color: #374151; margin-bottom: 16px;">
+                      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="vertical-align: text-bottom; margin-right: 8px;">
+                        <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/>
+                        <circle cx="12" cy="10" r="3"/>
+                      </svg>
+                      Use Saved Address
+                    </h3>
+                    <div class="saved-addresses-list">
+                      ${user.addresses.map(address => `
+                        <label class="saved-address-option ${address.isDefault ? 'default' : ''}">
+                          <input type="radio" name="savedAddress" value="${address.id}" ${address.isDefault ? 'checked' : ''}>
+                          <div class="saved-address-content">
+                            <div class="saved-address-header">
+                              <strong>${address.name}</strong>
+                              ${address.isDefault ? '<span class="address-badge">Default</span>' : ''}
+                            </div>
+                            <p class="saved-address-details">
+                              ${address.street}, ${address.city}, ${address.postalCode}, ${address.country}
+                            </p>
+                          </div>
+                        </label>
+                      `).join('')}
+                      <label class="saved-address-option">
+                        <input type="radio" name="savedAddress" value="new">
+                        <div class="saved-address-content">
+                          <div class="saved-address-header">
+                            <strong>
+                              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="vertical-align: text-bottom; margin-right: 4px;">
+                                <line x1="12" y1="5" x2="12" y2="19"/>
+                                <line x1="5" y1="12" x2="19" y2="12"/>
+                              </svg>
+                              Use New Address
+                            </strong>
+                          </div>
+                          <p class="saved-address-details">Enter a different shipping address</p>
+                        </div>
+                      </label>
+                    </div>
+                  </div>
+                  <div class="form-divider" style="margin: 28px 0; border-top: 1px solid #E5E7EB;"></div>
+                ` : ''}
+                
                 <div class="form-row">
                   <div class="form-group">
                     <label class="form-label required">First Name</label>
@@ -106,6 +151,14 @@ export function checkoutPageTemplate(): string {
                   <label class="form-label">Delivery Notes (Optional)</label>
                   <textarea class="form-input" name="notes" rows="3" placeholder="Any special delivery instructions..."></textarea>
                 </div>
+                ${isLoggedIn ? `
+                  <div class="form-group">
+                    <label class="toggle-checkbox-inline">
+                      <input type="checkbox" name="saveAddress" id="saveAddressCheckbox">
+                      <span>Save this address for future orders</span>
+                    </label>
+                  </div>
+                ` : ''}
                 <div class="form-actions">
                   <button type="button" class="btn btn-secondary" onclick="history.back()">
                     <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">

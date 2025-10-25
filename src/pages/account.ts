@@ -134,31 +134,11 @@ export function accountPageTemplate(userName: string = '', isAdmin: boolean = fa
             <div class="account-tab" data-tab-content="addresses">
               <div class="account-card">
                 <h2>Saved Addresses</h2>
-                <div class="addresses-grid">
-                  <div class="address-card">
-                    <div class="address-card-header">
-                      <h3>Home</h3>
-                      <span class="address-default-badge">Default</span>
-                    </div>
-                    <p class="address-details">
-                      John Doe<br>
-                      123 Main Street<br>
-                      London, SW1A 1AA<br>
-                      United Kingdom<br>
-                      +44 123 456 7890
-                    </p>
-                    <div class="address-actions">
-                      <button class="btn btn-secondary btn-sm">Edit</button>
-                      <button class="btn btn-danger btn-sm">Delete</button>
-                    </div>
+                <div class="addresses-grid" id="addressesGrid">
+                  <div class="empty-state">
+                    <h3>No Addresses</h3>
+                    <p>Add an address to use for future orders</p>
                   </div>
-                  <button class="address-card add-address">
-                    <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                      <line x1="12" y1="5" x2="12" y2="19"/>
-                      <line x1="5" y1="12" x2="19" y2="12"/>
-                    </svg>
-                    <span>Add New Address</span>
-                  </button>
                 </div>
               </div>
             </div>
@@ -321,3 +301,202 @@ export function viewOrderDetails(orderId: string) {
 
 // Make viewOrderDetails globally available
 (window as any).viewOrderDetails = viewOrderDetails;
+
+// Function to render addresses
+export function renderAddresses(addresses: any[]) {
+  const addressesGrid = document.getElementById('addressesGrid');
+  if (!addressesGrid) return;
+
+  if (addresses.length === 0) {
+    addressesGrid.innerHTML = `
+      <div class="empty-state">
+        <h3>No Addresses</h3>
+        <p>Add an address to use for future orders</p>
+      </div>
+      <button class="address-card add-address" onclick="showAddressModal()">
+        <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <line x1="12" y1="5" x2="12" y2="19"/>
+          <line x1="5" y1="12" x2="19" y2="12"/>
+        </svg>
+        <span>Add New Address</span>
+      </button>
+    `;
+    return;
+  }
+
+  addressesGrid.innerHTML = addresses.map(address => `
+    <div class="address-card" data-address-id="${address.id}">
+      <div class="address-card-header">
+        <h3>${address.name}</h3>
+        ${address.isDefault ? '<span class="address-default-badge">DEFAULT</span>' : ''}
+      </div>
+      <p class="address-details">
+        ${address.street}<br>
+        ${address.city}, ${address.postalCode}<br>
+        ${address.country}
+      </p>
+      <div class="address-actions">
+        <button class="btn btn-secondary btn-sm" onclick="editAddress('${address.id}')">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/>
+            <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/>
+          </svg>
+          Edit
+        </button>
+        ${!address.isDefault ? `
+          <button class="btn btn-secondary btn-sm" onclick="setDefaultAddress('${address.id}')">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/>
+              <polyline points="22 4 12 14.01 9 11.01"/>
+            </svg>
+            Set Default
+          </button>
+        ` : ''}
+        <button class="btn btn-danger btn-sm" onclick="deleteAddress('${address.id}')">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <polyline points="3 6 5 6 21 6"/>
+            <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/>
+          </svg>
+          Delete
+        </button>
+      </div>
+    </div>
+  `).join('') + `
+    <button class="address-card add-address" onclick="showAddressModal()">
+      <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <line x1="12" y1="5" x2="12" y2="19"/>
+        <line x1="5" y1="12" x2="19" y2="12"/>
+      </svg>
+      <span>Add New Address</span>
+    </button>
+  `;
+}
+
+// Function to show address modal
+export function showAddressModal(addressId?: string) {
+  const isEdit = !!addressId;
+  const modal = document.createElement('div');
+  modal.className = 'address-modal active';
+  modal.id = 'addressModal';
+  
+  modal.innerHTML = `
+    <div class="address-modal-content">
+      <div class="address-modal-header">
+        <h3>${isEdit ? 'Edit Address' : 'Add New Address'}</h3>
+        <button class="modal-close" onclick="document.getElementById('addressModal').remove()">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <line x1="18" y1="6" x2="6" y2="18"/>
+            <line x1="6" y1="6" x2="18" y2="18"/>
+          </svg>
+        </button>
+      </div>
+      <div class="address-modal-body">
+        <form class="address-form" id="addressForm" data-address-id="${addressId || ''}">
+          <div class="form-group">
+            <label class="form-label required">Address Name</label>
+            <input type="text" class="form-input" name="name" placeholder="e.g., Home, Work, Office" required>
+            <small class="form-help">Give this address a memorable name</small>
+          </div>
+          <div class="form-group">
+            <label class="form-label required">Street Address</label>
+            <input type="text" class="form-input" name="street" placeholder="123 Salon Street" required>
+          </div>
+          <div class="form-row">
+            <div class="form-group">
+              <label class="form-label required">City</label>
+              <input type="text" class="form-input" name="city" placeholder="London" required>
+            </div>
+            <div class="form-group">
+              <label class="form-label required">Postcode</label>
+              <input type="text" class="form-input" name="postalCode" placeholder="SW1A 1AA" required>
+            </div>
+          </div>
+          <div class="form-group">
+            <label class="form-label required">Country</label>
+            <select class="form-input" name="country" required>
+              <option value="">Select country</option>
+              <option value="United Kingdom" selected>United Kingdom</option>
+              <option value="Ireland">Ireland</option>
+              <option value="France">France</option>
+              <option value="Germany">Germany</option>
+              <option value="Spain">Spain</option>
+              <option value="Italy">Italy</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label class="toggle-checkbox">
+              <input type="checkbox" name="isDefault" ${isEdit ? '' : 'checked'}>
+              <span>Set as default address</span>
+            </label>
+          </div>
+          <div class="form-actions">
+            <button type="button" class="btn btn-secondary" onclick="document.getElementById('addressModal').remove()">
+              Cancel
+            </button>
+            <button type="submit" class="btn btn-primary">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"/>
+                <polyline points="17 21 17 13 7 13 7 21"/>
+                <polyline points="7 3 7 8 15 8"/>
+              </svg>
+              ${isEdit ? 'Update Address' : 'Save Address'}
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+  `;
+  
+  document.body.appendChild(modal);
+  
+  // Close on background click
+  modal.addEventListener('click', (e) => {
+    if (e.target === modal) {
+      modal.remove();
+    }
+  });
+  
+  // If editing, populate form with existing address data
+  if (isEdit && addressId) {
+    // This will be handled by the account.ts initialization
+    (window as any).populateAddressForm(addressId);
+  }
+}
+
+// Make functions globally available
+(window as any).showAddressModal = showAddressModal;
+(window as any).editAddress = (id: string) => showAddressModal(id);
+(window as any).deleteAddress = async (id: string) => {
+  if (confirm('Are you sure you want to delete this address?')) {
+    // Import authManagerAPI and call deleteAddress
+    const { authManagerAPI } = await import('../utils/authManagerAPI');
+    const result = await authManagerAPI.deleteAddress(id);
+    if (result.success) {
+      const user = authManagerAPI.getCurrentUser();
+      if (user) {
+        renderAddresses(user.addresses);
+      }
+    } else {
+      alert('Failed to delete address: ' + result.message);
+    }
+  }
+};
+(window as any).setDefaultAddress = async (id: string) => {
+  const { authManagerAPI } = await import('../utils/authManagerAPI');
+  const user = authManagerAPI.getCurrentUser();
+  if (!user) return;
+  
+  // Find the address and set it as default
+  const address = user.addresses.find(a => a.id === id);
+  if (address) {
+    const result = await authManagerAPI.updateAddress(id, { ...address, isDefault: true });
+    if (result.success) {
+      const updatedUser = authManagerAPI.getCurrentUser();
+      if (updatedUser) {
+        renderAddresses(updatedUser.addresses);
+      }
+    } else {
+      alert('Failed to set default address: ' + result.message);
+    }
+  }
+};
