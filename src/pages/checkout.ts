@@ -133,32 +133,34 @@ export function checkoutPageTemplate(): string {
                   <label class="form-label required">Phone Number</label>
                   <input type="tel" class="form-input" name="phone" value="${userPhone}" required>
                 </div>
-                <div class="form-group">
-                  <label class="form-label required">Street Address</label>
-                  <input type="text" class="form-input" name="address" required>
-                </div>
-                <div class="form-row">
+                <div id="manualAddressFields">
                   <div class="form-group">
-                    <label class="form-label required">City</label>
-                    <input type="text" class="form-input" name="city" required>
+                    <label class="form-label required">Street Address</label>
+                    <input type="text" class="form-input" name="address" required>
+                  </div>
+                  <div class="form-row">
+                    <div class="form-group">
+                      <label class="form-label required">City</label>
+                      <input type="text" class="form-input" name="city" required>
+                    </div>
+                    <div class="form-group">
+                      <label class="form-label required">Postcode</label>
+                      <input type="text" class="form-input" name="postcode" required>
+                    </div>
                   </div>
                   <div class="form-group">
-                    <label class="form-label required">Postcode</label>
-                    <input type="text" class="form-input" name="postcode" required>
+                    <label class="form-label">Delivery Notes (Optional)</label>
+                    <textarea class="form-input" name="notes" rows="3" placeholder="Any special delivery instructions..."></textarea>
                   </div>
+                  ${isLoggedIn ? `
+                    <div class="form-group">
+                      <label class="toggle-checkbox-inline">
+                        <input type="checkbox" name="saveAddress" id="saveAddressCheckbox">
+                        <span>Save this address for future orders</span>
+                      </label>
+                    </div>
+                  ` : ''}
                 </div>
-                <div class="form-group">
-                  <label class="form-label">Delivery Notes (Optional)</label>
-                  <textarea class="form-input" name="notes" rows="3" placeholder="Any special delivery instructions..."></textarea>
-                </div>
-                ${isLoggedIn ? `
-                  <div class="form-group">
-                    <label class="toggle-checkbox-inline">
-                      <input type="checkbox" name="saveAddress" id="saveAddressCheckbox">
-                      <span>Save this address for future orders</span>
-                    </label>
-                  </div>
-                ` : ''}
                 <div class="form-actions">
                   <button type="button" class="btn btn-secondary" onclick="history.back()">
                     <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">

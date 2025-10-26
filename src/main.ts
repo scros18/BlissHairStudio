@@ -461,6 +461,40 @@ class App {
       window.scrollTo({ top: 0, behavior: 'smooth' });
     };
     
+    // Saved address toggle (hide manual fields if a saved address is selected)
+    const manualAddressContainer = document.getElementById('manualAddressFields');
+  const savedAddressRadiosEls = document.querySelectorAll<HTMLInputElement>('input[name="savedAddress"]');
+    const addressInput = document.querySelector<HTMLInputElement>('input[name="address"]');
+    const cityInput = document.querySelector<HTMLInputElement>('input[name="city"]');
+    const postcodeInput = document.querySelector<HTMLInputElement>('input[name="postcode"]');
+
+    const setManualAddressVisibility = (show: boolean) => {
+      if (!manualAddressContainer) return;
+      manualAddressContainer.style.display = show ? '' : 'none';
+      // Toggle required attributes so validation doesn't block
+      [addressInput, cityInput, postcodeInput].forEach((el) => {
+        if (!el) return;
+        if (show) {
+          el.setAttribute('required', 'true');
+        } else {
+          el.removeAttribute('required');
+        }
+      });
+    };
+
+    if (savedAddressRadiosEls && savedAddressRadiosEls.length > 0) {
+      // Initialize based on currently selected option
+      const selected = document.querySelector<HTMLInputElement>('input[name="savedAddress"]:checked');
+      setManualAddressVisibility(!selected || selected.value === 'new');
+
+      savedAddressRadiosEls.forEach(r => {
+        r.addEventListener('change', () => {
+          const useNew = r.value === 'new';
+          setManualAddressVisibility(useNew);
+        });
+      });
+    }
+
     // Payment method toggle
     const cardDetails = document.getElementById('cardDetails');
     const paypalDetails = document.getElementById('paypalDetails');
@@ -735,8 +769,8 @@ class App {
     });
     
     // Handle saved address selection
-    const savedAddressRadios = document.querySelectorAll<HTMLInputElement>('input[name="savedAddress"]');
-    savedAddressRadios?.forEach(radio => {
+  const savedAddressRadiosList = document.querySelectorAll<HTMLInputElement>('input[name="savedAddress"]');
+  savedAddressRadiosList?.forEach(radio => {
       radio.addEventListener('change', async (e) => {
         const target = e.target as HTMLInputElement;
         const addressId = target.value;
@@ -746,6 +780,7 @@ class App {
           (document.querySelector('[name="address"]') as HTMLInputElement).value = '';
           (document.querySelector('[name="city"]') as HTMLInputElement).value = '';
           (document.querySelector('[name="postcode"]') as HTMLInputElement).value = '';
+      setManualAddressVisibility(true);
           return;
         }
         
@@ -759,6 +794,7 @@ class App {
           (document.querySelector('[name="postcode"]') as HTMLInputElement).value = address.postalCode;
           
           UI.showNotification(`✨ Using address: ${address.name}`, { type: 'info' });
+      setManualAddressVisibility(false);
         }
       });
     });
