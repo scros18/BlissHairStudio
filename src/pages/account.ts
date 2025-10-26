@@ -571,7 +571,7 @@ export async function renderBookings() {
     
     const now = new Date();
     
-    bookingsList.innerHTML = sortedBookings.map(booking => {
+  bookingsList.innerHTML = sortedBookings.map(booking => {
       const bookingDate = new Date(booking.date + 'T' + booking.time);
       const isPast = bookingDate < now;
       const dateStr = bookingDate.toLocaleDateString('en-GB', { 
@@ -581,54 +581,29 @@ export async function renderBookings() {
         year: 'numeric' 
       });
       
-      let statusClass = booking.status;
-      let statusEmoji = '';
-      
-      switch (booking.status) {
-        case 'confirmed':
-          statusEmoji = '✅';
-          break;
-        case 'completed':
-          statusEmoji = '✨';
-          break;
-        case 'cancelled':
-          statusEmoji = '❌';
-          break;
-        case 'no-show':
-          statusEmoji = '⚠️';
-          break;
-      }
+  let statusClass = booking.status;
       
       return `
-        <div class="booking-card booking-status-${statusClass} ${isPast ? 'booking-past' : 'booking-upcoming'}">
-          <div class="booking-header">
-            <div class="booking-date-time">
-              <h4>📅 ${dateStr}</h4>
-              <p class="booking-time">🕐 ${booking.time} (${booking.duration} minutes)</p>
+        <div class="account-booking-card ${isPast ? 'is-past' : 'is-upcoming'} status-${statusClass}">
+          <div class="account-booking-header">
+            <div class="account-booking-when">
+              <div class="account-booking-date">${dateStr}</div>
+              <div class="account-booking-time">${booking.time} • ${booking.duration} min</div>
             </div>
-            <span class="booking-status ${statusClass}">${statusEmoji} ${booking.status.toUpperCase()}</span>
+            <span class="account-booking-badge status-${statusClass}">${booking.status}</span>
           </div>
-          
-          <div class="booking-details">
-            <div class="booking-service">
-              <strong>Service:</strong> ${booking.service}
-            </div>
-            ${booking.notes ? `
-              <div class="booking-notes">
-                <strong>Notes:</strong> ${booking.notes}
-              </div>
-            ` : ''}
+
+          <div class="account-booking-body">
+            <div class="account-booking-service">${booking.service}</div>
+            ${booking.notes ? `<div class="account-booking-notes">${booking.notes}</div>` : ''}
           </div>
-          
+
           ${!isPast && booking.status === 'confirmed' ? `
-            <div class="booking-actions">
-              <button class="btn-cancel-booking" data-booking-id="${booking.id}">
-                Need to reschedule? Call us!
-              </button>
+            <div class="account-booking-actions">
+              <button class="btn btn-secondary btn-sm" data-booking-id="${booking.id}">Need to reschedule? Call us</button>
             </div>
           ` : ''}
-        </div>
-      `;
+        </div>`;
     }).join('');
     
   } catch (error) {
