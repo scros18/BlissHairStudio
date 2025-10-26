@@ -11,9 +11,10 @@ const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
 const PORT = process.env.PORT || 8787;
+// Use a stable data directory path even when working directory differs (e.g., under systemd)
 const DATA_DIR = process.env.BLISS_DATA_DIR
   ? path.resolve(process.env.BLISS_DATA_DIR)
-  : path.join(process.cwd(), 'data');
+  : path.join(__dirname, '..', 'data');
 
 // Data file paths
 const PRODUCTS_FILE = path.join(DATA_DIR, 'products.json');
@@ -24,8 +25,8 @@ const CATEGORIES_FILE = path.join(DATA_DIR, 'categories.json');
 const BOOKINGS_FILE = path.join(DATA_DIR, 'bookings.json');
 
 // Fallback to public folder for initial seed data
-const PUBLIC_PRODUCTS = path.join(process.cwd(), 'public', 'products.json');
-const PUBLIC_CATEGORIES = path.join(process.cwd(), 'public', 'categories.json');
+const PUBLIC_PRODUCTS = path.join(__dirname, '..', 'public', 'products.json');
+const PUBLIC_CATEGORIES = path.join(__dirname, '..', 'public', 'categories.json');
 
 // Ensure data directory and files exist
 function ensureDataFiles() {
@@ -84,12 +85,12 @@ function ensureDataFiles() {
 }
 
 // Generic read/write functions
-function readData(filePath) {
+function readData(filePath, fallback = []) {
   try {
     return JSON.parse(fs.readFileSync(filePath, 'utf-8'));
   } catch (e) {
     console.error(`Error reading ${filePath}:`, e.message);
-    return [];
+    return fallback;
   }
 }
 
@@ -280,13 +281,15 @@ const server = http.createServer(async (req, res) => {
 
     // ===== PASSWORDS API =====
     if (pathname === '/api/passwords' && method === 'GET') {
-      const passwords = readData(PASSWORDS_FILE);
+      const raw = readData(PASSWORDS_FILE, {});
+      const passwords = (raw && typeof raw === 'object' && !Array.isArray(raw)) ? raw : {};
       return send(res, 200, passwords);
     }
 
     if (pathname === '/api/passwords' && method === 'POST') {
       const { userId, password } = await parseBody(req);
-      const passwords = readData(PASSWORDS_FILE);
+      const raw = readData(PASSWORDS_FILE, {});
+      const passwords = (raw && typeof raw === 'object' && !Array.isArray(raw)) ? raw : {};
       passwords[userId] = password;
       writeData(PASSWORDS_FILE, passwords);
       return send(res, 200, { success: true });
