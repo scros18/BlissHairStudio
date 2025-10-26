@@ -6,6 +6,7 @@ import './styles/admin.css';
 import './styles/admin-panel.css';
 import './styles/calendar.css';
 import './styles/calendar-app.css';
+import './styles/docs.css';
 import './styles/performance.css';
 import './styles/auth.css';
 import './styles/luxury-products.css';
