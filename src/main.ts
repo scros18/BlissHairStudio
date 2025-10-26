@@ -25,7 +25,6 @@ import { aboutPageTemplate } from './pages/about';
 import { servicesPageTemplate } from './pages/services';
 import { contactPageTemplate } from './pages/contact';
 import { checkoutPageTemplate } from './pages/checkout';
-import { accountPageTemplate } from './pages/account';
 import { loginPageTemplate } from './pages/login';
 import { registerPageTemplate } from './pages/register';
 import { adminPanelTemplate } from './pages/admin';
@@ -144,7 +143,7 @@ class App {
         pageManager.loadPageFromTemplate(checkoutPageTemplate);
         setTimeout(() => this.setupCheckout(), 200);
       })
-      .route('/account', () => {
+      .route('/account', async () => {
         // Check if user is logged in
         if (!authManagerAPI.isLoggedIn()) {
           router.navigate('/login');
@@ -155,6 +154,7 @@ class App {
         const isAdmin = user?.isAdmin || false;
         
         seoManager.updateMeta(seoManager.getAccountSEO());
+        const { accountPageTemplate } = await import('./pages/account');
         pageManager.loadPageFromTemplate(() => accountPageTemplate(userName, isAdmin));
         setTimeout(() => this.setupAccount(), 200);
       })

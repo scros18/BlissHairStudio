@@ -95,7 +95,12 @@
 }
 
 /* Allow horizontal scroll for the full grid when viewport is narrow */
-.calendar-week-view { overflow-x: auto; -webkit-overflow-scrolling: touch; }
+.calendar-week-view {
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+  scroll-behavior: smooth;           /* programmatic smoothness */
+  overscroll-behavior-x: contain;    /* prevent parent bounce */
+}
 .calendar-week-view .calendar-header,
 .calendar-week-view .calendar-body { min-width: 920px; }
 
@@ -103,7 +108,7 @@
   display: grid;
   grid-template-columns: 80px repeat(7, 1fr);
   background: linear-gradient(135deg, #F9FAFB 0%, #F3F4F6 100%);
-  border-bottom: 2px solid #E5E7EB;
+  border-bottom: 1px solid #E5E7EB;  /* align exactly with body cell borders */
 }
 
 .calendar-time-label {
@@ -169,13 +174,13 @@
   font-size: 0.85rem;
   font-weight: 600;
   color: #64748B;
-  border-top: 1px solid #F3F4F6;
+  border-top: 1px solid #E5E7EB;     /* unify line color to prevent faint seams */
   background: #FAFBFC;
 }
 
 .calendar-cell {
   position: relative;
-  border-top: 1px solid #F3F4F6;
+  border-top: 1px solid #E5E7EB;     /* unify line color */
   border-left: 1px solid #E5E7EB;
   cursor: pointer;
   transition: all 0.2s ease;
@@ -452,123 +457,10 @@ select.form-input-large {
   }
 }
 
-/* Booking Modal: full-screen overlay, centered content (desktop) */
-#bookingModal { display: none; }
-
-#bookingModal.active {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  position: fixed;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  width: 100vw;
-  height: 100dvh;
-  max-width: none;
-  max-height: none;
-  background: rgba(0, 0, 0, 0.5);
-  z-index: 10000;
-  padding: 40px 20px;
-  box-sizing: border-box;
-  overflow: hidden; /* single scroll inside content */
-}
-
-#bookingModal .modal-content {
-  background: #FFFFFF;
-  border-radius: 20px;
-  width: min(620px, 92vw);
-  max-height: calc(100dvh - 80px);
-  overflow: auto; /* scroll only the content */
-  box-shadow: 0 20px 60px rgba(0,0,0,0.25);
-  animation: modalPopIn 0.25s ease;
-}
-
-@keyframes modalPopIn {
-  from { transform: translateY(6px) scale(.98); opacity: 0; }
-  to   { transform: translateY(0) scale(1);   opacity: 1; }
-}
-
+/* Booking Modal: styles defined in admin-panel.css for consistency.
+   Keep only small mobile input tweak here. */
 @media (max-width: 768px) {
-  .calendar-nav {
-    flex-direction: column;
-    padding: 20px;
-    gap: 16px;
-  }
-
-  .btn-calendar-nav {
-    width: 100%;
-    justify-content: center;
-    padding: 16px 24px;
-    font-size: 1.05rem;
-  }
-
-  .calendar-week-display {
-    width: 100%;
-  }
-
-  .calendar-week-display h3 {
-    font-size: 1.3rem;
-  }
-
-  /* Keep full week grid on mobile with horizontal scroll */
-  .calendar-week-view {
-    overflow-x: auto;
-    overflow-y: hidden;
-    -webkit-overflow-scrolling: touch;
-  }
-
-  /* Ensure grid has minimum width so it can scroll horizontally */
-  .calendar-header,
-  .calendar-body {
-    min-width: 920px;
-  }
-
-  .upcoming-section {
-    margin-top: 24px;
-  }
-
-  .upcoming-booking-card {
-    flex-direction: column;
-    align-items: flex-start;
-    padding: 20px;
-  }
-
-  .upcoming-booking-info {
-    width: 100%;
-  }
-
-  .upcoming-booking-status {
-    align-self: flex-start;
-  }
-
-  .form-row {
-    grid-template-columns: 1fr;
-    gap: 16px;
-  }
-
-  #bookingModal.active {
-    padding: 0;
-  }
-
-  #bookingModal .modal-content {
-    width: min(540px, 96vw);         /* centered card-style on phones */
-    height: auto;
-    max-width: 96vw;
-    max-height: calc(100dvh - 24px);
-    border-radius: 16px;
-  }
-
-  #bookingModal .modal-content form {
-    padding: 24px 20px;
-  }
-
-  .form-input-large {
-    font-size: 16px; /* Prevent iOS zoom */
-    padding: 16px;
-    min-height: 56px;
-  }
+  .form-input-large { font-size: 16px; padding: 16px; min-height: 56px; }
 }
 
 @media (max-width: 480px) {

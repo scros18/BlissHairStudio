@@ -621,9 +621,12 @@ body.modal-open {
   height: 100dvh;
   max-width: none;
   max-height: none;
-  background: rgba(0, 0, 0, 0.5);
+  background: rgba(10, 20, 18, 0.35);
+  -webkit-backdrop-filter: blur(10px) saturate(120%);
+  backdrop-filter: blur(10px) saturate(120%);
   z-index: 10000;
-  padding: 40px 20px;        /* even breathing space top/bottom */
+  padding: max(24px, env(safe-area-inset-top)) max(16px, env(safe-area-inset-right))
+           max(24px, env(safe-area-inset-bottom)) max(16px, env(safe-area-inset-left));
   box-sizing: border-box;
   overflow: hidden;          /* single scroll only inside content */
   animation: fadeInOverlay 0.3s ease forwards;
@@ -634,12 +637,12 @@ body.modal-open {
 #orderModal .modal-content,
 #bookingModal .modal-content {
   background: #FFFFFF;
-  border-radius: 20px;
-  width: min(560px, 90vw);
-  max-height: calc(100dvh - 80px);
+  border-radius: 18px;
+  width: min(680px, 92vw);
+  max-height: min(100dvh - 64px, 900px);
   display: flex;
   flex-direction: column;
-  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.28), 0 0 0 1px rgba(0,0,0,0.04);
   animation: modalPopIn 0.3s ease forwards;
   position: relative;
   overflow: auto;            /* enables scroll only when needed */
@@ -683,13 +686,15 @@ body.modal-open {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 28px 32px;
-  border-bottom: 1px solid #F1F5F9;
+  padding: 24px 28px;
+  border-bottom: 1px solid rgba(226, 232, 240, 0.9);
   background: linear-gradient(180deg, #FFFFFF 0%, #FAFBFC 100%);
   flex-shrink: 0;
   position: sticky;          /* keep visible on mobile scroll */
   top: 0;
   z-index: 2;
+  border-top-left-radius: 18px;
+  border-top-right-radius: 18px;
 }
 
 .modal-header h2 {
@@ -730,9 +735,22 @@ body.modal-open {
 }
 
 .modal-body {
-  padding: 32px;
+  padding: 24px 28px 28px;
   overflow-y: auto;
   flex: 1;
+}
+
+/* Avoid visible white strip around rounded corners when backdrop blur is on */
+#productModal .modal-content::before,
+#categoryModal .modal-content::before,
+#orderModal .modal-content::before,
+#bookingModal .modal-content::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  pointer-events: none;
+  box-shadow: inset 0 0 0 1px rgba(0,0,0,0.03);
 }
 
 #productModal .modal-content form,
@@ -1018,24 +1036,31 @@ body.modal-open {
   }
 
   .admin-tabs {
-    padding: 8px 12px; /* tighter padding to fit all tabs */
-    gap: 6px;
+    padding: 10px 12px;                 /* a touch more breathing room */
+    gap: 10px;                          /* nicer separation between chips */
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    scroll-snap-type: x mandatory;      /* smooth, snappy scroll */
+    scroll-padding: 12px;
+    mask-image: linear-gradient(to right, transparent, black 12px, black calc(100% - 12px), transparent);
+    -webkit-mask-image: linear-gradient(to right, transparent, black 12px, black calc(100% - 12px), transparent);
   }
 
   .admin-tab {
-    padding: 8px 10px;      /* slimmer pills */
-    font-size: 0.78rem;     /* smaller font to fit 5+ tabs */
-    gap: 6px;               /* reduce icon/text gap */
-    flex: 1 1 0;            /* allow equal distribution */
-    min-width: 0;           /* prevent overflow */
+    padding: 10px 14px;     /* larger touch target */
+    font-size: 0.9rem;      /* readable, not squished */
+    gap: 8px;
+    flex: 0 0 auto;         /* intrinsic width, no squish */
+    min-width: max-content; /* allow full label width */
     justify-content: center;
-    border-radius: 8px;
+    border-radius: 999px;   /* chip look */
+    scroll-snap-align: start;
+    background: #F8FAFC;    /* subtle chip bg */
+    border-color: #E5E7EB;
   }
 
-  .admin-tab svg {
-    width: 16px;
-    height: 16px;
-  }
+  /* Hide icons on very small screens to free space */
+  .admin-tab svg { display: none; }
 
   .admin-main {
     padding: 24px 16px 50px;
@@ -1054,6 +1079,13 @@ body.modal-open {
     letter-spacing: 1px;
     padding: 10px 24px;
     margin: 24px 0 20px 0;
+  }
+
+  /* Elevate active tab for clearer focus */
+  .admin-tab.active {
+    background: #ECFDF5;
+    border-color: #16A34A;
+    box-shadow: 0 6px 16px rgba(22, 163, 74, 0.15);
   }
 
   .btn-add-large {

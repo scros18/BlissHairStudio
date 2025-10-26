@@ -1849,22 +1849,62 @@
     margin-top: 4px;
   }
   
+  /* Top action buttons become a tidy grid on mobile */
   .account-header-actions {
     width: 100%;
-    flex-wrap: wrap;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
     margin-top: 12px;
   }
-  
+
   .account-header-actions .btn {
-    flex: 1;
-    min-width: 110px;
+    width: 100%;
+    min-width: 0;
     justify-content: center;
-    font-size: 13px;
+    font-size: 14px;
     padding: 10px 12px;
     white-space: nowrap;
+    border-radius: 12px;
+  }
+
+  /* Keep Logout (secondary) light, even on hover */
+  .account-header-actions .btn.btn-secondary {
+    background: #fff;
+    color: #2D6854;
+    border-color: #2D6854;
+  }
+  .account-header-actions .btn.btn-secondary:hover {
+    background: rgba(45, 104, 84, 0.08);
+    color: #2D6854;
+    transform: none;
+  }
+
+  .btn-admin {
+    padding: 10px 12px;
+    border-radius: 12px;
+    font-size: 14px;
+    box-shadow: 0 3px 10px rgba(45, 104, 84, 0.22);
+  }
+
+  @media (max-width: 380px) {
+  .account-header-actions { grid-template-columns: 1fr; }
+  .account-header-actions .btn { font-size: 13px; padding: 10px; }
+  }
+
+  /* Compact the tab row to avoid overflow */
+  .account-nav {
+    gap: 6px;
+    padding: 6px;
   }
   
-  .account-header-actions .btn svg {
+  .account-nav-item {
+    padding: 10px 12px;
+    font-size: 12.5px;
+    gap: 8px;
+  }
+  
+  .account-nav-item svg {
     width: 16px;
     height: 16px;
   }
@@ -1915,6 +1955,11 @@
     width: 100%;
     justify-content: center;
   }
+
+  /* Appointments card spacing on phones */
+  .account-booking-card { padding: 14px 14px; border-radius: 12px; }
+  .account-booking-date { font-size: 14px; }
+  .account-booking-time { font-size: 12.5px; }
   
   /* Orders Mobile Styles */
   .orders-list {
