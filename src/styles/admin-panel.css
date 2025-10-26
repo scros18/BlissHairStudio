@@ -249,6 +249,19 @@ body.modal-open {
   min-height: 400px;
 }
 
+/* Users tab - clean rows and toggles */
+.users-list { display: flex; flex-direction: column; gap: 12px; }
+.admin-user-row { display:flex; align-items:center; justify-content:space-between; padding:14px 16px; border:1px solid #E5E7EB; border-radius:12px; background: #F9FAFB; }
+.admin-user-row:hover { border-color:#16A34A; box-shadow:0 6px 14px rgba(22,163,74,0.12); transform: translateY(-1px); }
+.admin-user-row .user-name { font-weight:700; color:#0F172A; }
+.admin-user-row .user-email { color:#64748B; font-weight:600; font-size:0.9rem; }
+.admin-user-row .badge { margin-left:8px; font-size:0.7rem; letter-spacing:0.5px; background:#ECFDF5; color:#166534; border:1px solid #16A34A; padding:4px 8px; border-radius:999px; }
+.admin-user-row .user-actions { display:flex; align-items:center; gap:10px; }
+
+/* Data export - compact helper text and button spacing */
+.admin-section[data-section-content="data"] .admin-content p { margin-top: 0; margin-bottom: 16px; color:#475569; }
+.admin-section[data-section-content="data"] #downloadDataBtn { width: auto; }
+
 /* ================================================
    Large, Friendly Add Button
    ================================================ */
@@ -258,7 +271,8 @@ body.modal-open {
   justify-content: center;
   gap: 10px;
   padding: 14px 28px;
-  background: linear-gradient(135deg, #16A34A 0%, #165441 100%);
+  /* Lighter, fresher green so it doesn't look ultra dark */
+  background: linear-gradient(135deg, #22C55E 0%, #16A34A 100%);
   border: none;
   border-radius: 12px;
   color: #FFFFFF;
@@ -266,15 +280,15 @@ body.modal-open {
   font-weight: 600;
   cursor: pointer;
   transition: all 0.3s ease;
-  box-shadow: 0 4px 12px rgba(13, 61, 46, 0.25);
+  box-shadow: 0 4px 12px rgba(34, 197, 94, 0.25);
   margin-right: 0;
   width: auto;
 }
 
 .btn-add-large:hover {
   transform: translateY(-2px);
-  box-shadow: 0 8px 20px rgba(13, 61, 46, 0.35);
-  background: linear-gradient(135deg, #165441 0%, #16A34A 100%);
+  box-shadow: 0 8px 20px rgba(34, 197, 94, 0.35);
+  background: linear-gradient(135deg, #16A34A 0%, #22C55E 100%);
 }
 
 .btn-add-large:active {
@@ -282,14 +296,14 @@ body.modal-open {
 }
 
 .btn-add-large.secondary {
-  background: linear-gradient(135deg, #F3F4F6 0%, #E5E7EB 100%);
+  background: linear-gradient(135deg, #F8FAFC 0%, #E5E7EB 100%);
   color: #0F172A;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
   border: 1px solid #D1D5DB;
 }
 
 .btn-add-large.secondary:hover {
-  background: linear-gradient(135deg, #E5E7EB 0%, #D1D5DB 100%);
+  background: linear-gradient(135deg, #EEF2F7 0%, #E2E8F0 100%);
   color: #16A34A;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.12);
 }
@@ -999,20 +1013,23 @@ body.modal-open {
   }
 
   .admin-tabs {
-    padding: 10px 16px;
-    gap: 8px;
+    padding: 8px 12px; /* tighter padding to fit all tabs */
+    gap: 6px;
   }
 
   .admin-tab {
-    padding: 10px 18px;
-    font-size: 0.85rem;
-    flex: 1;
+    padding: 8px 10px;      /* slimmer pills */
+    font-size: 0.78rem;     /* smaller font to fit 5+ tabs */
+    gap: 6px;               /* reduce icon/text gap */
+    flex: 1 1 0;            /* allow equal distribution */
+    min-width: 0;           /* prevent overflow */
     justify-content: center;
+    border-radius: 8px;
   }
 
   .admin-tab svg {
-    width: 18px;
-    height: 18px;
+    width: 16px;
+    height: 16px;
   }
 
   .admin-main {
@@ -1201,8 +1218,14 @@ body.modal-open {
   }
 
   .admin-tab {
-    padding: 9px 14px;
-    font-size: 0.8rem;
+    padding: 7px 8px;   /* extra compact for very small phones */
+    font-size: 0.72rem;
+    gap: 4px;
+  }
+
+  .admin-tab svg {
+    width: 14px;
+    height: 14px;
   }
 
   .product-card {

@@ -24,13 +24,13 @@
 }
 
 .btn-primary {
-  background: var(--primary-color);
+  background: linear-gradient(135deg, #22C55E 0%, var(--primary-color) 100%);
   color: white;
   box-shadow: 0 4px 15px var(--shadow);
 }
 
 .btn-primary:hover:not(:disabled) {
-  background: var(--primary-dark);
+  background: linear-gradient(135deg, var(--primary-color) 0%, #22C55E 100%);
   transform: translateY(-2px);
   box-shadow: 0 6px 20px var(--shadow-hover);
 }
