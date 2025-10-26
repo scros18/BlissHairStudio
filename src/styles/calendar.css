@@ -94,6 +94,11 @@
   margin-bottom: 32px;
 }
 
+/* Allow horizontal scroll for the full grid when viewport is narrow */
+.calendar-week-view { overflow-x: auto; -webkit-overflow-scrolling: touch; }
+.calendar-week-view .calendar-header,
+.calendar-week-view .calendar-body { min-width: 920px; }
+
 .calendar-header {
   display: grid;
   grid-template-columns: 80px repeat(7, 1fr);
@@ -447,19 +452,35 @@ select.form-input-large {
   }
 }
 
-/* Desktop modal centering and smooth animations for booking modal */
+/* Booking Modal: full-screen overlay, centered content (desktop) */
+#bookingModal { display: none; }
+
 #bookingModal.active {
   display: flex;
   align-items: center;
   justify-content: center;
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  width: 100vw;
+  height: 100dvh;
+  max-width: none;
+  max-height: none;
+  background: rgba(0, 0, 0, 0.5);
+  z-index: 10000;
+  padding: 40px 20px;
+  box-sizing: border-box;
+  overflow: hidden; /* single scroll inside content */
 }
 
 #bookingModal .modal-content {
   background: #FFFFFF;
   border-radius: 20px;
   width: min(620px, 92vw);
-  max-height: calc(100vh - 80px);
-  overflow: auto;
+  max-height: calc(100dvh - 80px);
+  overflow: auto; /* scroll only the content */
   box-shadow: 0 20px 60px rgba(0,0,0,0.25);
   animation: modalPopIn 0.25s ease;
 }
@@ -491,9 +512,17 @@ select.form-input-large {
     font-size: 1.3rem;
   }
 
-  /* Hide week grid, show list view on mobile */
+  /* Keep full week grid on mobile with horizontal scroll */
   .calendar-week-view {
-    display: none;
+    overflow-x: auto;
+    overflow-y: hidden;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  /* Ensure grid has minimum width so it can scroll horizontally */
+  .calendar-header,
+  .calendar-body {
+    min-width: 920px;
   }
 
   .upcoming-section {
@@ -524,10 +553,10 @@ select.form-input-large {
   }
 
   #bookingModal .modal-content {
-    width: min(540px, 96vw);         /* keep centered card-style on phones too */
+    width: min(540px, 96vw);         /* centered card-style on phones */
     height: auto;
     max-width: 96vw;
-    max-height: calc(100vh - 24px);
+    max-height: calc(100dvh - 24px);
     border-radius: 16px;
   }
 

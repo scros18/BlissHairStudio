@@ -1,5 +1,6 @@
 // User Account Page Template
 import { authManagerAPI } from '../utils/authManagerAPI';
+import { bookingManagerAPI } from '../utils/bookingManagerAPI';
 
 export function accountPageTemplate(userName: string = '', isAdmin: boolean = false): string {
   return `
@@ -491,8 +492,7 @@ export function showAddressModal(addressId?: string) {
 (window as any).editAddress = (id: string) => showAddressModal(id);
 (window as any).deleteAddress = async (id: string) => {
   if (confirm('Are you sure you want to delete this address?')) {
-    // Import authManagerAPI and call deleteAddress
-    const { authManagerAPI } = await import('../utils/authManagerAPI');
+    // Use statically imported authManagerAPI
     const result = await authManagerAPI.deleteAddress(id);
     if (result.success) {
       const user = authManagerAPI.getCurrentUser();
@@ -505,7 +505,6 @@ export function showAddressModal(addressId?: string) {
   }
 };
 (window as any).setDefaultAddress = async (id: string) => {
-  const { authManagerAPI } = await import('../utils/authManagerAPI');
   const user = authManagerAPI.getCurrentUser();
   if (!user) return;
   
@@ -536,8 +535,6 @@ export async function renderBookings() {
   if (!user) return;
 
   try {
-    // Import bookingManagerAPI
-    const { bookingManagerAPI } = await import('../utils/bookingManagerAPI');
     await bookingManagerAPI.loadBookings();
     
     // Get all bookings

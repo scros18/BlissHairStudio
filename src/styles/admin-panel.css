@@ -13,6 +13,7 @@ body.modal-open {
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Helvetica Neue', sans-serif;
   padding-bottom: 60px;
   position: relative;
+  display: block;
 }
 
 /* ================================================
@@ -184,7 +185,7 @@ body.modal-open {
    ================================================ */
 .admin-main {
   max-width: 1400px;
-  margin: 0 auto;
+  margin: 0 auto; /* center horizontally */
   padding: 40px 40px 80px;
 }
 
@@ -599,13 +600,15 @@ body.modal-open {
    ================================================ */
 #productModal,
 #categoryModal,
-#orderModal {
+#orderModal,
+#bookingModal {
   display: none;
 }
 
 #productModal.active,
 #categoryModal.active,
-#orderModal.active {
+#orderModal.active,
+#bookingModal.active {
   display: flex;
   align-items: center;
   justify-content: center;
@@ -628,7 +631,8 @@ body.modal-open {
 
 #productModal .modal-content,
 #categoryModal .modal-content,
-#orderModal .modal-content {
+#orderModal .modal-content,
+#bookingModal .modal-content {
   background: #FFFFFF;
   border-radius: 20px;
   width: min(560px, 90vw);
@@ -655,7 +659,8 @@ body.modal-open {
 
 #productModal.closing .modal-content,
 #categoryModal.closing .modal-content,
-#orderModal.closing .modal-content {
+#orderModal.closing .modal-content,
+#bookingModal.closing .modal-content {
   animation: modalPopOut 0.3s ease forwards;
 }
 
