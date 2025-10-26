@@ -1,27 +1,27 @@
 ﻿[
   {
-    \"id\": \"admin_maxine_001\",
-    \"email\": \"maxine.croston@email.com\",
-    \"name\": \"Maxine Croston\",
-    \"phone\": \"+44 7XXX XXX XXX\",
-    \"createdAt\": \"2025-10-26T00:00:00.000Z\",
-    \"orders\": [],
-    \"addresses\": [
+    "id": "admin_maxine_001",
+    "email": "maxine.croston@email.com",
+    "name": "Maxine Croston",
+    "phone": "+44 7XXX XXX XXX",
+    "createdAt": "2025-10-26T00:00:00.000Z",
+    "orders": [],
+    "addresses": [
       {
-        \"id\": \"addr_maxine_001\",
-        \"name\": \"Bliss Hair Studio\",
-        \"street\": \"123 Salon Street\",
-        \"city\": \"London\",
-        \"postalCode\": \"SW1A 1AA\",
-        \"country\": \"United Kingdom\",
-        \"isDefault\": true
+        "id": "addr_maxine_001",
+        "name": "Bliss Hair Studio",
+        "street": "123 Salon Street",
+        "city": "London",
+        "postalCode": "SW1A 1AA",
+        "country": "United Kingdom",
+        "isDefault": true
       }
     ],
-    \"isAdmin\": true,
-    \"preferences\": {
-      \"smsNotifications\": true,
-      \"emailNotifications\": true,
-      \"marketingEmails\": false
+    "isAdmin": true,
+    "preferences": {
+      "smsNotifications": true,
+      "emailNotifications": true,
+      "marketingEmails": false
     }
   }
 ]
