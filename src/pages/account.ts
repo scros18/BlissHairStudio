@@ -1,4 +1,5 @@
 // User Account Page Template
+import { authManagerAPI } from '../utils/authManagerAPI';
 
 export function accountPageTemplate(userName: string = '', isAdmin: boolean = false): string {
   return `
@@ -500,3 +501,124 @@ export function showAddressModal(addressId?: string) {
     }
   }
 };
+
+/**
+ * Render user's bookings in their account
+ * Shows upcoming appointments linked to their email
+ */
+export async function renderBookings() {
+  const bookingsList = document.getElementById('bookingsList');
+  if (!bookingsList) return;
+
+  const user = authManagerAPI.getCurrentUser();
+  if (!user) return;
+
+  try {
+    // Import bookingManagerAPI
+    const { bookingManagerAPI } = await import('../utils/bookingManagerAPI');
+    await bookingManagerAPI.loadBookings();
+    
+    // Get all bookings
+    const allBookings = bookingManagerAPI.getAllBookings();
+    
+    // Filter bookings by user email
+    const userBookings = allBookings.filter(booking => 
+      booking.customerEmail && booking.customerEmail.toLowerCase() === user.email.toLowerCase()
+    );
+    
+    // Sort by date (upcoming first)
+    const sortedBookings = userBookings.sort((a, b) => {
+      const dateA = new Date(a.date + 'T' + a.time);
+      const dateB = new Date(b.date + 'T' + b.time);
+      return dateA.getTime() - dateB.getTime();
+    });
+    
+    if (sortedBookings.length === 0) {
+      bookingsList.innerHTML = `
+        <div class="empty-state">
+          <h3>No Appointments</h3>
+          <p>You don't have any appointments yet.</p>
+          <p>Call us to book your next appointment!</p>
+          <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+            <rect x="3" y="4" width="18" height="18" rx="2" ry="2"/>
+            <line x1="16" y1="2" x2="16" y2="6"/>
+            <line x1="8" y1="2" x2="8" y2="6"/>
+            <line x1="3" y1="10" x2="21" y2="10"/>
+          </svg>
+        </div>
+      `;
+      return;
+    }
+    
+    const now = new Date();
+    
+    bookingsList.innerHTML = sortedBookings.map(booking => {
+      const bookingDate = new Date(booking.date + 'T' + booking.time);
+      const isPast = bookingDate < now;
+      const dateStr = bookingDate.toLocaleDateString('en-GB', { 
+        weekday: 'long',
+        day: 'numeric', 
+        month: 'long', 
+        year: 'numeric' 
+      });
+      
+      let statusClass = booking.status;
+      let statusEmoji = '';
+      
+      switch (booking.status) {
+        case 'confirmed':
+          statusEmoji = '✅';
+          break;
+        case 'completed':
+          statusEmoji = '✨';
+          break;
+        case 'cancelled':
+          statusEmoji = '❌';
+          break;
+        case 'no-show':
+          statusEmoji = '⚠️';
+          break;
+      }
+      
+      return `
+        <div class="booking-card booking-status-${statusClass} ${isPast ? 'booking-past' : 'booking-upcoming'}">
+          <div class="booking-header">
+            <div class="booking-date-time">
+              <h4>📅 ${dateStr}</h4>
+              <p class="booking-time">🕐 ${booking.time} (${booking.duration} minutes)</p>
+            </div>
+            <span class="booking-status ${statusClass}">${statusEmoji} ${booking.status.toUpperCase()}</span>
+          </div>
+          
+          <div class="booking-details">
+            <div class="booking-service">
+              <strong>Service:</strong> ${booking.service}
+            </div>
+            ${booking.notes ? `
+              <div class="booking-notes">
+                <strong>Notes:</strong> ${booking.notes}
+              </div>
+            ` : ''}
+          </div>
+          
+          ${!isPast && booking.status === 'confirmed' ? `
+            <div class="booking-actions">
+              <button class="btn-cancel-booking" data-booking-id="${booking.id}">
+                Need to reschedule? Call us!
+              </button>
+            </div>
+          ` : ''}
+        </div>
+      `;
+    }).join('');
+    
+  } catch (error) {
+    console.error('Error loading bookings:', error);
+    bookingsList.innerHTML = `
+      <div class="empty-state">
+        <h3>Error Loading Appointments</h3>
+        <p>Please try again later.</p>
+      </div>
+    `;
+  }
+}

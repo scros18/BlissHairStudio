@@ -48,6 +48,15 @@ export function adminPanelTemplate(): string {
           </svg>
           <span>Categories</span>
         </button>
+        <button class="admin-tab" data-section="bookings">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <rect x="3" y="4" width="18" height="18" rx="2" ry="2"/>
+            <line x1="16" y1="2" x2="16" y2="6"/>
+            <line x1="8" y1="2" x2="8" y2="6"/>
+            <line x1="3" y1="10" x2="21" y2="10"/>
+          </svg>
+          <span>Calendar</span>
+        </button>
       </div>
 
       <div class="admin-main">
@@ -125,6 +134,55 @@ export function adminPanelTemplate(): string {
           <div class="admin-content">
             <div class="categories-grid" id="categoriesGrid">
               <!-- Categories will be loaded here -->
+            </div>
+          </div>
+        </div>
+
+        <!-- Bookings/Calendar Section -->
+        <div class="admin-section" data-section-content="bookings">
+          <h2 class="admin-section-title">Appointment Calendar</h2>
+          
+          <!-- Calendar Navigation -->
+          <div class="calendar-nav">
+            <button class="btn btn-calendar-nav" id="prevWeekBtn">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <polyline points="15 18 9 12 15 6"/>
+              </svg>
+              Previous Week
+            </button>
+            <div class="calendar-week-display">
+              <h3 id="currentWeekDisplay">Oct 21 - Oct 27, 2025</h3>
+              <button class="btn btn-today" id="todayBtn">Today</button>
+            </div>
+            <button class="btn btn-calendar-nav" id="nextWeekBtn">
+              Next Week
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <polyline points="9 18 15 12 9 6"/>
+              </svg>
+            </button>
+          </div>
+
+          <!-- Add Booking Button -->
+          <div class="admin-section-header">
+            <button class="btn btn-add-large" id="addBookingBtn" title="Book a new appointment">
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+                <line x1="12" y1="5" x2="12" y2="19"/>
+                <line x1="5" y1="12" x2="19" y2="12"/>
+              </svg>
+              <span>Book Appointment</span>
+            </button>
+          </div>
+
+          <!-- Week View Calendar -->
+          <div class="calendar-week-view" id="calendarWeekView">
+            <!-- Calendar will be rendered here -->
+          </div>
+
+          <!-- Upcoming Appointments -->
+          <div class="upcoming-section">
+            <h3 class="upcoming-title">Upcoming Appointments (Next 7 Days)</h3>
+            <div class="upcoming-list" id="upcomingList">
+              <!-- Upcoming bookings will be loaded here -->
             </div>
           </div>
         </div>
@@ -302,6 +360,196 @@ export function adminPanelTemplate(): string {
         <div class="modal-body" id="orderModalBody">
           <!-- Order details will be loaded here -->
         </div>
+      </div>
+    </div>
+
+    <!-- Add/Edit Booking Modal -->
+    <div class="modal" id="bookingModal">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h2 id="bookingModalTitle">Book New Appointment</h2>
+          <button class="modal-close" id="closeBookingModal" title="Close">
+            <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <line x1="18" y1="6" x2="6" y2="18"/>
+              <line x1="6" y1="6" x2="18" y2="18"/>
+            </svg>
+          </button>
+        </div>
+        <form id="bookingForm">
+          <input type="hidden" id="bookingId" name="id" />
+          
+          <div class="form-group">
+            <label class="form-label">
+              <span>Customer Name</span>
+              <span class="form-required">*</span>
+            </label>
+            <input 
+              type="text" 
+              class="form-input form-input-large" 
+              id="bookingCustomerName" 
+              name="customerName" 
+              placeholder="e.g., Sarah Johnson"
+              required 
+            />
+          </div>
+
+          <div class="form-group">
+            <label class="form-label">
+              <span>Phone Number</span>
+              <span class="form-required">*</span>
+            </label>
+            <input 
+              type="tel" 
+              class="form-input form-input-large" 
+              id="bookingCustomerPhone" 
+              name="customerPhone" 
+              placeholder="e.g., 07XXX XXXXXX"
+              required 
+            />
+          </div>
+
+          <div class="form-group">
+            <label class="form-label">
+              <span>Email</span>
+              <span class="form-optional">(Optional)</span>
+            </label>
+            <input 
+              type="email" 
+              class="form-input form-input-large" 
+              id="bookingCustomerEmail" 
+              name="customerEmail" 
+              placeholder="e.g., sarah@example.com"
+            />
+          </div>
+
+          <div class="form-group">
+            <label class="form-label">
+              <span>Service</span>
+              <span class="form-required">*</span>
+            </label>
+            <select 
+              class="form-input form-input-large" 
+              id="bookingService" 
+              name="service"
+              required
+            >
+              <option value="">Select a service...</option>
+              <option value="Haircut">Haircut</option>
+              <option value="Haircut & Blow Dry">Haircut & Blow Dry</option>
+              <option value="Blow Dry">Blow Dry</option>
+              <option value="Hair Styling">Hair Styling</option>
+              <option value="Hair Color">Hair Color</option>
+              <option value="Highlights">Highlights</option>
+              <option value="Balayage">Balayage</option>
+              <option value="Perm">Perm</option>
+              <option value="Hair Treatment">Hair Treatment</option>
+              <option value="Keratin Treatment">Keratin Treatment</option>
+              <option value="Updo">Updo</option>
+              <option value="Other">Other</option>
+            </select>
+          </div>
+
+          <div class="form-row">
+            <div class="form-group">
+              <label class="form-label">
+                <span>Date</span>
+                <span class="form-required">*</span>
+              </label>
+              <input 
+                type="date" 
+                class="form-input form-input-large" 
+                id="bookingDate" 
+                name="date" 
+                required 
+              />
+            </div>
+
+            <div class="form-group">
+              <label class="form-label">
+                <span>Time</span>
+                <span class="form-required">*</span>
+              </label>
+              <select 
+                class="form-input form-input-large" 
+                id="bookingTime" 
+                name="time"
+                required
+              >
+                <option value="">Select time...</option>
+                <!-- Time slots will be populated by JavaScript -->
+              </select>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label">
+              <span>Duration</span>
+              <span class="form-required">*</span>
+            </label>
+            <select 
+              class="form-input form-input-large" 
+              id="bookingDuration" 
+              name="duration"
+              required
+            >
+              <option value="30">30 minutes</option>
+              <option value="60" selected>1 hour</option>
+              <option value="90">1.5 hours</option>
+              <option value="120">2 hours</option>
+              <option value="150">2.5 hours</option>
+              <option value="180">3 hours</option>
+            </select>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label">
+              <span>Notes</span>
+              <span class="form-optional">(Optional)</span>
+            </label>
+            <textarea 
+              class="form-input form-textarea form-input-large" 
+              id="bookingNotes" 
+              name="notes" 
+              rows="3" 
+              placeholder="Any special requests or notes..."
+            ></textarea>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label">
+              <span>Status</span>
+            </label>
+            <select 
+              class="form-input form-input-large" 
+              id="bookingStatus" 
+              name="status"
+            >
+              <option value="confirmed">Confirmed</option>
+              <option value="completed">Completed</option>
+              <option value="cancelled">Cancelled</option>
+              <option value="no-show">No Show</option>
+            </select>
+          </div>
+
+          <div class="modal-actions">
+            <button type="button" class="btn btn-cancel" id="cancelBookingBtn">
+              Cancel
+            </button>
+            <button type="button" class="btn btn-delete" id="deleteBookingBtn" style="display: none;">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <polyline points="3 6 5 6 21 6"/>
+                <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/>
+              </svg>
+              <span>Delete</span>
+            </button>
+            <button type="submit" class="btn btn-save">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+                <polyline points="20 6 9 17 4 12"/>
+              </svg>
+              <span>Save Booking</span>
+            </button>
+          </div>
+        </form>
       </div>
     </div>
   `;

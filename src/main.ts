@@ -4,6 +4,7 @@ import './styles/main.css';
 import './styles/pages.css';
 import './styles/admin.css';
 import './styles/admin-panel.css';
+import './styles/calendar.css';
 import './styles/performance.css';
 import './styles/auth.css';
 import './styles/luxury-products.css';
@@ -1323,9 +1324,12 @@ class App {
     await productManager.waitForInit();
     await categoryManager.waitForInit();
     
+    // Initialize calendar (lazy import)
+    let calendarInitialized = false;
+    
     // Tab navigation (simpler than before)
     document.querySelectorAll('.admin-tab[data-section]').forEach(tab => {
-      tab.addEventListener('click', (e) => {
+      tab.addEventListener('click', async (e) => {
         e.preventDefault();
         const section = (tab as HTMLElement).dataset.section;
         
@@ -1335,9 +1339,16 @@ class App {
         tab.classList.add('active');
         document.querySelector(`.admin-section[data-section-content="${section}"]`)?.classList.add('active');
         
-        // Load data when switching to orders tab
+        // Load data when switching tabs
         if (section === 'orders') {
           this.loadAdminOrders();
+        } else if (section === 'bookings') {
+          // Initialize calendar on first visit
+          if (!calendarInitialized) {
+            const { initializeCalendar } = await import('./pages/calendar');
+            await initializeCalendar();
+            calendarInitialized = true;
+          }
         }
       });
     });

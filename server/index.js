@@ -21,6 +21,7 @@ const ORDERS_FILE = path.join(DATA_DIR, 'orders.json');
 const USERS_FILE = path.join(DATA_DIR, 'users.json');
 const PASSWORDS_FILE = path.join(DATA_DIR, 'passwords.json');
 const CATEGORIES_FILE = path.join(DATA_DIR, 'categories.json');
+const BOOKINGS_FILE = path.join(DATA_DIR, 'bookings.json');
 
 // Fallback to public folder for initial seed data
 const PUBLIC_PRODUCTS = path.join(process.cwd(), 'public', 'products.json');
@@ -73,6 +74,12 @@ function ensureDataFiles() {
   if (!fs.existsSync(PASSWORDS_FILE)) {
     fs.writeFileSync(PASSWORDS_FILE, '{}');
     console.log('✅ Created empty passwords.json');
+  }
+
+  // Initialize bookings
+  if (!fs.existsSync(BOOKINGS_FILE)) {
+    fs.writeFileSync(BOOKINGS_FILE, '[]');
+    console.log('✅ Created empty bookings.json');
   }
 }
 
@@ -285,6 +292,43 @@ const server = http.createServer(async (req, res) => {
       return send(res, 200, { success: true });
     }
 
+    // ===== BOOKINGS API =====
+    if (pathname === '/api/bookings' && method === 'GET') {
+      const bookings = readData(BOOKINGS_FILE);
+      return send(res, 200, bookings);
+    }
+
+    if (pathname === '/api/bookings' && method === 'POST') {
+      const booking = await parseBody(req);
+      const bookings = readData(BOOKINGS_FILE);
+      booking.id = booking.id || `booking_${Date.now()}_${Math.random().toString(36).slice(2, 8)}`;
+      booking.createdAt = booking.createdAt || Date.now();
+      booking.updatedAt = Date.now();
+      bookings.push(booking);
+      writeData(BOOKINGS_FILE, bookings);
+      return send(res, 201, booking);
+    }
+
+    if (pathname.startsWith('/api/bookings/') && method === 'PUT') {
+      const id = pathname.split('/').pop();
+      const updates = await parseBody(req);
+      const bookings = readData(BOOKINGS_FILE);
+      const idx = bookings.findIndex((b) => b.id === id);
+      if (idx === -1) return send(res, 404, { error: 'Booking not found' });
+      bookings[idx] = { ...bookings[idx], ...updates, id, updatedAt: Date.now() };
+      writeData(BOOKINGS_FILE, bookings);
+      return send(res, 200, bookings[idx]);
+    }
+
+    if (pathname.startsWith('/api/bookings/') && method === 'DELETE') {
+      const id = pathname.split('/').pop();
+      const bookings = readData(BOOKINGS_FILE);
+      const filtered = bookings.filter((b) => b.id !== id);
+      if (filtered.length === bookings.length) return send(res, 404, { error: 'Booking not found' });
+      writeData(BOOKINGS_FILE, filtered);
+      return send(res, 204, '');
+    }
+
     // Health check
     if (pathname === '/api/health' && method === 'GET') {
       return send(res, 200, { 
@@ -295,7 +339,8 @@ const server = http.createServer(async (req, res) => {
           orders: fs.existsSync(ORDERS_FILE),
           users: fs.existsSync(USERS_FILE),
           passwords: fs.existsSync(PASSWORDS_FILE),
-          categories: fs.existsSync(CATEGORIES_FILE)
+          categories: fs.existsSync(CATEGORIES_FILE),
+          bookings: fs.existsSync(BOOKINGS_FILE)
         }
       });
     }
@@ -322,6 +367,7 @@ server.listen(PORT, '0.0.0.0', () => {
 ║  Endpoints:                            ║
 ║  • GET/POST/PUT/DELETE /api/products  ║
 ║  • GET/POST/PUT/DELETE /api/orders    ║
+║  • GET/POST/PUT/DELETE /api/bookings  ║
 ║  • GET/POST/PUT/DELETE /api/categories║
 ║  • GET/POST/PUT /api/users            ║
 ║  • GET/POST /api/passwords            ║

@@ -353,6 +353,36 @@ class AuthManagerAPI {
     return this.updateProfile({ orders });
   }
 
+  // Get all users (admin only - for linking bookings)
+  async getAllUsers(): Promise<User[]> {
+    try {
+      return await this.fetchJson(`${API_BASE}/users`) as User[];
+    } catch (error) {
+      console.error('Error fetching users:', error);
+      return [];
+    }
+  }
+
+  // Add booking to user (for customer portal integration)
+  async addBookingToUser(userId: string, bookingId: string): Promise<void> {
+    try {
+      const users = await this.getAllUsers();
+      const user = users.find(u => u.id === userId);
+      
+      if (user) {
+        const bookings = [...((user as any).bookings || []), bookingId];
+        await this.fetchJson(`${API_BASE}/users/${userId}`, {
+          method: 'PUT',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ ...user, bookings })
+        });
+      }
+    } catch (error) {
+      console.error('Error adding booking to user:', error);
+      throw error;
+    }
+  }
+
   // Private helper methods
   private generateId(): string {
     return Date.now().toString(36) + Math.random().toString(36).substr(2);
