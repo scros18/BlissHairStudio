@@ -43,6 +43,15 @@ export function accountPageTemplate(userName: string = '', isAdmin: boolean = fa
                 </svg>
                 Profile
               </a>
+              <a href="#" class="account-nav-item" data-tab="appointments">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <rect x="3" y="4" width="18" height="18" rx="2" ry="2"/>
+                  <line x1="16" y1="2" x2="16" y2="6"/>
+                  <line x1="8" y1="2" x2="8" y2="6"/>
+                  <line x1="3" y1="10" x2="21" y2="10"/>
+                </svg>
+                Appointments
+              </a>
               <a href="#" class="account-nav-item" data-tab="orders">
                 <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                   <path d="M9 2L6 6H3L6 20H18L21 6H18L15 2M9 2H15M9 2V6M15 2V6"/>
@@ -127,6 +136,19 @@ export function accountPageTemplate(userName: string = '', isAdmin: boolean = fa
                     <circle cx="20" cy="21" r="1"/>
                     <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"/>
                   </svg>
+                </div>
+              </div>
+            </div>
+
+            <!-- Appointments Tab -->
+            <div class="account-tab" data-tab-content="appointments">
+              <div class="account-card">
+                <h2>Your Appointments</h2>
+                <div id="bookingsList">
+                  <div class="empty-state">
+                    <h3>No Appointments</h3>
+                    <p>Your linked bookings will appear here.</p>
+                  </div>
                 </div>
               </div>
             </div>

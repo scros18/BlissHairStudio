@@ -5,6 +5,7 @@ import './styles/pages.css';
 import './styles/admin.css';
 import './styles/admin-panel.css';
 import './styles/calendar.css';
+import './styles/calendar-app.css';
 import './styles/performance.css';
 import './styles/auth.css';
 import './styles/luxury-products.css';
@@ -27,6 +28,7 @@ import { accountPageTemplate } from './pages/account';
 import { loginPageTemplate } from './pages/login';
 import { registerPageTemplate } from './pages/register';
 import { adminPanelTemplate } from './pages/admin';
+import { calendarAppTemplate, initCalendarApp } from './pages/calendar-app';
 import { authManager } from './utils/authManager';
 // Using API-backed managers for persistent JSON storage
 import { authManagerAPI } from './utils/authManagerAPI';
@@ -183,6 +185,16 @@ class App {
         }
         seoManager.updateMeta({ title: 'Admin Panel - BlissHairStudio', description: 'Admin access', keywords: 'admin, management' });
         this.loadAdminPanel();
+      })
+      .route('/admin/calendar', async () => {
+        // Must be admin to view
+        const user = authManagerAPI.getCurrentUser();
+        if (!user?.isAdmin) { router.navigate('/'); return; }
+        seoManager.updateMeta({ title: 'Calendar - BlissHairStudio', description: 'Salon calendar and bookings' });
+        pageManager.loadPageFromTemplate(calendarAppTemplate);
+        setTimeout(async () => {
+          try { await initCalendarApp(); } catch {}
+        }, 50);
       })
       .route('/privacy', () => {
         seoManager.updateMeta({ 
@@ -991,10 +1003,13 @@ class App {
     // Display user addresses
     const { renderAddresses } = await import('./pages/account');
     renderAddresses(user.addresses || []);
+  // Display user appointments
+  const { renderBookings } = await import('./pages/account');
+  renderBookings();
     
     // Tab switching
     document.querySelectorAll('.account-nav-item').forEach(item => {
-      item.addEventListener('click', (e) => {
+      item.addEventListener('click', async (e) => {
         e.preventDefault();
         e.stopPropagation();
         const tab = (item as HTMLElement).dataset.tab;
@@ -1010,6 +1025,9 @@ class App {
           this.loadUserOrders();
         } else if (tab === 'addresses') {
           this.loadUserAddresses();
+        } else if (tab === 'appointments') {
+          const { renderBookings } = await import('./pages/account');
+          await renderBookings();
         }
       });
     });

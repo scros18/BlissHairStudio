@@ -1,0 +1,36 @@
+:root{--cal-bg:#0b1210;--cal-card:#0e1614;--cal-accent:#00a88b;--cal-text:#e7f6f3;--cal-muted:#8fb8af;--cal-danger:#e05252}
+.calendar-app{display:grid;grid-template-columns:2fr 1fr;gap:24px;padding:20px}
+.calendar-app-header{display:flex;align-items:center;justify-content:space-between;background:var(--cal-card);border:1px solid #17302a;border-radius:14px;padding:12px 16px;color:var(--cal-text)}
+.calendar-month-switcher{display:flex;align-items:center;gap:12px}
+.calendar-month-switcher h1{margin:0;font-size:20px;font-weight:700}
+.btn{background:#13231f;border:1px solid #1d3a33;color:var(--cal-text);padding:8px 12px;border-radius:10px;cursor:pointer}
+.btn.primary{background:var(--cal-accent);border-color:var(--cal-accent);color:#06211c}
+.btn.sm{padding:4px 8px;font-size:12px}
+.btn.danger{background:var(--cal-danger);border-color:var(--cal-danger);color:#fff}
+.today-btn{background:#13231f}
+.calendar-month-grid{background:var(--cal-card);border:1px solid #17302a;border-radius:14px;overflow:hidden}
+.grid-head{display:grid;grid-template-columns:repeat(7,1fr);border-bottom:1px solid #17302a}
+.grid-head>div{padding:10px 12px;color:var(--cal-muted);text-transform:uppercase;font-size:12px;letter-spacing:.06em}
+.grid-body{display:grid;grid-template-columns:repeat(7,1fr)}
+.month-cell{position:relative;aspect-ratio:1/1;border-right:1px solid #17302a;border-bottom:1px solid #17302a;background:transparent;color:var(--cal-text);text-align:left;padding:10px}
+.month-cell .day-num{font-weight:600;opacity:.9}
+.month-cell .dot{position:absolute;right:8px;top:8px;background:var(--cal-accent);color:#031612;border-radius:999px;padding:2px 6px;font-size:11px}
+.month-cell.muted{color:var(--cal-muted);opacity:.6}
+.month-cell.today{outline:2px solid var(--cal-accent)}
+.month-cell.selected{background:#0f1d19}
+.calendar-day-panel{background:var(--cal-card);border:1px solid #17302a;border-radius:14px;padding:16px}
+.day-panel-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:10px}
+.day-booking{display:flex;align-items:center;gap:12px;padding:12px;border:1px solid #17302a;border-radius:12px;margin-bottom:10px;background:#0f1d19}
+.day-booking .time{width:60px;font-weight:700;color:var(--cal-accent)}
+.day-booking .name{font-weight:600}
+.day-booking .service{color:var(--cal-muted);font-size:12px}
+.empty{color:var(--cal-muted);padding:20px;text-align:center}
+.modal{position:fixed;inset:0;background:rgba(0,0,0,.5);display:none;align-items:center;justify-content:center;z-index:1000}
+.modal.active{display:flex}
+.modal-content{background:var(--cal-card);border:1px solid #17302a;border-radius:14px;min-width:360px;max-width:520px;width:90%;padding:16px;color:var(--cal-text)}
+.modal-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:12px}
+.form-row{display:flex;flex-direction:column;gap:6px;margin-bottom:12px}
+.form-row.two{flex-direction:row}
+.form-row.two>div{flex:1}
+input,select,textarea{background:#0f1d19;border:1px solid #1b332c;color:var(--cal-text);padding:10px;border-radius:10px}
+@media (max-width: 980px){.calendar-app{grid-template-columns:1fr;}}
