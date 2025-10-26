@@ -37,6 +37,7 @@ import { categoryManager } from './utils/categoryManager';
 import { renderPrivacyPage } from './pages/privacy';
 import { renderTermsPage } from './pages/terms';
 import { renderAccessibilityPage } from './pages/accessibility';
+import { docsPageTemplate, staffCalendarGuideTemplate } from './pages/docs';
 import { clientsPageTemplate, initClientsGallery } from './pages/clients';
 import { storesPage } from './pages/stores';
 import { productMoistureTemplate } from './pages/product-moisture';
@@ -190,7 +191,7 @@ class App {
         // Must be admin to view
         const user = authManagerAPI.getCurrentUser();
         if (!user?.isAdmin) { router.navigate('/'); return; }
-        seoManager.updateMeta({ title: 'Calendar - BlissHairStudio', description: 'Salon calendar and bookings' });
+  seoManager.updateMeta({ title: 'Calendar - BlissHairStudio', description: 'Salon calendar and bookings', keywords: 'calendar, bookings, admin' });
         pageManager.loadPageFromTemplate(calendarAppTemplate);
         setTimeout(async () => {
           try { await initCalendarApp(); } catch {}
@@ -236,6 +237,19 @@ class App {
           keywords: 'hair salon locations, store locator, find salon, BlissHairStudio near me, salon addresses'
         });
         pageManager.loadPageFromTemplate(storesPage);
+      })
+      .route('/docs', () => {
+        // Admin-only docs
+        const user = authManagerAPI.getCurrentUser();
+        if (!user?.isAdmin) { router.navigate('/'); return; }
+  seoManager.updateMeta({ title: 'Internal Docs - BlissHairStudio', description: 'Private documentation', keywords: 'docs, internal, admin' });
+        pageManager.loadPageFromTemplate(docsPageTemplate);
+      })
+      .route('/docs/staff-calendar', () => {
+        const user = authManagerAPI.getCurrentUser();
+        if (!user?.isAdmin) { router.navigate('/'); return; }
+  seoManager.updateMeta({ title: 'Staff Calendar Guide', description: 'How to use the calendar', keywords: 'calendar, staff guide, admin' });
+        pageManager.loadPageFromTemplate(staffCalendarGuideTemplate);
       })
       .route('/product/:slug', async () => {
         // Dynamic product route - extract slug from URL
@@ -1383,7 +1397,7 @@ class App {
     
     // Tab navigation (simpler than before)
     document.querySelectorAll('.admin-tab[data-section]').forEach(tab => {
-      tab.addEventListener('click', async (e) => {
+  tab.addEventListener('click', async (e) => {
         e.preventDefault();
         const section = (tab as HTMLElement).dataset.section;
         
@@ -1403,6 +1417,10 @@ class App {
             await initializeCalendar();
             calendarInitialized = true;
           }
+        } else if (section === 'users') {
+          await this.loadAdminUsers();
+        } else if (section === 'data') {
+          this.setupDataExport();
         }
       });
     });
@@ -1537,6 +1555,61 @@ class App {
         this.loadCategoriesGrid();
       }, 300);
     });
+  }
+
+  private async loadAdminUsers(): Promise<void> {
+    const container = document.getElementById('usersList');
+    if (!container) return;
+    const { userManagerAPI } = await import('./utils/userManagerAPI');
+    const users = await userManagerAPI.getAll();
+    if (!users.length) {
+      container.innerHTML = '<div class="products-empty"><div class="products-empty-icon">👥</div><p>No users yet.</p></div>';
+      return;
+    }
+    container.innerHTML = users.map(u => `
+      <div class="admin-user-row">
+        <div>
+          <div class="user-name">${u.name || '(No name)'} ${u.isAdmin ? '<span class="badge">ADMIN</span>' : ''}</div>
+          <div class="user-email">${u.email}</div>
+        </div>
+        <div class="user-actions">
+          <label class="toggle-switch">
+            <input type="checkbox" ${u.isAdmin ? 'checked' : ''} data-user-id="${u.id}" class="toggle-admin">
+            <span class="toggle-slider"></span>
+          </label>
+        </div>
+      </div>
+    `).join('');
+
+    container.querySelectorAll<HTMLInputElement>('.toggle-admin').forEach(el => {
+      el.addEventListener('change', async () => {
+        const id = el.dataset.userId!;
+        const { userManagerAPI } = await import('./utils/userManagerAPI');
+        await userManagerAPI.update(id, { isAdmin: el.checked });
+      });
+    });
+  }
+
+  private setupDataExport(): void {
+    const btn = document.getElementById('downloadDataBtn');
+    const link = document.getElementById('dataDownloadLink') as HTMLAnchorElement | null;
+    if (!btn || !link) return;
+    btn.addEventListener('click', async () => {
+      try {
+        const base = (import.meta as any).env?.VITE_API_BASE || 'http://localhost:8787';
+        const res = await fetch(`${base}/export`);
+        if (!res.ok) throw new Error('Export failed');
+        const json = await res.json();
+        const blob = new Blob([JSON.stringify(json, null, 2)], { type: 'application/json' });
+        link.href = URL.createObjectURL(blob);
+        link.download = `bliss-data-export-${new Date().toISOString().slice(0,10)}.json`;
+        link.style.display = '';
+        link.click();
+        setTimeout(() => URL.revokeObjectURL(link.href), 1000);
+      } catch (e) {
+        console.error(e);
+      }
+    }, { once: true });
   }
 
   private loadCategoriesGrid(): void {

@@ -48,6 +48,21 @@ export function adminPanelTemplate(): string {
           </svg>
           <span>Categories</span>
         </button>
+        <button class="admin-tab" data-section="users">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/>
+            <circle cx="12" cy="7" r="4"/>
+          </svg>
+          <span>Users</span>
+        </button>
+        <button class="admin-tab" data-section="data">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <ellipse cx="12" cy="5" rx="9" ry="3"/>
+            <path d="M3 5v6c0 1.66 4.03 3 9 3s9-1.34 9-3V5"/>
+            <path d="M3 11v6c0 1.66 4.03 3 9 3s9-1.34 9-3v-6"/>
+          </svg>
+          <span>Data</span>
+        </button>
         <button class="admin-tab" data-section="bookings">
           <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
             <rect x="3" y="4" width="18" height="18" rx="2" ry="2"/>
@@ -135,6 +150,31 @@ export function adminPanelTemplate(): string {
             <div class="categories-grid" id="categoriesGrid">
               <!-- Categories will be loaded here -->
             </div>
+          </div>
+        </div>
+
+        <!-- Users Section -->
+        <div class="admin-section" data-section-content="users">
+          <h2 class="admin-section-title">Users</h2>
+          <div class="admin-content">
+            <div id="usersList" class="users-list"></div>
+          </div>
+        </div>
+
+        <!-- Data Section -->
+        <div class="admin-section" data-section-content="data">
+          <h2 class="admin-section-title">Data Export</h2>
+          <div class="admin-content">
+            <p>Download a snapshot of products, categories, orders, users, and bookings (passwords excluded).</p>
+            <button class="btn btn-add-large" id="downloadDataBtn">
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+                <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
+                <polyline points="7 10 12 15 17 10"/>
+                <line x1="12" y1="15" x2="12" y2="3"/>
+              </svg>
+              <span>Download Data Bundle</span>
+            </button>
+            <a id="dataDownloadLink" style="display:none"></a>
           </div>
         </div>
 

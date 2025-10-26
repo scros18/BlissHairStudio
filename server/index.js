@@ -95,8 +95,11 @@ function readData(filePath, fallback = []) {
 }
 
 function writeData(filePath, data) {
+  // Atomic write: write to temp file then rename
   try {
-    fs.writeFileSync(filePath, JSON.stringify(data, null, 2));
+    const tmp = `${filePath}.tmp`;
+    fs.writeFileSync(tmp, JSON.stringify(data, null, 2));
+    fs.renameSync(tmp, filePath);
     return true;
   } catch (e) {
     console.error(`Error writing ${filePath}:`, e.message);
@@ -118,12 +121,23 @@ function send(res, status, data) {
 
 // Parse request body
 function parseBody(req) {
+  // Limit body to 1MB to avoid memory issues
+  const MAX = 1 * 1024 * 1024;
   return new Promise((resolve, reject) => {
+    let size = 0;
     let buf = '';
-    req.on('data', (chunk) => (buf += chunk));
+    req.on('data', (chunk) => {
+      size += chunk.length;
+      if (size > MAX) {
+        reject(new Error('Payload too large'));
+        req.destroy();
+        return;
+      }
+      buf += chunk;
+    });
     req.on('end', () => {
       try {
-        resolve(JSON.parse(buf));
+        resolve(buf ? JSON.parse(buf) : {});
       } catch (e) {
         reject(new Error('Invalid JSON'));
       }
@@ -346,6 +360,20 @@ const server = http.createServer(async (req, res) => {
           bookings: fs.existsSync(BOOKINGS_FILE)
         }
       });
+    }
+
+    // Data export (combined), excluding passwords
+    if (pathname === '/api/export' && method === 'GET') {
+      const bundle = {
+        generatedAt: new Date().toISOString(),
+        dataDir: DATA_DIR,
+        products: readData(PRODUCTS_FILE, []),
+        categories: readData(CATEGORIES_FILE, []),
+        orders: readData(ORDERS_FILE, []),
+        users: readData(USERS_FILE, []),
+        bookings: readData(BOOKINGS_FILE, [])
+      };
+      return send(res, 200, bundle);
     }
 
     // Not found
